@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30105.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Creeper Lv's Universal dotNet Library", "Creeper Lv's Universal dotNet Library\Creeper Lv's Universal dotNet Library.csproj", "{597737F0-9561-49FF-B000-F45DF6156B2D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CLUNLTests", "CLUNLTests\CLUNLTests.csproj", "{FD31699C-2F35-4F00-B9C4-31D1DB78758C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CLUNL.DirectedIO", "CLUNL.DirectedIO\CLUNL.DirectedIO.csproj", "{544B8278-67B2-4E13-BCDC-1BF16C4C46E3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{47590577-03F0-4737-95C1-2F8D171EC0F7}"
+	ProjectSection(SolutionItems) = preProject
+		package.ps1 = package.ps1
+		publish.ps1 = publish.ps1
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CLUNL.Packaging", "CLUNL.Packaging\CLUNL.Packaging.csproj", "{03EBE711-9F73-4A94-8021-FA54027316B0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{597737F0-9561-49FF-B000-F45DF6156B2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{597737F0-9561-49FF-B000-F45DF6156B2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{597737F0-9561-49FF-B000-F45DF6156B2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{597737F0-9561-49FF-B000-F45DF6156B2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD31699C-2F35-4F00-B9C4-31D1DB78758C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD31699C-2F35-4F00-B9C4-31D1DB78758C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD31699C-2F35-4F00-B9C4-31D1DB78758C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD31699C-2F35-4F00-B9C4-31D1DB78758C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{544B8278-67B2-4E13-BCDC-1BF16C4C46E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{544B8278-67B2-4E13-BCDC-1BF16C4C46E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{544B8278-67B2-4E13-BCDC-1BF16C4C46E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{544B8278-67B2-4E13-BCDC-1BF16C4C46E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03EBE711-9F73-4A94-8021-FA54027316B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03EBE711-9F73-4A94-8021-FA54027316B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03EBE711-9F73-4A94-8021-FA54027316B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03EBE711-9F73-4A94-8021-FA54027316B0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C906856E-1A4B-4972-8D20-2B10DA48F4D0}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Creeper Lv's Universal dotNet Library\Creeper Lv's Universal dotNet Library.csproj" />
+  </ItemGroup>
+
+</Project>
