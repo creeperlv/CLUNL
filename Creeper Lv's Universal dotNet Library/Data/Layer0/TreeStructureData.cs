@@ -45,7 +45,7 @@ namespace CLUNL.Data.Layer0
             string Line;
             while ((Line = WR.ReadLine()) != null)
             {
-                if (Line.StartsWith("#"))
+                if (Line.TrimStart().StartsWith("#"))
                 {
 
                 }
