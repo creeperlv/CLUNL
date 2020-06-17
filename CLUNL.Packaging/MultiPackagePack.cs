@@ -7,8 +7,9 @@ namespace CLUNL.Packaging
 {
     public class MultiPackagePack
     {
-        public static void CreatePack(Dictionary<string,string>Manifest,DirectoryInfo TempDirectory)
+        public static void CreatePack(Dictionary<string,string>Manifest,DirectoryInfo TempDirectory, FileInfo TargetPackage)
         {
+            FileInfo fileInfo = new FileInfo(Path.Combine(TempDirectory.FullName, "Package.Manifest"));
             foreach (var item in Manifest)
             {
 

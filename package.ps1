@@ -22,6 +22,7 @@ Write-Host "Compressing..."
 $Compress=@{
 	Path=".\Creeper Lv's Universal dotNet Library\bin\Release\netstandard2.0\CLUNL.dll",
 		".\CLUNL.DirectedIO\bin\Release\netstandard2.0\CLUNL.DirectedIO.dll",
+		".\CLUNL.Pipeline\bin\Release\netstandard2.0\CLUNL.Pipeline.dll",
 		".\Artifacts\LibManifest"
 	Destination=".\Artifacts\$ArtifactName.zip"
 }

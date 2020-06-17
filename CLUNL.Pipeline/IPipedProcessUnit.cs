@@ -10,6 +10,7 @@ namespace CLUNL.Pipeline
     public interface IPipelineProcessor : IPipedProcessUnit
     {
         void Init();
+        object Process(object Input, bool IgnoreError);
     }
     public class UniversalProcessor:IPipelineProcessor
     {
@@ -42,12 +43,35 @@ namespace CLUNL.Pipeline
 
         public object Process(object Input)
         {
+            return Process(Input, false);
+        }
 
-            foreach (var item in processUnits)
+        public object Process(object Input, bool IgnoreError)
+        {
+            if (IgnoreError)
             {
-                Input = item.Process(Input);
+
+                foreach (var item in processUnits)
+                {
+                    try
+                    {
+                        Input = item.Process(Input);
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+                return Input;
             }
-            return Input;
+            else
+            {
+
+                foreach (var item in processUnits)
+                {
+                    Input = item.Process(Input);
+                }
+                return Input;
+            }
         }
     }
 
@@ -68,12 +92,35 @@ namespace CLUNL.Pipeline
 
         public object Process(object Input)
         {
+            return Process(Input, false);
+        }
 
-            foreach (var item in processUnits)
+        public object Process(object Input, bool IgnoreError)
+        {
+            if (IgnoreError)
             {
-                Input = item.Process(Input);
+
+                foreach (var item in processUnits)
+                {
+                    try
+                    {
+                        Input = item.Process(Input);
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+                return Input;
             }
-            return Input;
+            else
+            {
+
+                foreach (var item in processUnits)
+                {
+                    Input = item.Process(Input);
+                }
+                return Input;
+            }
         }
     }
     public class DefaultProcessUnit : IPipedProcessUnit
