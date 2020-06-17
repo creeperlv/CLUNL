@@ -12,7 +12,7 @@ To isolate some frequently used codes in my projects, and they can be updated in
 
 ### 1. A common path to store libs.
 
-I tend to use '~/.libs', '~/.libs/creeperlv', '~/.libraries/creeperlv', '~/.libraries/' for these paths are both available in Windows and Linux.
+I tend to use '\~/.libs', '\~/.libs/creeperlv', '\~/.libraries/creeperlv', '\~/.libraries/' for these paths are both available in Windows and Linux.
 
 ### 2. Include in application distribution.
 
