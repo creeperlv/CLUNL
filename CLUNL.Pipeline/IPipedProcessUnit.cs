@@ -5,14 +5,14 @@ namespace CLUNL.Pipeline
 {
     public interface IPipedProcessUnit
     {
-        object Process(object Input);
+        PipelineData Process(PipelineData Input);
     }
     public interface IPipelineProcessor : IPipedProcessUnit
     {
         void Init();
-        object Process(object Input, bool IgnoreError);
+        PipelineData Process(PipelineData Input, bool IgnoreError);
     }
-    public class UniversalProcessor:IPipelineProcessor
+    public class UniversalProcessor : IPipelineProcessor
     {
         List<IPipedProcessUnit> processUnits = new List<IPipedProcessUnit>();
 
@@ -25,7 +25,7 @@ namespace CLUNL.Pipeline
                 if (item.FullName.StartsWith("Microsoft.")) continue;
                 if (item.FullName.StartsWith("netstandard")) continue;
                 {
-                    var types=item.GetTypes();
+                    var types = item.GetTypes();
                     foreach (var type0 in types)
                     {
                         if (type0.IsAssignableFrom(typeof(IPipelineProcessor)))
@@ -41,12 +41,12 @@ namespace CLUNL.Pipeline
             }
         }
 
-        public object Process(object Input)
+        public PipelineData Process(PipelineData Input)
         {
             return Process(Input, false);
         }
 
-        public object Process(object Input, bool IgnoreError)
+        public PipelineData Process(PipelineData Input, bool IgnoreError)
         {
             if (IgnoreError)
             {
@@ -55,7 +55,11 @@ namespace CLUNL.Pipeline
                 {
                     try
                     {
-                        Input = item.Process(Input);
+                        var output = item.Process(Input);
+                        if (Input.CheckContinuity(output))
+                        {
+                            Input = output;
+                        }
                     }
                     catch (Exception)
                     {
@@ -68,13 +72,30 @@ namespace CLUNL.Pipeline
 
                 foreach (var item in processUnits)
                 {
-                    Input = item.Process(Input);
+                    var output = item.Process(Input);
+                    if (Input.CheckContinuity(output))
+                    {
+                        Input = output;
+                    }
+                    else
+                    {
+                        throw new PipelineDataContinuityException(item);
+                    }
                 }
                 return Input;
             }
         }
     }
 
+    [Serializable]
+    public class PipelineDataContinuityException : Exception
+    {
+        public PipelineDataContinuityException(IPipedProcessUnit unit) : base("Pipeline Data continuity is broken. Caused by unit:" + unit.GetType().FullName) { }
+        public PipelineDataContinuityException(IPipedProcessUnit unit, Exception inner) : base("Pipeline Data continuity is broken. Caused by unit:" + unit.GetType().FullName, inner) { }
+        protected PipelineDataContinuityException(
+          System.Runtime.Serialization.SerializationInfo info,
+          System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+    }
     public class DefaultProcessor : IPipelineProcessor
     {
         List<IPipedProcessUnit> processUnits = new List<IPipedProcessUnit>();
@@ -90,12 +111,12 @@ namespace CLUNL.Pipeline
             Init(new IPipedProcessUnit[0]);
         }
 
-        public object Process(object Input)
+        public PipelineData Process(PipelineData Input)
         {
             return Process(Input, false);
         }
 
-        public object Process(object Input, bool IgnoreError)
+        public PipelineData Process(PipelineData Input, bool IgnoreError)
         {
             if (IgnoreError)
             {
@@ -104,7 +125,11 @@ namespace CLUNL.Pipeline
                 {
                     try
                     {
-                        Input = item.Process(Input);
+                        var output = item.Process(Input);
+                        if (Input.CheckContinuity(output))
+                        {
+                            Input = output;
+                        }
                     }
                     catch (Exception)
                     {
@@ -117,7 +142,15 @@ namespace CLUNL.Pipeline
 
                 foreach (var item in processUnits)
                 {
-                    Input = item.Process(Input);
+                    var output = item.Process(Input);
+                    if (Input.CheckContinuity(output))
+                    {
+                        Input = output;
+                    }
+                    else
+                    {
+                        throw new PipelineDataContinuityException(item);
+                    }
                 }
                 return Input;
             }
@@ -125,7 +158,7 @@ namespace CLUNL.Pipeline
     }
     public class DefaultProcessUnit : IPipedProcessUnit
     {
-        public object Process(object Input)
+        public PipelineData Process(PipelineData Input)
         {
             return Input;
         }

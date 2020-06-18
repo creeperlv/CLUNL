@@ -20,7 +20,7 @@ namespace CLUNLTests
                 if (item.FullName.StartsWith("System.")) continue;
                 if (item.FullName.StartsWith("Microsoft.")) continue;
                 if (item.FullName.StartsWith("netstandard")) continue;
-                Console.WriteLine(defaultProcessor.Process(item.FullName));
+                Console.WriteLine(defaultProcessor.Process(new PipelineData(item.FullName,null,null)));
             }
         }
     }
