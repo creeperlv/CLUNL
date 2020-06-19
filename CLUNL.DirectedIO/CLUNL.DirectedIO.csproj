@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CLUNL.Pipeline\CLUNL.Pipeline.csproj" />
     <ProjectReference Include="..\Creeper Lv's Universal dotNet Library\Creeper Lv's Universal dotNet Library.csproj" />
   </ItemGroup>
 
