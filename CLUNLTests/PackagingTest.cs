@@ -66,5 +66,10 @@ namespace CLUNLTests
             }
             MultiPackagePack.CreatePack(Manifest, new DirectoryInfo(Path.GetTempPath()), new FileInfo("./TestPackage.mpp"));
         }
+        [TestMethod]
+        public void UnpackTest()
+        {
+            MultiPackagePack.ExtractPack(new FileInfo("./TestPackage.mpp"), new DirectoryInfo(Path.GetTempPath()), new DirectoryInfo("./UnPackTest/"), "Pkg-1", "Pkg-2");
+        }
     }
 }

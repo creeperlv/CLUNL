@@ -22,11 +22,53 @@ namespace CLUNL.Packaging
             }
             sw.Close();
             //Start to Zip.
+            if (File.Exists(TargetPackage.FullName)) File.Delete(TargetPackage.FullName);
             ZipFile.CreateFromDirectory(TempDirectory.FullName, TargetPackage.FullName);
             TempDirectory.Delete(true);
         }
-        public static void ExtractPack(params string[] PackageName)
+        public static void ExtractPack(FileInfo PackageFile,DirectoryInfo TempDirectory,DirectoryInfo Target,params string[] PackageName)
         {
+            //var stream=PackageFile.Open(FileMode.Open);
+            //ZipArchive zipArchive=new ZipArchive(stream);
+            //var Manifest=zipArchive.GetEntry("Package.Manifest");
+            //var ManiData=Manifest.Open();
+            //StreamReader streamReader=new StreamReader(ManiData);
+            //string line=null;
+            //while ((line=streamReader.ReadLine())!=null)
+            //{
+            //    foreach(var item in PackageName){
+            //        if(line.StartsWith(item+"|")){
+            //            var pkgname=line.Substring((item+"|").Length);
+            //            foreach (var entry in zipArchive.Entries)
+            //            {
+            //                if (entry.FullName.StartsWith(pkgname))
+            //                {
+            //                    entry.ExtractToFile(Path.Combine(Target.FullName,entry.FullName.Substring(pkgname/)))
+            //                }
+            //            }
+
+
+            //        }
+            //    }
+            //}
+            TempDirectory = new DirectoryInfo(Path.Combine(TempDirectory.FullName, Guid.NewGuid().ToString()));
+            if(!TempDirectory.Exists)TempDirectory.Create();
+            if(Target.Exists==false)Target.Create();
+            ZipFile.ExtractToDirectory(PackageFile.FullName,TempDirectory.FullName);
+            var manifest = File.ReadAllLines(Path.Combine(TempDirectory.FullName, "Package.Manifest"));
+            foreach (var item in manifest)
+            {
+                foreach (var target in PackageName)
+                {
+                    if (item.StartsWith(target))
+                    {
+                        var pkgName = item.Substring(target.Length+1);
+                        Utilities.MoveFolderRecursively(Path.Combine(TempDirectory.FullName, pkgName), Target.FullName);
+                        //Directory.Move(Path.Combine(TempDirectory.FullName, pkgName), Target.FullName);
+                    }
+                }
+            }
+            TempDirectory.Delete(true);
 
         }
     }
