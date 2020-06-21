@@ -28,6 +28,7 @@ namespace CLUNL
         public static int ListData_AutoSave = 0x0001;
         public static int ThrowExceptionWhenHold = 0x0002;
         public static int FileWR_AutoCreateFile = 0x0003;
+        public static int Pipeline_IgnoreError=0x0004;
     }
     public enum VersionChannel
     {
