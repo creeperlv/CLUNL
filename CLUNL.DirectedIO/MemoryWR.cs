@@ -38,7 +38,10 @@ namespace CLUNL.DirectedIO
             await StreamWriter.FlushAsync();
             await MemoryStream.FlushAsync();
         }
-
+        public byte[] GetAllData()
+        {
+            return MemoryStream.ToArray();
+        }
         public byte[] Read(int length, int offset)
         {
             byte[] vs = new byte[length];
