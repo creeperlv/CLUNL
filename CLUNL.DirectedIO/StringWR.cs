@@ -54,7 +54,14 @@ namespace CLUNL.DirectedIO
         {
             return (char)reader.Read();
         }
-
+        public string GetAllString()
+        {
+            return Encoding.Default.GetString(memoryStream.ToArray());
+        }
+        public string GetAllString(Encoding encoding)
+        {
+            return encoding.GetString(memoryStream.ToArray());
+        }
         public string ReadLine()
         {
             return reader.ReadLine();
