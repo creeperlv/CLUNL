@@ -5,7 +5,7 @@ namespace CLUNL
 {
     public class LibraryInfo
     {
-        public static readonly Version LibVersion = new Version(1, 0, 0, 0);
+        public static readonly Version LibVersion = new Version(0, 1, 0, 0);
         internal static Dictionary<int, int> __ = new Dictionary<int, int>();
         public static void SetFlag(int FeatureID,int Value)
         {
