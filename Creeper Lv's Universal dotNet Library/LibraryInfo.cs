@@ -7,6 +7,15 @@ namespace CLUNL
     {
         public static readonly Version LibVersion = new Version(0, 1, 0, 0);
         internal static Dictionary<int, int> __ = new Dictionary<int, int>();
+        public static string GetVersionString()
+        {
+            var c = BuildInfo.Channel;
+            if (BuildInfo.Channel == "Undefined00")
+            {
+                c = "PreRelease";
+            }
+            return $"{LibVersion}-{c}";
+        }
         public static void SetFlag(int FeatureID,int Value)
         {
             if (__.ContainsKey(FeatureID))
