@@ -26,6 +26,7 @@ namespace CLUNL.Data.Layer1
         }
         public static INILikeData CreateToFile(FileInfo TargetFile)
         {
+            if (!TargetFile.Exists) TargetFile.Create().Close();
             FileWR _α___ = new FileWR(TargetFile);
             _α___.WriteLine("#=================================================");
             _α___.WriteLine("#=INI-Like Data File                             =");
