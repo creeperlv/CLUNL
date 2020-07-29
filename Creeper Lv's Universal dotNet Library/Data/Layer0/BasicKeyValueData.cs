@@ -196,7 +196,7 @@ namespace CLUNL.Data.Layer0
         /// <param name="Value"></param>
         /// <param name="AutoSave">Indicates whether the data will be saved after this operation.</param>
         /// <returns><p>true: Operate Succeed.</p><br/><p>false: Operation calceld due to other operation is on hold.</p></returns>
-        public bool? AddValue(string Key, string Value, bool AutoSave = false, int Handle = 0)
+        public bool? AddValue(string Key, string Value,bool IgnoreDuplicateCheck=false, bool AutoSave = false, int Handle = 0)
         {
             if (HitHandle(Handle) == false)
             {
@@ -206,6 +206,7 @@ namespace CLUNL.Data.Layer0
             {
                 return false;
             }
+            if(IgnoreDuplicateCheck==false)
             for (int i = 0; i < Raw.Count; i++)
             {
                 if (Raw[i].StartsWith(Key + Separator))
@@ -252,6 +253,42 @@ namespace CLUNL.Data.Layer0
             //    ____.Flush();
             //}
         }
+
+        public bool RemoveOldDuplicatedItems(bool AutoSave = true, int Handle = 0)
+        {
+            if (HitHandle(Handle) == false)
+            {
+                return false;
+            }
+            if (isSyncingData == true)
+            {
+                return false;
+            }
+            List<string> Keys=new List<string>();
+            for (int i = Raw.Count-1; i >=0 ; i--)
+            {
+                if (Raw[i].StartsWith("#")) continue;
+                if (Raw[i].Contains(Separator))
+                {
+                    foreach (var item in Keys)
+                    {
+                        if (Raw[i].StartsWith(item))
+                        {
+                            Raw.RemoveAt(i);
+                        }
+                        else
+                        {
+                            Keys.Add(Raw[i].Substring(0, Raw[i].IndexOf(Separator) + 1));
+                        }
+                    }
+                }
+            }
+            if (AutoSave == true)
+            {
+                Flush();
+            }
+            return true;
+        }
         public static BasicKeyValueData CreateToFile(FileInfo TargetFile, char Separator = ':')
         {
             if (!TargetFile.Exists) TargetFile.Create().Close();
@@ -277,7 +314,7 @@ namespace CLUNL.Data.Layer0
 
         public void Add(KeyValuePair<string, string> item)
         {
-            AddValue(item.Key, item.Value);
+            AddValue(item.Key, item.Value,false,true,0);
         }
 
         public void Clear()

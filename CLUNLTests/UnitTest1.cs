@@ -12,13 +12,35 @@ namespace CLUNLTests
     public class UnitTest1
     {
         [TestMethod]
-        public void PressureTest()
+        public void PressureTest1()
         {
-            var a=BasicKeyValueData.CreateToFile(new FileInfo("./TestData.data"));
+            var a = BasicKeyValueData.CreateToFile(new FileInfo("./TestData.data"));
             for (int i = 0; i < 100000; i++)
             {
-                a.AddValue("Key." + i + "", "SampleTest");
+                a.AddValue("Key." + i + "", "SampleTest"+i);
             }
+            for (int i = 0; i < 10000; i++)
+            {
+                a.AddValue("Key." + i + "", "SampleTestUpdated" + i);
+            }
+            //Microsoft.VisualStudio.TestTools.UnitTesting.Logging.Logger.LogMessage("%s",a.FindValue("Key.2"));
+            //a.AddValue("ASDDD","Appended Content");
+            a.Flush();
+            a.Dispose();
+        }
+        [TestMethod]
+        public void PressureTest2()
+        {
+            var a = BasicKeyValueData.CreateToFile(new FileInfo("./TestData2.data"));
+            for (int i = 0; i < 100000; i++)
+            {
+                a.AddValue("Key." + i + "", "SampleTest" + i, true, false);
+            }
+            for (int i = 0; i < 10000; i++)
+            {
+                a.AddValue("Key." + i + "", "SampleTestUpdated" + i, true, false);
+            }
+            a.RemoveOldDuplicatedItems(false);
             //Microsoft.VisualStudio.TestTools.UnitTesting.Logging.Logger.LogMessage("%s",a.FindValue("Key.2"));
             //a.AddValue("ASDDD","Appended Content");
             a.Flush();

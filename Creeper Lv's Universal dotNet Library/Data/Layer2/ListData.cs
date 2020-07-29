@@ -79,8 +79,9 @@ namespace CLUNL.Data.Layer2
             BasicKeyValueData.AddValue("Length", RawData.Count+"",Handle:Handle);
             for (int i = 0; i < RawData.Count; i++)
             {
-                BasicKeyValueData.AddValue(i + "", RawData[i].ToString(),false,Handle);
+                BasicKeyValueData.AddValue(i + "", RawData[i].ToString(),false,false,Handle);
             }
+            BasicKeyValueData.RemoveOldDuplicatedItems();
             BasicKeyValueData.Flush(Handle);
             BasicKeyValueData.Release(Handle);
         }
