@@ -20,6 +20,15 @@ namespace CLUNL.Pipeline
         {
             Data.Add(item);
         }
+        public static ProcessUnitManifest ObtainFromStringCollection(ICollection<string> scollection)
+        {
+            ProcessUnitManifest types = new ProcessUnitManifest();
+            foreach (var item in scollection)
+            {
+                types.Add(Type.GetType(item));
+            }
+            return types;
+        }
         ///<summary>
         /// Generate a list that contians instances of given types of process units.
         ///</summart>
