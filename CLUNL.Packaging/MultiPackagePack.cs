@@ -18,7 +18,7 @@ namespace CLUNL.Packaging
             foreach (var item in Manifest)
             {
                 sw.WriteLine(item.Key + "|" + item.Value.Name);
-                Utilities.CopyFolderRecursively(item.Value.FullName, Path.Combine(TempDirectory.FullName, item.Value.Name));
+                FileUtilities.CopyFolderRecursively(item.Value.FullName, Path.Combine(TempDirectory.FullName, item.Value.Name));
             }
             sw.Close();
             //Start to Zip.
@@ -63,7 +63,7 @@ namespace CLUNL.Packaging
                     if (item.StartsWith(target))
                     {
                         var pkgName = item.Substring(target.Length+1);
-                        Utilities.MoveFolderRecursively(Path.Combine(TempDirectory.FullName, pkgName), Target.FullName);
+                        FileUtilities.MoveFolderRecursively(Path.Combine(TempDirectory.FullName, pkgName), Target.FullName);
                         //Directory.Move(Path.Combine(TempDirectory.FullName, pkgName), Target.FullName);
                     }
                 }

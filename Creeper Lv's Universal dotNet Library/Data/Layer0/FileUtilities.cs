@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CLUNL.Data.Layer0
 {
-    public static class Utilities
+    public static class FileUtilities
     {
         public static void CopyFolderRecursively(string Origin, string Target)
         {

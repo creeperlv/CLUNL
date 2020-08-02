@@ -12,7 +12,7 @@ namespace CLUNL.Data.Layer2
 {
     public class ListData<T> : HoldableObject, ICollection<T>, IList<T>, IEnumerable
     {
-        Stream fileStream;
+        //Stream fileStream;
         BasicKeyValueData BasicKeyValueData;
         List<T> RawData;
         public ListData()
