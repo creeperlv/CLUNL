@@ -28,6 +28,20 @@ namespace CLUNL.Data.Layer0.Buffers
                 yield return GetGroup();
             }
         }
+        public override string ToString()
+        {
+            return Convert.ToBase64String(GetTotalData());
+        }
+        public static ByteBuffer FromBase64String(string str)
+        {
+            var b=new ByteBuffer();
+            var a = Convert.FromBase64String(str);
+            foreach (var item in a)
+            {
+                b.buf.Enqueue(item);
+            }
+            return b;
+        }
         public byte[] GetTotalData()
         {
             return buf.ToArray();
