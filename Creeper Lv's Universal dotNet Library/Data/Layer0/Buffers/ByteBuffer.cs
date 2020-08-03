@@ -34,9 +34,18 @@ namespace CLUNL.Data.Layer0.Buffers
         }
         public static ByteBuffer FromBase64String(string str)
         {
-            var b=new ByteBuffer();
+            var b = new ByteBuffer();
             var a = Convert.FromBase64String(str);
             foreach (var item in a)
+            {
+                b.buf.Enqueue(item);
+            }
+            return b;
+        }
+        public static ByteBuffer FromByteArray(byte[]data)
+        {
+            var b = new ByteBuffer();
+            foreach (var item in data)
             {
                 b.buf.Enqueue(item);
             }
