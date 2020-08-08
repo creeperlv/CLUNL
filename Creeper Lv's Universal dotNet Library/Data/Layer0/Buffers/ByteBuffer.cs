@@ -55,6 +55,12 @@ namespace CLUNL.Data.Layer0.Buffers
         {
             return buf.ToArray();
         }
+        public byte[] GetTotalDataAndClear()
+        {
+            var arr = buf.ToArray();
+            buf.Clear();
+            return arr;
+        }
         public byte[] GetGroup()
         {
             byte[] Header = new byte[4];

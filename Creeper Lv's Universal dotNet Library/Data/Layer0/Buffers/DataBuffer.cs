@@ -17,6 +17,10 @@ namespace CLUNL.Data.Layer0.Buffers
         {
             return vs.GetTotalData();
         }
+        public byte[] ObtainByteArrayAndClear()
+        {
+            return vs.GetTotalDataAndClear();
+        }
         public int ReadInt()
         {
             var a = vs.GetGroup();
