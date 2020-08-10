@@ -46,6 +46,119 @@ namespace CLUNL.Data.Layer0.Buffers
             var a = vs.GetGroup();
             return Encoding.UTF8.GetString(a);
         }
+        public Array ReadArray<T>()
+        {
+            var l = BitConverter.ToInt32(vs.GetGroup(), 0);
+            Array array = Array.CreateInstance(typeof(T), l) ;
+            for (int i = 0; i < l; i++)
+            {
+                if (typeof(T) == typeof(int))
+                {
+                    array.SetValue(BitConverter.ToInt32(vs.GetGroup(), 0), i);
+                }
+                else
+                if (typeof(T) == typeof(uint))
+                {
+                    array.SetValue(BitConverter.ToUInt16(vs.GetGroup(), 0), i);
+                }
+                else
+                if (typeof(T) == typeof(short))
+                {
+                    array.SetValue(BitConverter.ToInt16(vs.GetGroup(), 0), i);
+                }
+                else
+                if (typeof(T) == typeof(ushort))
+                {
+                    array.SetValue(BitConverter.ToUInt16(vs.GetGroup(), 0), i);
+                }
+                else
+                if (typeof(T) == typeof(long))
+                {
+                    array.SetValue(BitConverter.ToInt64(vs.GetGroup(), 0), i);
+                }
+                else
+                if (typeof(T) == typeof(ulong))
+                {
+                    array.SetValue(BitConverter.ToUInt64(vs.GetGroup(), 0), i);
+                }
+                else
+                if (typeof(T) == typeof(float))
+                {
+                    array.SetValue(BitConverter.ToSingle(vs.GetGroup(), 0), i);
+                }
+                else
+                if (typeof(T) == typeof(double))
+                {
+                    array.SetValue(BitConverter.ToDouble(vs.GetGroup(), 0), i);
+                }
+                else
+                if (typeof(T) == typeof(bool))
+                {
+                    array.SetValue(BitConverter.ToBoolean(vs.GetGroup(), 0), i);
+                }
+                else
+                if (typeof(T) == typeof(char))
+                {
+                    array.SetValue(BitConverter.ToChar(vs.GetGroup(), 0), i);
+                }
+                else
+                if (typeof(T) == typeof(string))
+                {
+                    array.SetValue(Encoding.UTF8.GetString(vs.GetGroup()), i);
+                }
+            }
+            return null;
+        }
+        public void WriteArray(Array array)
+        {
+            vs.AppendGroup(BitConverter.GetBytes(array.Length));
+            foreach (var item in array)
+            {
+                if (item is int)
+                {
+                    vs.AppendGroup(BitConverter.GetBytes((int)item));
+                }else if (item is uint)
+                {
+                    vs.AppendGroup(BitConverter.GetBytes((uint)item));
+                }
+                else if (item is float)
+                {
+                    vs.AppendGroup(BitConverter.GetBytes((float)item));
+                }
+                else if (item is bool)
+                {
+                    vs.AppendGroup(BitConverter.GetBytes((bool)item));
+                }
+                else if (item is double)
+                {
+                    vs.AppendGroup(BitConverter.GetBytes((double)item));
+                }
+                else if (item is char)
+                {
+                    vs.AppendGroup(BitConverter.GetBytes((char)item));
+                }
+                else if (item is long)
+                {
+                    vs.AppendGroup(BitConverter.GetBytes((long)item));
+                }
+                else if (item is short)
+                {
+                    vs.AppendGroup(BitConverter.GetBytes((short)item));
+                }
+                else if (item is ulong)
+                {
+                    vs.AppendGroup(BitConverter.GetBytes((ulong)item));
+                }
+                else if (item is ushort)
+                {
+                    vs.AppendGroup(BitConverter.GetBytes((ushort)item));
+                }
+                else if (item is string)
+                {
+                    vs.AppendGroup(Encoding.UTF8.GetBytes((string)item));
+                }
+            }
+        }
         public void WriteInt(int value)
         {
             vs.AppendGroup(BitConverter.GetBytes(value));
