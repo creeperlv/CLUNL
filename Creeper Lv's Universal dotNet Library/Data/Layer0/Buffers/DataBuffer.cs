@@ -17,6 +17,10 @@ namespace CLUNL.Data.Layer0.Buffers
         {
             return vs.GetTotalData();
         }
+        public void Clear()
+        {
+            vs.Clear();
+        }
         public byte[] ObtainByteArrayAndClear()
         {
             return vs.GetTotalDataAndClear();
