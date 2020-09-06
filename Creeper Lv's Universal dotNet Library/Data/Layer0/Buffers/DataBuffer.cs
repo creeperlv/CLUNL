@@ -35,6 +35,31 @@ namespace CLUNL.Data.Layer0.Buffers
             var a = vs.GetGroup();
             return BitConverter.ToSingle(a, 0);
         }
+        public short ReadShort()
+        {
+            var a = vs.GetGroup();
+            return BitConverter.ToInt16(a, 0);
+        }
+        public ushort ReadUShort()
+        {
+            var a = vs.GetGroup();
+            return BitConverter.ToUInt16(a, 0);
+        }
+        public long ReadLong()
+        {
+            var a = vs.GetGroup();
+            return BitConverter.ToInt64(a, 0);
+        }
+        public ulong ReadULong()
+        {
+            var a = vs.GetGroup();
+            return BitConverter.ToUInt64(a, 0);
+        }
+        public char ReadChar()
+        {
+            var a = vs.GetGroup();
+            return BitConverter.ToChar(a, 0);
+        }
         public bool ReadBool()
         {
             var a = vs.GetGroup();
@@ -182,6 +207,26 @@ namespace CLUNL.Data.Layer0.Buffers
         public void WriteString(string value)
         {
             vs.AppendGroup(Encoding.UTF8.GetBytes(value));
+        }
+        public void WriteShort(short value)
+        {
+            vs.AppendGroup(BitConverter.GetBytes(value));
+        }
+        public void WriteLong(long value)
+        {
+            vs.AppendGroup(BitConverter.GetBytes(value));
+        }
+        public void WriteUlong(ulong value)
+        {
+            vs.AppendGroup(BitConverter.GetBytes(value));
+        }
+        public void WriteUShort(ushort value)
+        {
+            vs.AppendGroup(BitConverter.GetBytes(value));
+        }
+        public void WriteChar(char value)
+        {
+            vs.AppendGroup(BitConverter.GetBytes(value));
         }
     }
 }
