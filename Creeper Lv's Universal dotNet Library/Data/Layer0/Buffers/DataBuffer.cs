@@ -13,6 +13,12 @@ namespace CLUNL.Data.Layer0.Buffers
             dataBuffer.vs = ByteBuffer.FromByteArray(Data);
             return dataBuffer;
         }
+        public static DataBuffer FromByteBuffer(ByteBuffer buffer)
+        {
+            DataBuffer dataBuffer = new DataBuffer();
+            dataBuffer.vs = buffer;
+            return dataBuffer;
+        }
         public byte[] ObtainByteArray()
         {
             return vs.GetTotalData();
