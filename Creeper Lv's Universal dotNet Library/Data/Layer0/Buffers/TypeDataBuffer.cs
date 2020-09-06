@@ -233,12 +233,16 @@ namespace CLUNL.Data.Layer0.Buffers
                 case TypeFlags.String:
                     return Encoding.UTF8.GetString(CoreBuffer.GetGroup());
                 default:
-                    break;
+                    throw new UndefinedTypeFlagException(flag);
             }
-            return null;
         }
     }
 
+    [Serializable]
+    public class UndefinedTypeFlagException : Exception
+    {
+        public UndefinedTypeFlagException(short TypeID):base($"Undefined TypeFlag:{TypeID}") { }
+    }
     public class TypeFlags
     {
         public const short Int= 0x00;
