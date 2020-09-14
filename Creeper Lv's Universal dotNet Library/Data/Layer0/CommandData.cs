@@ -1,11 +1,12 @@
-﻿using System;
+﻿using CLUNL.Data.Layer0.Buffers;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
 namespace CLUNL.Data.Layer0
 {
-    public struct CommandData : IConvertible
+    public struct CommandData : IConvertible,IDataBufferable
     {
         public int Command;
         public string Data;
@@ -14,9 +15,24 @@ namespace CLUNL.Data.Layer0
             this.Command = Command;
             this.Data = Data;
         }
+
+        public void Deserialize(DataBuffer buffer)
+        {
+            Command = buffer.ReadInt();
+            Data = buffer.ReadString();
+        }
+
         public TypeCode GetTypeCode()
         {
             return TypeCode.Object;
+        }
+
+        public DataBuffer Serialize()
+        {
+            DataBuffer buffer = new DataBuffer();
+            buffer.WriteInt(Command);
+            buffer.WriteString(Data);
+            return buffer;
         }
 
         public bool ToBoolean(IFormatProvider provider)
