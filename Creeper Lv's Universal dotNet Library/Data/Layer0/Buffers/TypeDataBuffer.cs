@@ -365,6 +365,7 @@ namespace CLUNL.Data.Layer0.Buffers
         public const short Char = 0x08;
         public const short String = 0x09;
         public const short Array = 0x0A;
-        public const short CustomData = 0x0B;
+        public const short KVCollection = 0x0B;
+        public const short CustomData = 0x0C;
     }
 }

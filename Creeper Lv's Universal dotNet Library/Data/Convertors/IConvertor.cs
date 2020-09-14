@@ -9,7 +9,7 @@ namespace CLUNL.Data.Convertors
         byte[] Serialize(object obj);
         object Deserialize(byte[] b);
         /// <summary>
-        /// Must larger than 0x0B (exclude 0x0B).
+        /// Must larger than 0x0C (exclude 0x0C).
         /// Used by TypeDataBuffer.
         /// </summary>
         /// <returns></returns>
