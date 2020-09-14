@@ -6,7 +6,7 @@ using System.Text;
 
 namespace CLUNL.Data.Layer0
 {
-    public struct CommandData : IConvertible,IDataBufferable
+    public struct CommandData : IDataBufferable
     {
         public int Command;
         public string Data;
@@ -22,11 +22,6 @@ namespace CLUNL.Data.Layer0
             Data = buffer.ReadString();
         }
 
-        public TypeCode GetTypeCode()
-        {
-            return TypeCode.Object;
-        }
-
         public DataBuffer Serialize()
         {
             DataBuffer buffer = new DataBuffer();
@@ -35,88 +30,18 @@ namespace CLUNL.Data.Layer0
             return buffer;
         }
 
-        public bool ToBoolean(IFormatProvider provider)
-        {
-            throw new InvalidCastException();
-        }
-
-        public byte ToByte(IFormatProvider provider)
-        {
-            throw new InvalidCastException();
-        }
-
-        public char ToChar(IFormatProvider provider)
-        {
-            throw new InvalidCastException();
-        }
-
-        public DateTime ToDateTime(IFormatProvider provider)
-        {
-            throw new InvalidCastException();
-        }
-
-        public decimal ToDecimal(IFormatProvider provider)
-        {
-            throw new InvalidCastException();
-        }
-
-        public double ToDouble(IFormatProvider provider)
-        {
-            throw new InvalidCastException();
-        }
-
-        public short ToInt16(IFormatProvider provider)
-        {
-            throw new InvalidCastException();
-        }
-
-        public int ToInt32(IFormatProvider provider)
-        {
-            throw new InvalidCastException();
-        }
-
-        public long ToInt64(IFormatProvider provider)
-        {
-            throw new InvalidCastException();
-        }
-
-        public sbyte ToSByte(IFormatProvider provider)
-        {
-            throw new InvalidCastException();
-        }
-
-        public float ToSingle(IFormatProvider provider)
-        {
-            throw new InvalidCastException();
-        }
-
         public string ToString(IFormatProvider provider)
         {
             return string.Format("{0}|{1}", Command.ToString(), Data);
         }
 
-        public object ToType(Type conversionType, IFormatProvider provider)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ushort ToUInt16(IFormatProvider provider)
-        {
-            throw new InvalidCastException();
-        }
-
-        public uint ToUInt32(IFormatProvider provider)
-        {
-            throw new InvalidCastException();
-        }
-
-        public ulong ToUInt64(IFormatProvider provider)
-        {
-            throw new InvalidCastException();
-        }
         public static implicit operator string(CommandData D)
         {
             return string.Format("{0}|{1}", D.Command.ToString(), D.Data);
+        }
+        public static implicit operator DataBuffer(CommandData D)
+        {
+            return D.Serialize();
         }
         public static implicit operator CommandData(string D)
         {
@@ -132,6 +57,12 @@ namespace CLUNL.Data.Layer0
             {
                 throw new InvalidDataException();
             }
+        }
+        public static implicit operator CommandData(DataBuffer D)
+        {
+            CommandData commandData = new CommandData();
+            commandData.Deserialize(D);
+            return commandData;
         }
     }
 }
