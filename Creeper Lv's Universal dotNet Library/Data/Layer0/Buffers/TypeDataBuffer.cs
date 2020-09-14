@@ -286,7 +286,7 @@ namespace CLUNL.Data.Layer0.Buffers
                     {
                         short DType = BitConverter.ToInt16(CoreBuffer.GetGroup(), 0);
                         Type t;
-                        switch (flag)
+                        switch (DType)
                         {
                             case TypeFlags.Int:
                                 t = typeof(int);
@@ -319,10 +319,8 @@ namespace CLUNL.Data.Layer0.Buffers
                                 throw new UndefinedTypeFlagException(flag);
                         }
                         var arr = ReadArray(t);
+                        return arr;
                     }
-                    return null;
-                    break;
-                //return 
                 default:
                     throw new UndefinedTypeFlagException(flag);
             }
@@ -347,5 +345,6 @@ namespace CLUNL.Data.Layer0.Buffers
         public const short Char = 0x08;
         public const short String = 0x09;
         public const short Array = 0x10;
+        public const short CustomData = 0x11;
     }
 }
