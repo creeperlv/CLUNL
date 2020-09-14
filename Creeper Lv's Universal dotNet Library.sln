@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30105.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Creeper Lv's Universal dotNet Library", "Creeper Lv's Universal dotNet Library\Creeper Lv's Universal dotNet Library.csproj", "{597737F0-9561-49FF-B000-F45DF6156B2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CLUNL", "Creeper Lv's Universal dotNet Library\CLUNL.csproj", "{597737F0-9561-49FF-B000-F45DF6156B2D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CLUNLTests", "CLUNLTests\CLUNLTests.csproj", "{FD31699C-2F35-4F00-B9C4-31D1DB78758C}"
 EndProject

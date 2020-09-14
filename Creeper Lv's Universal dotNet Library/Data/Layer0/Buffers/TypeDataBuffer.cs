@@ -31,63 +31,63 @@ namespace CLUNL.Data.Layer0.Buffers
         {
             return CoreBuffer.GetTotalDataAndClear();
         }
-        public Array ReadArray<T>()
+        public Array ReadArray(Type T)
         {
             var l = BitConverter.ToInt32(CoreBuffer.GetGroup(), 0);
-            Array array = Array.CreateInstance(typeof(T), l);
+            Array array = Array.CreateInstance(T, l);
             for (int i = 0; i < l; i++)
             {
-                if (typeof(T) == typeof(int))
+                if (T== typeof(int))
                 {
                     array.SetValue(BitConverter.ToInt32(CoreBuffer.GetGroup(), 0), i);
                 }
                 else
-                if (typeof(T) == typeof(uint))
+                if (T== typeof(uint))
                 {
                     array.SetValue(BitConverter.ToUInt16(CoreBuffer.GetGroup(), 0), i);
                 }
                 else
-                if (typeof(T) == typeof(short))
+                if (T== typeof(short))
                 {
                     array.SetValue(BitConverter.ToInt16(CoreBuffer.GetGroup(), 0), i);
                 }
                 else
-                if (typeof(T) == typeof(ushort))
+                if (T == typeof(ushort))
                 {
                     array.SetValue(BitConverter.ToUInt16(CoreBuffer.GetGroup(), 0), i);
                 }
                 else
-                if (typeof(T) == typeof(long))
+                if (T == typeof(long))
                 {
                     array.SetValue(BitConverter.ToInt64(CoreBuffer.GetGroup(), 0), i);
                 }
                 else
-                if (typeof(T) == typeof(ulong))
+                if (T== typeof(ulong))
                 {
                     array.SetValue(BitConverter.ToUInt64(CoreBuffer.GetGroup(), 0), i);
                 }
                 else
-                if (typeof(T) == typeof(float))
+                if (T== typeof(float))
                 {
                     array.SetValue(BitConverter.ToSingle(CoreBuffer.GetGroup(), 0), i);
                 }
                 else
-                if (typeof(T) == typeof(double))
+                if (T == typeof(double))
                 {
                     array.SetValue(BitConverter.ToDouble(CoreBuffer.GetGroup(), 0), i);
                 }
                 else
-                if (typeof(T) == typeof(bool))
+                if (T== typeof(bool))
                 {
                     array.SetValue(BitConverter.ToBoolean(CoreBuffer.GetGroup(), 0), i);
                 }
                 else
-                if (typeof(T) == typeof(char))
+                if (T == typeof(char))
                 {
                     array.SetValue(BitConverter.ToChar(CoreBuffer.GetGroup(), 0), i);
                 }
                 else
-                if (typeof(T) == typeof(string))
+                if (T == typeof(string))
                 {
                     array.SetValue(Encoding.UTF8.GetString(CoreBuffer.GetGroup()), i);
                 }
@@ -147,7 +147,7 @@ namespace CLUNL.Data.Layer0.Buffers
         }
         public void Write(object obj)
         {
-            if(obj is int)
+            if (obj is int)
             {
                 CoreBuffer.AppendGroup(BitConverter.GetBytes(TypeFlags.Int));
                 CoreBuffer.AppendGroup(BitConverter.GetBytes((int)obj));
@@ -206,10 +206,60 @@ namespace CLUNL.Data.Layer0.Buffers
                 CoreBuffer.AppendGroup(BitConverter.GetBytes(TypeFlags.String));
                 CoreBuffer.AppendGroup(Encoding.UTF8.GetBytes((string)obj));
             }
+            else if (obj is Array)
+            {
+                CoreBuffer.AppendGroup(BitConverter.GetBytes(TypeFlags.Array));
+                var arr = (Array)obj;
+                if (arr.Length > 0)
+                {
+                    var item = arr.GetValue(0);
+                    if (item is int)
+                    {
+                        CoreBuffer.AppendGroup(BitConverter.GetBytes(TypeFlags.Int));
+                    }
+                    else if (item is long)
+                    {
+                        CoreBuffer.AppendGroup(BitConverter.GetBytes(TypeFlags.Long));
+                    }
+                    else if (item is ulong)
+                    {
+                        CoreBuffer.AppendGroup(BitConverter.GetBytes(TypeFlags.ULong));
+                    }
+                    else if (item is short)
+                    {
+                        CoreBuffer.AppendGroup(BitConverter.GetBytes(TypeFlags.Short));
+                    }
+                    else if (item is ushort)
+                    {
+                        CoreBuffer.AppendGroup(BitConverter.GetBytes(TypeFlags.UShort));
+                    }
+                    else if (item is float)
+                    {
+                        CoreBuffer.AppendGroup(BitConverter.GetBytes(TypeFlags.Float));
+                    }
+                    else if (item is double)
+                    {
+                        CoreBuffer.AppendGroup(BitConverter.GetBytes(TypeFlags.Double));
+                    }
+                    else if (item is bool)
+                    {
+                        CoreBuffer.AppendGroup(BitConverter.GetBytes(TypeFlags.Bool));
+                    }
+                    else if (item is char)
+                    {
+                        CoreBuffer.AppendGroup(BitConverter.GetBytes(TypeFlags.Char));
+                    }
+                    else if (item is string)
+                    {
+                        CoreBuffer.AppendGroup(BitConverter.GetBytes(TypeFlags.String));
+                    }
+                }
+                WriteArray((Array)obj);
+            }
         }
         public object Read()
         {
-            short flag =BitConverter.ToInt16( CoreBuffer.GetGroup(),0);
+            short flag = BitConverter.ToInt16(CoreBuffer.GetGroup(), 0);
             switch (flag)
             {
                 case TypeFlags.Int:
@@ -232,6 +282,47 @@ namespace CLUNL.Data.Layer0.Buffers
                     return BitConverter.ToChar(CoreBuffer.GetGroup(), 0);
                 case TypeFlags.String:
                     return Encoding.UTF8.GetString(CoreBuffer.GetGroup());
+                case TypeFlags.Array:
+                    {
+                        short DType = BitConverter.ToInt16(CoreBuffer.GetGroup(), 0);
+                        Type t;
+                        switch (flag)
+                        {
+                            case TypeFlags.Int:
+                                t = typeof(int);
+                                break;
+                            case TypeFlags.Float:
+                                t = typeof(float); break;
+                            case TypeFlags.Short:
+                                t = typeof(short); break;
+                            case TypeFlags.UShort:
+                                t = typeof(ushort); break;
+                            case TypeFlags.Long:
+                                t = typeof(long); break;
+                            case TypeFlags.ULong:
+                                t = typeof(ulong); break;
+                            case TypeFlags.Double:
+                                t = typeof(double); break;
+                            case TypeFlags.Bool:
+                                t = typeof(bool); break;
+                            case TypeFlags.Char:
+                                t = typeof(char); break;
+                            case TypeFlags.String:
+                                t = typeof(string); break;
+                            case TypeFlags.Array:
+                                {
+                                throw new Exception("Nested array is not supported!");
+
+                                }
+                            //return 
+                            default:
+                                throw new UndefinedTypeFlagException(flag);
+                        }
+                        var arr = ReadArray(t);
+                    }
+                    return null;
+                    break;
+                //return 
                 default:
                     throw new UndefinedTypeFlagException(flag);
             }
@@ -241,11 +332,11 @@ namespace CLUNL.Data.Layer0.Buffers
     [Serializable]
     public class UndefinedTypeFlagException : Exception
     {
-        public UndefinedTypeFlagException(short TypeID):base($"Undefined TypeFlag:{TypeID}") { }
+        public UndefinedTypeFlagException(short TypeID) : base($"Undefined TypeFlag:{TypeID}") { }
     }
     public class TypeFlags
     {
-        public const short Int= 0x00;
+        public const short Int = 0x00;
         public const short Float = 0x01;
         public const short Double = 0x02;
         public const short Long = 0x03;
@@ -255,5 +346,6 @@ namespace CLUNL.Data.Layer0.Buffers
         public const short Bool = 0x07;
         public const short Char = 0x08;
         public const short String = 0x09;
+        public const short Array = 0x10;
     }
 }
