@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using static System.Collections.Generic.Dictionary<System.Type, CLUNL.Data.Convertors.IConvertor>;
 
 namespace CLUNL.Data.Convertors
 {
@@ -11,6 +13,10 @@ namespace CLUNL.Data.Convertors
         ConvertorManager()
         {
 
+        }
+        public ValueCollection AllConvertors()
+        {
+            return Convertors.Values;
         }
         public void RegisterConvertor(Type T,IConvertor Convertor)
         {
@@ -24,5 +30,11 @@ namespace CLUNL.Data.Convertors
         {
             return Convertors[T];
         }
+    }
+
+    [Serializable]
+    public class ConvertorNotFoundException : Exception
+    {
+        public ConvertorNotFoundException() : base("Cannot find target convertor.") { }
     }
 }

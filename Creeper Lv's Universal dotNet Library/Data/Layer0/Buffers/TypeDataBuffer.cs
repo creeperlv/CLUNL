@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CLUNL.Data.Convertors;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -37,17 +38,17 @@ namespace CLUNL.Data.Layer0.Buffers
             Array array = Array.CreateInstance(T, l);
             for (int i = 0; i < l; i++)
             {
-                if (T== typeof(int))
+                if (T == typeof(int))
                 {
                     array.SetValue(BitConverter.ToInt32(CoreBuffer.GetGroup(), 0), i);
                 }
                 else
-                if (T== typeof(uint))
+                if (T == typeof(uint))
                 {
                     array.SetValue(BitConverter.ToUInt16(CoreBuffer.GetGroup(), 0), i);
                 }
                 else
-                if (T== typeof(short))
+                if (T == typeof(short))
                 {
                     array.SetValue(BitConverter.ToInt16(CoreBuffer.GetGroup(), 0), i);
                 }
@@ -62,12 +63,12 @@ namespace CLUNL.Data.Layer0.Buffers
                     array.SetValue(BitConverter.ToInt64(CoreBuffer.GetGroup(), 0), i);
                 }
                 else
-                if (T== typeof(ulong))
+                if (T == typeof(ulong))
                 {
                     array.SetValue(BitConverter.ToUInt64(CoreBuffer.GetGroup(), 0), i);
                 }
                 else
-                if (T== typeof(float))
+                if (T == typeof(float))
                 {
                     array.SetValue(BitConverter.ToSingle(CoreBuffer.GetGroup(), 0), i);
                 }
@@ -77,7 +78,7 @@ namespace CLUNL.Data.Layer0.Buffers
                     array.SetValue(BitConverter.ToDouble(CoreBuffer.GetGroup(), 0), i);
                 }
                 else
-                if (T== typeof(bool))
+                if (T == typeof(bool))
                 {
                     array.SetValue(BitConverter.ToBoolean(CoreBuffer.GetGroup(), 0), i);
                 }
@@ -256,6 +257,13 @@ namespace CLUNL.Data.Layer0.Buffers
                 }
                 WriteArray((Array)obj);
             }
+            else
+            {
+                var Convertor=ConvertorManager.CurrentConvertorManager.GetConvertor(obj.GetType());
+                CoreBuffer.AppendGroup(BitConverter.GetBytes(TypeFlags.CustomData));
+                CoreBuffer.AppendGroup(BitConverter.GetBytes(Convertor.DataHeader()));
+                CoreBuffer.AppendGroup(Convertor.Serialize(obj));
+            }
         }
         public object Read()
         {
@@ -311,15 +319,27 @@ namespace CLUNL.Data.Layer0.Buffers
                                 t = typeof(string); break;
                             case TypeFlags.Array:
                                 {
-                                throw new Exception("Nested array is not supported!");
+                                    throw new Exception("Nested array is not supported!");
 
                                 }
-                            //return 
                             default:
                                 throw new UndefinedTypeFlagException(flag);
                         }
                         var arr = ReadArray(t);
                         return arr;
+                    }
+                case TypeFlags.CustomData:
+                    {
+                        short DataHeader = BitConverter.ToInt16(CoreBuffer.GetGroup(), 0);
+                        foreach (var item in ConvertorManager.CurrentConvertorManager.AllConvertors())
+                        {
+                            if (item.DataHeader() == DataHeader)
+                            {
+                                return item.Deserialize(CoreBuffer.GetGroup());
+                            }
+                            else continue;
+                        }
+                        throw new ConvertorNotFoundException();
                     }
                 default:
                     throw new UndefinedTypeFlagException(flag);
@@ -344,7 +364,7 @@ namespace CLUNL.Data.Layer0.Buffers
         public const short Bool = 0x07;
         public const short Char = 0x08;
         public const short String = 0x09;
-        public const short Array = 0x10;
-        public const short CustomData = 0x11;
+        public const short Array = 0x0A;
+        public const short CustomData = 0x0B;
     }
 }
