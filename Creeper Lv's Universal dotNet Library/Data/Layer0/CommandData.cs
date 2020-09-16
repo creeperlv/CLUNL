@@ -15,13 +15,11 @@ namespace CLUNL.Data.Layer0
             this.Command = Command;
             this.Data = Data;
         }
-
         public void Deserialize(DataBuffer buffer)
         {
             Command = buffer.ReadInt();
             Data = buffer.ReadString();
         }
-
         public DataBuffer Serialize()
         {
             DataBuffer buffer = new DataBuffer();
@@ -30,7 +28,7 @@ namespace CLUNL.Data.Layer0
             return buffer;
         }
 
-        public string ToString(IFormatProvider provider)
+        public override string ToString()
         {
             return string.Format("{0}|{1}", Command.ToString(), Data);
         }

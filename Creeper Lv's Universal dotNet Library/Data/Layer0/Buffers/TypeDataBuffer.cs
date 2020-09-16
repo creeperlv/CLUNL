@@ -20,6 +20,10 @@ namespace CLUNL.Data.Layer0.Buffers
             Buffer.CoreBuffer = vs;
             return Buffer;
         }
+        public ByteBuffer ObtainByteBuffer()
+        {
+            return CoreBuffer;
+        }
         public byte[] ObtainByteArray()
         {
             return CoreBuffer.GetTotalData();
