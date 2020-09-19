@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace CLUNL.Data.Layer0.Buffers
@@ -86,6 +87,50 @@ namespace CLUNL.Data.Layer0.Buffers
             {
                 yield return GetGroup();
             }
+        }
+        /// <summary>
+        /// Append  right ByteBuffer to left ByteBuffer as-is.
+        /// </summary>
+        /// <param name="L"></param>
+        /// <param name="R"></param>
+        /// <returns></returns>
+        public static ByteBuffer operator +(ByteBuffer L, ByteBuffer R)
+        {
+            foreach (var item in R.buf)
+            {
+                L.buf.Enqueue(item);
+            }
+            return L;
+        }
+        /// <summary>
+        /// Append right ByteBuffer as an array to left ByteBuffer
+        /// </summary>
+        /// <param name="L"></param>
+        /// <param name="R"></param>
+        /// <returns></returns>
+        public static ByteBuffer operator *(ByteBuffer L, ByteBuffer R)
+        {
+            L.AppendGroup(R.GetTotalData());
+            return L;
+        }
+        public static ByteBuffer operator+(ByteBuffer L,byte R)
+        {
+            L.buf.Enqueue(R);
+            return L;
+        }
+        public static ByteBuffer operator +(ByteBuffer L, byte[] R)
+        {
+
+            foreach (var item in R)
+            {
+                L.buf.Enqueue(item);
+            }
+            return L;
+        }
+        public static ByteBuffer operator *(ByteBuffer L, byte[] R)
+        {
+            L.AppendGroup(R);
+            return L;
         }
     }
 }
