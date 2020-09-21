@@ -127,6 +127,50 @@ namespace CLUNL.Data.Layer0.Buffers
             }
             return L;
         }
+        /// <summary>
+        /// Obtain a byte array from a buffer in given length from the start of the buffer.
+        /// </summary>
+        /// <param name="L"></param>
+        /// <param name="R"></param>
+        /// <returns></returns>
+        public static byte[] operator - (ByteBuffer L,int R)
+        {
+            byte[] arr = new byte[R];
+            for (int i = 0; i < R; i++)
+            {
+                arr[i] = L.buf.ElementAt(i);
+            }
+            return arr;
+        }
+        /// <summary>
+        /// Obtain a series of buffer array from a given buffer.
+        /// </summary>
+        /// <param name="L"></param>
+        /// <param name="R"></param>
+        /// <returns></returns>
+        public static ByteBuffer[] operator / (ByteBuffer L,int R)
+        {
+            ByteBuffer[] vs = new ByteBuffer[R];
+            for (int i = 0; i < R; i++)
+            {
+                vs[i] = L.GetGroup();
+            }
+            return vs;
+        }
+        /// <summary>
+        /// Remove byte buffers in given counts and return the rest of the buffer.
+        /// </summary>
+        /// <param name="L"></param>
+        /// <param name="R"></param>
+        /// <returns></returns>
+        public static ByteBuffer operator %(ByteBuffer L,int R)
+        {
+            for(int i = 0; i < R; i++)
+            {
+                L.GetGroup();
+            }
+            return L;
+        }
         public static ByteBuffer operator *(ByteBuffer L, byte[] R)
         {
             L.AppendGroup(R);
