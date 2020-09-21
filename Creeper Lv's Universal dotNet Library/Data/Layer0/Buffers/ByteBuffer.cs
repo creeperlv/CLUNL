@@ -132,5 +132,18 @@ namespace CLUNL.Data.Layer0.Buffers
             L.AppendGroup(R);
             return L;
         }
+        public static implicit operator ByteBuffer(byte[] Data)
+        {
+            ByteBuffer vs = new ByteBuffer();
+            foreach (var item in Data)
+            {
+                vs.buf.Enqueue(item);
+            }
+            return vs;
+        }
+        public static implicit operator byte[](ByteBuffer Buffer)
+        {
+            return Buffer.GetTotalData();
+        }
     }
 }
