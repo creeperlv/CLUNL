@@ -11,7 +11,9 @@
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBox/>
-        <TextBlock/>
+        <Grid Name="Content" Grid.Row="0">
+            <TextBox x:Name="DefaultEditor"/>
+        </Grid>
+        <TextBlock x:Name="Description" Grid.Row="1" Text="Description"/>
     </Grid>
 </UserControl>

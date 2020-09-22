@@ -8,7 +8,7 @@ namespace CLUNL.Data.Layer0.Buffers
 {
     public class ByteBuffer:IEnumerable<byte[]>
     {
-        Queue<byte> buf = new Queue<byte>();
+        internal Queue<byte> buf = new Queue<byte>();
         public void AppendGroup(byte[] data)
         {
             var H = BitConverter.GetBytes(data.Length);

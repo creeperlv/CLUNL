@@ -234,5 +234,20 @@ namespace CLUNL.Data.Layer0.Buffers
         {
             vs.AppendGroup(BitConverter.GetBytes(value));
         }
+        public static implicit operator DataBuffer(byte[] Data)
+        {
+            DataBuffer result = new DataBuffer();
+               ByteBuffer vs = new ByteBuffer();
+            foreach (var item in Data)
+            {
+                vs.buf.Enqueue(item);
+            }
+            result.vs = vs;
+            return result;
+        }
+        public static implicit operator byte[](DataBuffer Buffer)
+        {
+            return Buffer.ObtainByteArray();
+        }
     }
 }
