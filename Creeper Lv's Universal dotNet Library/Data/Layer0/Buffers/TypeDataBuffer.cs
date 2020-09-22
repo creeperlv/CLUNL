@@ -349,6 +349,21 @@ namespace CLUNL.Data.Layer0.Buffers
                     throw new UndefinedTypeFlagException(flag);
             }
         }
+        public static implicit operator TypeDataBuffer(byte[] Data)
+        {
+            TypeDataBuffer result = new TypeDataBuffer();
+            ByteBuffer vs = new ByteBuffer();
+            foreach (var item in Data)
+            {
+                vs.buf.Enqueue(item);
+            }
+            result.CoreBuffer = vs;
+            return result;
+        }
+        public static implicit operator byte[](TypeDataBuffer Buffer)
+        {
+            return Buffer.ObtainByteArray();
+        }
     }
 
     [Serializable]
