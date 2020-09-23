@@ -73,61 +73,87 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <Grid Grid.Column="0" Background="#FFEAEAEA">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <StackPanel>
-                <TextBlock Text="BUFFER TOOL" FontWeight="Black" Margin="8"/>
-                <Button Style="{DynamicResource ViewSelectButton}">ByteBuffer</Button>
-                <Button Style="{DynamicResource ViewSelectButton}">DataBuffer</Button>
-                <Button Style="{DynamicResource ViewSelectButton}">TypeDataBuffer</Button>
-            </StackPanel>
-            <StackPanel Grid.Row="1">
-                <Button Style="{DynamicResource ViewSelectButton}">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="" VerticalAlignment="Center"/>
-                        <TextBlock Text="Settings" Margin="2"/>
-                    </StackPanel>
-                </Button>
-            </StackPanel>
-        </Grid>
-        <Grid Grid.Column="1" x:Name="ByteBufferView">
-            <Grid x:Name="Default">
-                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Center" Text="Please Select A Tool In Left List" FontSize="22" FontWeight="Bold"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0" Background="#FFEAEAEA">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <StackPanel>
+                    <TextBlock Text="BUFFER TOOL" FontWeight="Black" Margin="8"/>
+                    <Button Style="{DynamicResource ViewSelectButton}">ByteBuffer</Button>
+                    <Button Style="{DynamicResource ViewSelectButton}">DataBuffer</Button>
+                    <Button Style="{DynamicResource ViewSelectButton}">TypeDataBuffer</Button>
+                </StackPanel>
+                <StackPanel Grid.Row="1">
+                    <Button Style="{DynamicResource ViewSelectButton}">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="" VerticalAlignment="Center"/>
+                            <TextBlock Text="Settings" Margin="2"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
             </Grid>
-            <Grid Background="#FFFF" x:Name="BufferToolView">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Text="BYTEBUFFER TOOL" FontSize="18" FontWeight="Bold"/>
-                    <StackPanel Grid.Row="1" Orientation="Horizontal">
-                        <Button Content="Open File"/>
-                        <Button Content="Save To File"/>
-                        <Button Content="Clear"/>
-                        <Button Content="Add Group"/>
-                    </StackPanel>
-                    <WrapPanel Grid.Row="2">
-                    </WrapPanel>
+            <Grid Grid.Column="1" x:Name="ByteBufferView">
+                <Grid x:Name="Default">
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Center" Text="Please Select A Tool In Left List" FontSize="22" FontWeight="Bold"/>
+                </Grid>
+                <Grid Background="#FFFF" x:Name="BufferToolView">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="BYTEBUFFER TOOL" FontSize="18" FontWeight="Bold"/>
+                        <StackPanel Grid.Row="1" Orientation="Horizontal">
+                            <Button Content="Open File"/>
+                            <Button Content="Save To File"/>
+                            <Button Content="Clear"/>
+                            <Button Content="Add Group"/>
+                        </StackPanel>
+                        <WrapPanel Grid.Row="2">
+                        </WrapPanel>
+                    </Grid>
+                </Grid>
+                <Grid Background="#FFF" x:Name="Settings" Visibility="Collapsed">
+                    <ScrollViewer>
+                        <StackPanel>
+                            <TextBlock Text="ABOUT" FontWeight="Bold" FontSize="16"/>
+                            <TextBlock Text="Buffer Tool" FontSize="24"/>
+                            <TextBlock Text="Version: 0.0.0.0-Non-Production-Environment"/>
+                        </StackPanel>
+                    </ScrollViewer>
                 </Grid>
             </Grid>
-            <Grid Background="#FFF" x:Name="Settings" Visibility="Collapsed">
-                <ScrollViewer>
-                    <StackPanel>
-                        <TextBlock Text="ABOUT" FontWeight="Bold" FontSize="16"/>
-                        <TextBlock Text="Buffer Tool" FontSize="24"/>
-                        <TextBlock Text="Version: 0.0.0.0-Non-Production-Environment"/>
+        </Grid>
+        <Grid Background="#6000" Visibility="Collapsed">
+            <Border HorizontalAlignment="Center" BorderThickness="2" BorderBrush="#28E" Background="#444" VerticalAlignment="Center">
+                <Grid MinWidth="400" MinHeight="150">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Margin="8">
+                        <TextBlock Text="DialogText" FontSize="18" FontWeight="Bold" Foreground="#FFF"></TextBlock>
+                        <StackPanel x:Name="DialogContent"></StackPanel>
                     </StackPanel>
-                </ScrollViewer>
-            </Grid>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Button Foreground="#FFF" Margin="4">CANCEL</Button>
+                        <Button Foreground="#FFF" Margin="4" Grid.Column="1">OK</Button>
+                    </Grid>
+                    
+                </Grid>
+            </Border>
+            
         </Grid>
     </Grid>
 </Window>
