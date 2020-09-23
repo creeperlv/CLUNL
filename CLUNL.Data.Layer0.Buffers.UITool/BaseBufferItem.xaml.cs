@@ -18,9 +18,9 @@ namespace CLUNL.Data.Layer0.Buffers.UITool
     /// <summary>
     /// Interaction logic for UserControl1.xaml
     /// </summary>
-    public partial class UserControl1 : UserControl
+    public partial class BaseBufferItem : UserControl
     {
-        public UserControl1()
+        public BaseBufferItem()
         {
             InitializeComponent();
         }
