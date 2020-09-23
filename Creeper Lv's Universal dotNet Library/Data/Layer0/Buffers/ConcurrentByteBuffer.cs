@@ -80,7 +80,36 @@ namespace CLUNL.Data.Layer0.Buffers
             }
             return RealContent;
         }
-
+        public static ConcurrentByteBuffer operator +(ConcurrentByteBuffer L, ConcurrentByteBuffer R)
+        {
+            lock (L)
+            {
+                foreach (var item in R.buf)
+                {
+                    L.buf.Enqueue(item);
+                }
+            }
+            return L;
+        }
+        public static ConcurrentByteBuffer operator +(ConcurrentByteBuffer L, byte R)
+        {
+            lock (L)
+            {
+                L.buf.Enqueue(R);
+            }
+            return L;
+        }
+        public static ConcurrentByteBuffer operator +(ConcurrentByteBuffer L, byte[] R)
+        {
+            lock (L)
+            {
+                foreach (var item in R)
+                {
+                    L.buf.Enqueue(item);
+                }
+            }
+            return L;
+        }
         IEnumerator IEnumerable.GetEnumerator()
         {
             while (buf.Count < 1)
