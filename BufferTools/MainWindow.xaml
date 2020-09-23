@@ -101,7 +101,7 @@
             <Grid x:Name="Default">
                 <TextBlock VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Center" Text="Please Select A Tool In Left List" FontSize="22" FontWeight="Bold"/>
             </Grid>
-            <Grid Background="#FFFF">
+            <Grid Background="#FFFF" x:Name="BufferToolView">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -112,8 +112,21 @@
                     <StackPanel Grid.Row="1" Orientation="Horizontal">
                         <Button Content="Open File"/>
                         <Button Content="Save To File"/>
+                        <Button Content="Clear"/>
+                        <Button Content="Add Group"/>
                     </StackPanel>
+                    <WrapPanel Grid.Row="2">
+                    </WrapPanel>
                 </Grid>
+            </Grid>
+            <Grid Background="#FFF" x:Name="Settings" Visibility="Collapsed">
+                <ScrollViewer>
+                    <StackPanel>
+                        <TextBlock Text="ABOUT" FontWeight="Bold" FontSize="16"/>
+                        <TextBlock Text="Buffer Tool" FontSize="24"/>
+                        <TextBlock Text="Version: 0.0.0.0-Non-Production-Environment"/>
+                    </StackPanel>
+                </ScrollViewer>
             </Grid>
         </Grid>
     </Grid>
