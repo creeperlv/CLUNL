@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CLUNL.Data.Layer0.Buffers.UITool;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,12 @@ namespace BufferTools
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void BBT_Add_Click(object sender, RoutedEventArgs e)
+        {
+            ByteBufferItem baseBufferItem = new ByteBufferItem();
+            ByteBufferViewPanel.Children.Add(baseBufferItem);
         }
     }
 }

@@ -25,4 +25,14 @@ namespace CLUNL.Data.Layer0.Buffers.UITool
             InitializeComponent();
         }
     }
+    public class ByteBufferItem : BaseBufferItem
+    {
+        public ByteBufferItem()
+        {
+            DefaultEditor.BorderThickness = new Thickness(2);
+            DefaultEditor.Padding = new Thickness(8,4,8,4);
+            this.MinWidth = 100;
+            Description.Text = "Byte[]";
+        }
+    }
 }

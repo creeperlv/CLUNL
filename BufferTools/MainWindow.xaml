@@ -114,9 +114,9 @@
                             <Button Content="Open File"/>
                             <Button Content="Save To File"/>
                             <Button Content="Clear"/>
-                            <Button Content="Add Group"/>
+                            <Button Content="Add Group" Name="BBT_Add" Click="BBT_Add_Click"    />
                         </StackPanel>
-                        <WrapPanel Grid.Row="2">
+                        <WrapPanel Grid.Row="2" Name="ByteBufferViewPanel">
                         </WrapPanel>
                     </Grid>
                 </Grid>
