@@ -114,7 +114,8 @@
                             <Button Content="Open File"/>
                             <Button Content="Save To File"/>
                             <Button Content="Clear"/>
-                            <Button Content="Add Group" Name="BBT_Add" Click="BBT_Add_Click"    />
+                            <Button Content="Add Group" Name="BBT_Add" Click="BBT_Add_Click"/>
+                            <Button Content="Add Random Group" Name="BBT_Add_Debug_Random" Click="BBT_Add_Debug_Random_Click" />
                         </StackPanel>
                         <WrapPanel Grid.Row="2" Name="ByteBufferViewPanel">
                         </WrapPanel>
@@ -123,9 +124,15 @@
                 <Grid Background="#FFF" x:Name="Settings" Visibility="Collapsed">
                     <ScrollViewer>
                         <StackPanel>
-                            <TextBlock Text="ABOUT" FontWeight="Bold" FontSize="16"/>
-                            <TextBlock Text="Buffer Tool" FontSize="24"/>
-                            <TextBlock Text="Version: 0.0.0.0-Non-Production-Environment"/>
+                            <StackPanel>
+                                <TextBlock FontSize="24">Theme-ing</TextBlock>
+                                <TextBox></TextBox>
+                            </StackPanel>
+                            <StackPanel>
+                                <TextBlock Text="ABOUT" FontWeight="Bold" FontSize="16"/>
+                                <TextBlock Text="Buffer Tool" FontSize="24"/>
+                                <TextBlock Text="Version: 0.0.0.0-Non-Production-Environment"/>
+                            </StackPanel>
                         </StackPanel>
                     </ScrollViewer>
                 </Grid>
@@ -150,10 +157,10 @@
                         <Button Foreground="#FFF" Margin="4">CANCEL</Button>
                         <Button Foreground="#FFF" Margin="4" Grid.Column="1">OK</Button>
                     </Grid>
-                    
+
                 </Grid>
             </Border>
-            
+
         </Grid>
     </Grid>
 </Window>

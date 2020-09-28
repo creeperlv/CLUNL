@@ -31,5 +31,24 @@ namespace BufferTools
             ByteBufferItem baseBufferItem = new ByteBufferItem();
             ByteBufferViewPanel.Children.Add(baseBufferItem);
         }
+
+        private void BBT_Add_Debug_Random_Click(object sender, RoutedEventArgs e)
+        {
+
+            ByteBufferItem bufferItem = new ByteBufferItem();
+            bufferItem.ByteGroup = RandomArray();
+            ByteBufferViewPanel.Children.Add(bufferItem);
+        }
+        byte[] RandomArray()
+        {
+            Random random = new Random();
+            var length=random.Next(1, 16);
+            byte[] b= new byte[length];
+            for (int i = 0; i < length; i++)
+            {
+                b[i] = (byte)random.Next(byte.MinValue, byte.MaxValue);
+            }
+            return b;
+        }
     }
 }

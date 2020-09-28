@@ -24,15 +24,52 @@ namespace CLUNL.Data.Layer0.Buffers.UITool
         {
             InitializeComponent();
         }
+        public virtual byte[] ByteGroup { get; set; }
     }
     public class ByteBufferItem : BaseBufferItem
     {
         public ByteBufferItem()
         {
-            DefaultEditor.BorderThickness = new Thickness(2);
-            DefaultEditor.Padding = new Thickness(8,4,8,4);
+            this.ToolTip = new ToolTip() { Content = new TextBlock() { Text="Only HEX String is accepted."} };
+            this.Margin = new Thickness(2);
             this.MinWidth = 100;
-            Description.Text = "Byte[]";
+            Description.Text = "byte[]";
+            DefaultEditor.KeyDown += DefaultEditor_KeyDown;
+        }
+        public override byte[] ByteGroup
+        {
+            get
+            {
+                try
+                {
+                    return ByteUtilities.StringToByteArray(DefaultEditor.Text);
+                }
+                catch (global::System.Exception)
+                {
+                }
+                return null;
+            }
+            set { DefaultEditor.Text = ByteUtilities.ByteArrayToString(value); }
+        }
+        private void DefaultEditor_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Tab) return;
+            e.Handled = "0123456789ABCDEF".IndexOf(char.ToUpper(e.Key.ToString()[0])) < 0;
+        }
+    }
+    public class ByteUtilities
+    {
+        public static string ByteArrayToString(byte[] ba)
+        {
+            return BitConverter.ToString(ba).Replace("-", "");
+        }
+        public static byte[] StringToByteArray(String hex)
+        {
+            int NumberChars = hex.Length;
+            byte[] bytes = new byte[NumberChars / 2];
+            for (int i = 0; i < NumberChars; i += 2)
+                bytes[i / 2] = Convert.ToByte(hex.Substring(i, 2), 16);
+            return bytes;
         }
     }
 }
