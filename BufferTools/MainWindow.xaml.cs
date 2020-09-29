@@ -50,5 +50,34 @@ namespace BufferTools
             }
             return b;
         }
+
+        private void Settings_Tab_Click(object sender, RoutedEventArgs e)
+        {
+            DisableAll();
+            Settings.Visibility = Visibility.Visible;
+        }
+        void DisableAll()
+        {
+            foreach (var item in ByteBufferView.Children)
+            {
+                (item as UIElement).Visibility = Visibility.Collapsed;
+            }
+        }
+        private void BBT_Tab_Click(object sender, RoutedEventArgs e)
+        {
+
+            DisableAll();
+            ByteBufferToolView.Visibility = Visibility.Visible;
+        }
+
+        private void DBT_Tab_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void TDBT_Tab_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

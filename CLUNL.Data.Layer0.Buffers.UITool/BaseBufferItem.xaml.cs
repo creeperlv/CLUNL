@@ -30,7 +30,7 @@ namespace CLUNL.Data.Layer0.Buffers.UITool
     {
         public ByteBufferItem()
         {
-            this.ToolTip = new ToolTip() { Content = new TextBlock() { Text="Only HEX String is accepted."} };
+            this.ToolTip = new ToolTip() { Content = new TextBlock() { Text="Only HEX Strings are accepted."} };
             this.Margin = new Thickness(2);
             this.MinWidth = 100;
             Description.Text = "byte[]";
@@ -63,9 +63,10 @@ namespace CLUNL.Data.Layer0.Buffers.UITool
         {
             return BitConverter.ToString(ba).Replace("-", "");
         }
-        public static byte[] StringToByteArray(String hex)
+        public static byte[] StringToByteArray(string hex)
         {
             int NumberChars = hex.Length;
+            hex = hex.Replace(" ", "");
             byte[] bytes = new byte[NumberChars / 2];
             for (int i = 0; i < NumberChars; i += 2)
                 bytes[i / 2] = Convert.ToByte(hex.Substring(i, 2), 16);
