@@ -122,7 +122,7 @@
                     </Grid>
                 </Grid>
                 <Grid Background="#FFF" x:Name="Settings" Visibility="Visible">
-                    <ScrollViewer>
+                    <ScrollViewer Padding="10,0">
                         <StackPanel>
                             <StackPanel>
                                 <TextBlock FontSize="24">General</TextBlock>
@@ -131,6 +131,11 @@
                                     <ComboBoxItem Content="Direct Byte Array"/>
                                     <ComboBoxItem Content="Base64"/>
                                 </ComboBox>
+                            </StackPanel>
+                            <StackPanel>
+                                <TextBlock FontSize="24">Experimental</TextBlock>
+                                <CheckBox Content="Enable Mapped File Support" />
+                                
                             </StackPanel>
                             <StackPanel>
                                 <TextBlock FontSize="24">Theme-ing</TextBlock>
