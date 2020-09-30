@@ -7,80 +7,146 @@ namespace CLUNL.Data.Layer0.Buffers
     public class DataBuffer
     {
         ByteBuffer vs = new ByteBuffer();
+        /// <summary>
+        /// Generate a DataBuffer from a byte array.
+        /// </summary>
+        /// <param name="Data"></param>
+        /// <returns></returns>
         public static DataBuffer FromByteArray(byte[] Data)
         {
             DataBuffer dataBuffer = new DataBuffer();
             dataBuffer.vs = ByteBuffer.FromByteArray(Data);
             return dataBuffer;
         }
+        /// <summary>
+        /// Generate a DataBuffer from a ByteBuffer.
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <returns></returns>
         public static DataBuffer FromByteBuffer(ByteBuffer buffer)
         {
             DataBuffer dataBuffer = new DataBuffer();
             dataBuffer.vs = buffer;
             return dataBuffer;
         }
+        /// <summary>
+        /// Get Byte Array of current buffer.
+        /// </summary>
+        /// <returns></returns>
         public byte[] ObtainByteArray()
         {
             return vs.GetTotalData();
         }
+        /// <summary>
+        /// Clear the buffer.
+        /// </summary>
         public void Clear()
         {
             vs.Clear();
         }
+        /// <summary>
+        /// Get byte array and then clear.
+        /// </summary>
+        /// <returns></returns>
         public byte[] ObtainByteArrayAndClear()
         {
             return vs.GetTotalDataAndClear();
         }
+        /// <summary>
+        /// Read an int value.
+        /// </summary>
+        /// <returns></returns>
         public int ReadInt()
         {
             var a = vs.GetGroup();
             return BitConverter.ToInt32(a, 0);
         }
+        /// <summary>
+        /// Read a float value.
+        /// </summary>
+        /// <returns></returns>
         public float ReadFloat()
         {
             var a = vs.GetGroup();
             return BitConverter.ToSingle(a, 0);
         }
+        /// <summary>
+        /// Read a shor value
+        /// </summary>
+        /// <returns></returns>
         public short ReadShort()
         {
             var a = vs.GetGroup();
             return BitConverter.ToInt16(a, 0);
         }
+        /// <summary>
+        /// Read a unsigned value.
+        /// </summary>
+        /// <returns></returns>
         public ushort ReadUShort()
         {
             var a = vs.GetGroup();
             return BitConverter.ToUInt16(a, 0);
         }
+        /// <summary>
+        /// Read a long value.
+        /// </summary>
+        /// <returns></returns>
         public long ReadLong()
         {
             var a = vs.GetGroup();
             return BitConverter.ToInt64(a, 0);
         }
+        /// <summary>
+        /// Read a unsigned long value.
+        /// </summary>
+        /// <returns></returns>
         public ulong ReadULong()
         {
             var a = vs.GetGroup();
             return BitConverter.ToUInt64(a, 0);
         }
+        /// <summary>
+        /// Read a char value.
+        /// </summary>
+        /// <returns></returns>
         public char ReadChar()
         {
             var a = vs.GetGroup();
             return BitConverter.ToChar(a, 0);
         }
+        /// <summary>
+        /// Read a boolean value.
+        /// </summary>
+        /// <returns></returns>
         public bool ReadBool()
         {
             var a = vs.GetGroup();
             return BitConverter.ToBoolean(a, 0);
         }
+        /// <summary>
+        /// Read a double value.
+        /// </summary>
+        /// <returns></returns>
         public double ReadDouble()
         {
             var a = vs.GetGroup();
             return BitConverter.ToDouble(a, 0);
         }
+        /// <summary>
+        /// Read a string.
+        /// </summary>
+        /// <returns></returns>
         public string ReadString()
         {
             var a = vs.GetGroup();
             return Encoding.UTF8.GetString(a);
         }
+        /// <summary>
+        /// Read an array that only contains primitive types.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public Array ReadArray<T>()
         {
             var l = BitConverter.ToInt32(vs.GetGroup(), 0);
