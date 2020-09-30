@@ -50,6 +50,11 @@ namespace CLUNL.Diagnosis
         {
             throw new NotImplementedException();
         }
+        /// <summary>
+        /// Log a message to target file/memory.
+        /// </summary>
+        /// <param name="Message"></param>
+        /// <param name="logLevel"></param>
         public void Log(string Message, LogLevel logLevel= LogLevel.Default)
         {
             String FinalMessage = "";
