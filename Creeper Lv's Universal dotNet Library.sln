@@ -12,6 +12,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{47590577-03F0-4737-95C1-2F8D171EC0F7}"
 	ProjectSection(SolutionItems) = preProject
 		Build.ps1 = Build.ps1
+		CloneAndBuild.ps1 = CloneAndBuild.ps1
 		package.ps1 = package.ps1
 		publish.ps1 = publish.ps1
 	EndProjectSection
@@ -26,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BufferTools", "BufferTools\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CLUNL.Data.Layer0.Buffers.UITool", "CLUNL.Data.Layer0.Buffers.UITool\CLUNL.Data.Layer0.Buffers.UITool.csproj", "{4E577367-A548-4C58-BB3C-DA55F6D424E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLUNL.Diagnosis", "CLUNL.Diagnosis\CLUNL.Diagnosis.csproj", "{7FD0CFB4-7CAD-4E38-8092-D3A4B2033476}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CLUNL.Diagnosis", "CLUNL.Diagnosis\CLUNL.Diagnosis.csproj", "{7FD0CFB4-7CAD-4E38-8092-D3A4B2033476}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

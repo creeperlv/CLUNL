@@ -5,6 +5,12 @@
 ##############################
 Write-Output "Copyright (C) 2020 Creeper Lv"
 Write-Output "Licensed under the MIT License"
+Write-Output ""
+Write-Output "Cloning..."
+Write-Output ""
+git clone https://github.com/creeperlv/Creeper-Lv-s-Universal-dotNet-Library.git CLUNL
+#git clone https://gitea.com/CreeperLv/CLUNL.git CLUNL
+#¡ü use this address in China to boost clone process.
 cd CLUNL
 $Ori = "./Creeper Lv's Universal dotNet Library/BuildInfo.cs"
 $Dest =  "./Creeper Lv's Universal dotNet Library/BuildInfo.cs"

@@ -23,6 +23,8 @@ $Compress=@{
 	Path=".\Creeper Lv's Universal dotNet Library\bin\Release\netstandard2.0\CLUNL.dll",
 		".\CLUNL.DirectedIO\bin\Release\netstandard2.0\CLUNL.DirectedIO.dll",
 		".\CLUNL.Pipeline\bin\Release\netstandard2.0\CLUNL.Pipeline.dll",
+		".\CLUNL.Diagnosis\bin\Release\netstandard2.0\CLUNL.Diagnosis.dll",
+		".\CLUNL.Packaging\bin\Release\netstandard2.0\CLUNL.Packaging.dll",
 		".\Artifacts\LibManifest"
 	Destination=".\Artifacts\$ArtifactName.zip"
 }
