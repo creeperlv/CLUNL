@@ -10,6 +10,21 @@ namespace CLUNL.Diagnosis
     {
         IBaseWR baseWR;
         bool isDisposed = false;
+        bool isPaused = false;
+        /// <summary>
+        /// Temporarily stop log messages.
+        /// </summary>
+        public void Pause()
+        {
+            isPaused = true;
+        }
+        /// <summary>
+        /// Resume logging messages.
+        /// </summary>
+        public void Resume()
+        {
+            isPaused = false;
+        }
         /// <summary>
         /// The only public client.
         /// </summary>
@@ -51,7 +66,8 @@ namespace CLUNL.Diagnosis
         /// <param name="logLevel"></param>
         public void Log(string Message, LogLevel logLevel= LogLevel.Default)
         {
-            String FinalMessage = $"{DateTime.Now}>";
+            if (isPaused == true) return;
+            string FinalMessage = $"{DateTime.Now}>";
             switch (logLevel)
             {
                 case LogLevel.Default:
