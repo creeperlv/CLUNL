@@ -1,88 +1,187 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.MemoryMappedFiles;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Schema;
 
 namespace CLUNL.DirectedIO
 {
+    /// <summary>
+    /// MMF - Memory Mapped File. Operates MMF.
+    /// </summary>
     public class MMFWR : IBaseWR
     {
-        public long Position { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public bool AutoFlush { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
+        MemoryMappedFile file;
+        Stream MemoryFileStream;
+        StreamReader StreamReader;
+        StreamWriter StreamWriter;
+        public MemoryMappedFile CoreFile
+        {
+            get => file;private set
+            {
+                file = value;
+                MemoryFileStream = file.CreateViewStream();
+                StreamWriter = new StreamWriter(MemoryFileStream);
+                StreamReader = new StreamReader(MemoryFileStream);
+            }
+        }
+        /// <summary>
+        /// Creates a new memory mapped file with given length.
+        /// </summary>
+        /// <param name="Name"></param>
+        /// <param name="Capacity"></param>
+        /// <returns></returns>
+        public static MMFWR CreateNew(string Name, long Capacity)
+        {
+            MMFWR mMFWR = new MMFWR();
+            mMFWR.CoreFile = MemoryMappedFile.CreateNew(Name, Capacity);
+            return mMFWR;
+        }
+        /// <summary>
+        /// Opens an existing memory mapped file.
+        /// </summary>
+        /// <param name="Name"></param>
+        /// <returns></returns>
+        public static MMFWR Open(string Name)
+        {
+            MMFWR WR = new MMFWR();
+            WR.CoreFile = MemoryMappedFile.OpenExisting(Name);
+            return WR;
+        }
+        public long Position { get => MemoryFileStream.Position; set => MemoryFileStream.Position = value; }
+        public bool AutoFlush { get; set; }
+        /// <summary>
+        /// Releases operating resources.
+        /// </summary>
         public void Dispose()
         {
-            throw new NotImplementedException();
+            CoreFile.Dispose();
         }
-
+        /// <summary>
+        /// Flush the cache to target MMF.
+        /// </summary>
         public void Flush()
         {
-            throw new NotImplementedException();
+            MemoryFileStream.Flush();
         }
-
-        public Task FlushAsync()
+        /// <summary>
+        /// Flush the cache to target MMF asynchronously.
+        /// </summary>
+        /// <returns></returns>
+        public async Task FlushAsync()
         {
-            throw new NotImplementedException();
+            await MemoryFileStream.FlushAsync();
         }
-
+        /// <summary>
+        /// Read a byte array.
+        /// </summary>
+        /// <param name="length"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
         public byte[] Read(int length, int offset)
         {
-            throw new NotImplementedException();
+            byte[] b = new byte[length];
+            MemoryFileStream.Read(b, offset, length);
+            return b;
         }
-
+        /// <summary>
+        /// Read a char.
+        /// </summary>
+        /// <returns></returns>
         public char ReadChar()
         {
-            throw new NotImplementedException();
+            return (char)StreamReader.Read();
         }
-
+        /// <summary>
+        /// Read a line.
+        /// </summary>
+        /// <returns></returns>
         public string ReadLine()
         {
-            throw new NotImplementedException();
+            return StreamReader.ReadLine();
         }
-
+        /// <summary>
+        /// Set the length of the Stream.
+        /// </summary>
+        /// <param name="Length"></param>
         public void SetLength(long Length)
         {
-            throw new NotImplementedException();
+            MemoryFileStream.SetLength(Length);
         }
-
+        /// <summary>
+        /// Write a string.
+        /// </summary>
+        /// <param name="Str"></param>
         public void Write(string Str)
         {
-            throw new NotImplementedException();
+            StreamWriter.Write(Str);
         }
-
+        /// <summary>
+        /// Write a char.
+        /// </summary>
+        /// <param name="c"></param>
         public void Write(char c)
         {
-            throw new NotImplementedException();
+            StreamWriter.Write(c);
         }
-
-        public Task WriteAsync(char c)
+        /// <summary>
+        /// Write a char asynchronously.
+        /// </summary>
+        /// <param name="c"></param>
+        /// <returns></returns>
+        public async Task WriteAsync(char c)
         {
-            throw new NotImplementedException();
+            await StreamWriter.WriteAsync(c);
         }
-
-        public Task WriteAsync(string Str)
+        /// <summary>
+        /// Write a string asynchronously.
+        /// </summary>
+        /// <param name="Str"></param>
+        /// <returns></returns>
+        public async Task WriteAsync(string Str)
         {
-            throw new NotImplementedException();
+            await StreamWriter.WriteAsync(Str);
         }
-
+        /// <summary>
+        /// Write a byte array.
+        /// </summary>
+        /// <param name="b"></param>
+        /// <param name="length"></param>
+        /// <param name="offset"></param>
         public void WriteBytes(byte[] b, int length, int offset)
         {
-            throw new NotImplementedException();
+            MemoryFileStream.Write(b, offset, length);
         }
-
-        public Task WriteBytesAsync(byte[] b, int length, int offset)
+        /// <summary>
+        /// Write a byte array asynchronously.
+        /// </summary>
+        /// <param name="b"></param>
+        /// <param name="length"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
+        public async Task WriteBytesAsync(byte[] b, int length, int offset)
         {
-            throw new NotImplementedException();
+            await MemoryFileStream.WriteAsync(b, offset, length);
         }
-
+        /// <summary>
+        /// Write a string as a line.
+        /// </summary>
+        /// <param name="Str"></param>
         public void WriteLine(string Str)
         {
-            throw new NotImplementedException();
+            StreamWriter.WriteLine(Str);
         }
-
-        public Task WriteLineAsync(string str)
+        /// <summary>
+        /// Write a string as a line asynchronously.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public async Task WriteLineAsync(string str)
         {
-            throw new NotImplementedException();
+            await StreamWriter.WriteLineAsync(str);
         }
     }
 }
