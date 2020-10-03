@@ -4,6 +4,9 @@ using System.Text;
 
 namespace CLUNL.Data.Layer0.Buffers
 {
+    /// <summary>
+    /// DataBuffer - it can convert primitive types when adding them into buffer.
+    /// </summary>
     public class DataBuffer
     {
         ByteBuffer vs = new ByteBuffer();

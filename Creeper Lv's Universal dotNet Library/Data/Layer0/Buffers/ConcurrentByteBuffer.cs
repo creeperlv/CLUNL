@@ -31,10 +31,17 @@ namespace CLUNL.Data.Layer0.Buffers
                 }
             }
         }
+        /// <summary>
+        /// Clear buffer.
+        /// </summary>
         public void Clear()
         {
             buf = new ConcurrentQueue<byte>();
         }
+        /// <summary>
+        /// Get enumerator to enumerate byte arrays.
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator<byte[]> GetEnumerator()
         {
             while (buf.Count < 1)
@@ -42,10 +49,19 @@ namespace CLUNL.Data.Layer0.Buffers
                 yield return GetGroup();
             }
         }
+        /// <summary>
+        /// Convert buffer data to Base64 string.
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return Convert.ToBase64String(GetTotalData());
         }
+        /// <summary>
+        /// Obtain ConcurrentByteBuffer from base64 string.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         public static ConcurrentByteBuffer FromBase64String(string str)
         {
             var b = new ConcurrentByteBuffer();
@@ -56,6 +72,11 @@ namespace CLUNL.Data.Layer0.Buffers
             }
             return b;
         }
+        /// <summary>
+        /// Obtain ConcurrentByteBuffer from a byte array.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public static ConcurrentByteBuffer FromByteArray(byte[] data)
         {
             var b = new ConcurrentByteBuffer();
@@ -65,31 +86,52 @@ namespace CLUNL.Data.Layer0.Buffers
             }
             return b;
         }
+        /// <summary>
+        /// Obtain byte array from buffer.
+        /// </summary>
+        /// <returns></returns>
         public byte[] GetTotalData()
         {
             return buf.ToArray();
         }
+        /// <summary>
+        /// Obtain byte array then clear buffer.
+        /// </summary>
+        /// <returns></returns>
         public byte[] GetTotalDataAndClear()
         {
             var arr = buf.ToArray();
             Clear();
             return arr;
         }
+        /// <summary>
+        /// Get a byte array.
+        /// </summary>
+        /// <returns></returns>
         public byte[] GetGroup()
         {
-            byte[] Header = new byte[4];
-            buf.TryDequeue(out Header[0]);
-            buf.TryDequeue(out Header[1]);
-            buf.TryDequeue(out Header[2]);
-            buf.TryDequeue(out Header[3]);
-            var TargetLength = BitConverter.ToInt32(Header, 0);
-            byte[] RealContent = new byte[TargetLength];
-            for (int i = 0; i < TargetLength; i++)
+            lock (buf)
             {
-                buf.TryDequeue(out RealContent[i]);
+                byte[] Header = new byte[4];
+                buf.TryDequeue(out Header[0]);
+                buf.TryDequeue(out Header[1]);
+                buf.TryDequeue(out Header[2]);
+                buf.TryDequeue(out Header[3]);
+                var TargetLength = BitConverter.ToInt32(Header, 0);
+                byte[] RealContent = new byte[TargetLength];
+                for (int i = 0; i < TargetLength; i++)
+                {
+                    buf.TryDequeue(out RealContent[i]);
+                }
+                return RealContent;
             }
-            return RealContent;
         }
+        /// <summary>
+        /// Connect R to L (L is in front of R)
+        /// </summary>
+        /// <param name="L"></param>
+        /// <param name="R"></param>
+        /// <returns></returns>
         public static ConcurrentByteBuffer operator +(ConcurrentByteBuffer L, ConcurrentByteBuffer R)
         {
             lock (L)
@@ -101,6 +143,12 @@ namespace CLUNL.Data.Layer0.Buffers
             }
             return L;
         }
+        /// <summary>
+        /// Append R to the buffer without treating it as an array.
+        /// </summary>
+        /// <param name="L"></param>
+        /// <param name="R"></param>
+        /// <returns></returns>
         public static ConcurrentByteBuffer operator +(ConcurrentByteBuffer L, byte R)
         {
             lock (L)
@@ -109,6 +157,12 @@ namespace CLUNL.Data.Layer0.Buffers
             }
             return L;
         }
+        /// <summary>
+        /// Append an array to the buffer without using AppendGroup(byte[]); (will not add length field in front of the array).
+        /// </summary>
+        /// <param name="L"></param>
+        /// <param name="R"></param>
+        /// <returns></returns>
         public static ConcurrentByteBuffer operator +(ConcurrentByteBuffer L, byte[] R)
         {
             lock (L)

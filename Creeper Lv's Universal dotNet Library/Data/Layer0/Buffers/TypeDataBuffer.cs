@@ -36,22 +36,42 @@ namespace CLUNL.Data.Layer0.Buffers
             Buffer.CoreBuffer = vs;
             return Buffer;
         }
+        /// <summary>
+        /// Obtain the core ByteBuffer.
+        /// </summary>
+        /// <returns></returns>
         public ByteBuffer ObtainByteBuffer()
         {
             return CoreBuffer;
         }
+        /// <summary>
+        /// Obtain a byte array of buffered data.
+        /// </summary>
+        /// <returns></returns>
         public byte[] ObtainByteArray()
         {
             return CoreBuffer.GetTotalData();
         }
+        /// <summary>
+        /// Clear the buffer.
+        /// </summary>
         public void Clear()
         {
             CoreBuffer.Clear();
         }
+        /// <summary>
+        /// Obtain a byte array then clear the buffer.
+        /// </summary>
+        /// <returns></returns>
         public byte[] ObtainByteArrayAndClear()
         {
             return CoreBuffer.GetTotalDataAndClear();
         }
+        /// <summary>
+        /// Read an array with primitive data. Nested array is <b>not</b> supported.
+        /// </summary>
+        /// <param name="T"></param>
+        /// <returns></returns>
         public Array ReadArray(Type T)
         {
             var l = BitConverter.ToInt32(CoreBuffer.GetGroup(), 0);
@@ -115,6 +135,10 @@ namespace CLUNL.Data.Layer0.Buffers
             }
             return null;
         }
+        /// <summary>
+        /// Write an array with primitive data. Nested array is <b>not</b> supported.
+        /// </summary>
+        /// <param name="array"></param>
         public void WriteArray(Array array)
         {
             CoreBuffer.AppendGroup(BitConverter.GetBytes(array.Length));
@@ -166,6 +190,10 @@ namespace CLUNL.Data.Layer0.Buffers
                 }
             }
         }
+        /// <summary>
+        /// Write a data which can be primitive or data with registered convertor.
+        /// </summary>
+        /// <param name="obj"></param>
         public void Write(object obj)
         {
             if (obj is int)
@@ -285,6 +313,9 @@ namespace CLUNL.Data.Layer0.Buffers
                 CoreBuffer.AppendGroup(Convertor.Serialize(obj));
             }
         }
+        /// <summary>
+        /// Read a data which can be primitive or data with registered convertor.
+        /// </summary>
         public object Read()
         {
             short flag = BitConverter.ToInt16(CoreBuffer.GetGroup(), 0);
@@ -365,6 +396,10 @@ namespace CLUNL.Data.Layer0.Buffers
                     throw new UndefinedTypeFlagException(flag);
             }
         }
+        /// <summary>
+        /// Convert from byte array to TypeDataBuffer.
+        /// </summary>
+        /// <param name="Data"></param>
         public static implicit operator TypeDataBuffer(byte[] Data)
         {
             TypeDataBuffer result = new TypeDataBuffer();
@@ -376,31 +411,82 @@ namespace CLUNL.Data.Layer0.Buffers
             result.CoreBuffer = vs;
             return result;
         }
+        /// <summary>
+        /// Convert from TypeDataBuffer to byte array.
+        /// </summary>
+        /// <param name="Buffer"></param>
         public static implicit operator byte[](TypeDataBuffer Buffer)
         {
             return Buffer.ObtainByteArray();
         }
     }
-
+    /// <summary>
+    /// Throw when the type flag is undefined.
+    /// </summary>
     [Serializable]
     public class UndefinedTypeFlagException : Exception
     {
+        /// <summary>
+        /// Throw when the type flag is undefined.
+        /// </summary>
         public UndefinedTypeFlagException(short TypeID) : base($"Undefined TypeFlag:{TypeID}") { }
     }
+    /// <summary>
+    /// Known type flags.
+    /// </summary>
     public class TypeFlags
     {
+        /// <summary>
+        /// Int32, int
+        /// </summary>
         public const short Int = 0x00;
+        /// <summary>
+        /// Single, float
+        /// </summary>
         public const short Float = 0x01;
+        /// <summary>
+        /// Double, double
+        /// </summary>
         public const short Double = 0x02;
+        /// <summary>
+        /// Int64, long
+        /// </summary>
         public const short Long = 0x03;
+        /// <summary>
+        /// Unsigned Int64, ulong
+        /// </summary>
         public const short ULong = 0x04;
+        /// <summary>
+        /// Int16, short
+        /// </summary>
         public const short Short = 0x05;
+        /// <summary>
+        /// Unsigned Int16, ushort
+        /// </summary>
         public const short UShort = 0x06;
+        /// <summary>
+        /// Boolean, bool
+        /// </summary>
         public const short Bool = 0x07;
+        /// <summary>
+        /// Character, char
+        /// </summary>
         public const short Char = 0x08;
+        /// <summary>
+        /// String, string
+        /// </summary>
         public const short String = 0x09;
+        /// <summary>
+        /// Array
+        /// </summary>
         public const short Array = 0x0A;
+        /// <summary>
+        /// KVCollection, not implemented yet.
+        /// </summary>
         public const short KVCollection = 0x0B;
+        /// <summary>
+        /// Customed data, requies its convertor to be registered.
+        /// </summary>
         public const short CustomData = 0x0C;
     }
 }

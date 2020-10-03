@@ -83,16 +83,28 @@ namespace CLUNL.Data.Layer0.Buffers
             }
             return b;
         }
+        /// <summary>
+        /// Get all data from buffer.
+        /// </summary>
+        /// <returns></returns>
         public byte[] GetTotalData()
         {
             return buf.ToArray();
         }
+        /// <summary>
+        /// Get all data from buffer then clear the buffer.
+        /// </summary>
+        /// <returns></returns>
         public byte[] GetTotalDataAndClear()
         {
             var arr = buf.ToArray();
             buf.Clear();
             return arr;
         }
+        /// <summary>
+        /// Get a byte array.
+        /// </summary>
+        /// <returns></returns>
         public byte[] GetGroup()
         {
             byte[] Header = new byte[4];
@@ -141,11 +153,23 @@ namespace CLUNL.Data.Layer0.Buffers
             L.AppendGroup(R.GetTotalData());
             return L;
         }
+        /// <summary>
+        /// Append a byte to ByteBuffer without treating it as an array.
+        /// </summary>
+        /// <param name="L"></param>
+        /// <param name="R"></param>
+        /// <returns></returns>
         public static ByteBuffer operator+(ByteBuffer L,byte R)
         {
             L.buf.Enqueue(R);
             return L;
         }
+        /// <summary>
+        /// Same as AppendGroup(byte[])/
+        /// </summary>
+        /// <param name="L"></param>
+        /// <param name="R"></param>
+        /// <returns></returns>
         public static ByteBuffer operator +(ByteBuffer L, byte[] R)
         {
 
@@ -210,6 +234,10 @@ namespace CLUNL.Data.Layer0.Buffers
             L.AppendGroup(R);
             return L;
         }
+        /// <summary>
+        /// Convert from byte array to ByteBuffer.
+        /// </summary>
+        /// <param name="Data"></param>
         public static implicit operator ByteBuffer(byte[] Data)
         {
             ByteBuffer vs = new ByteBuffer();
@@ -219,6 +247,10 @@ namespace CLUNL.Data.Layer0.Buffers
             }
             return vs;
         }
+        /// <summary>
+        /// Convert from ByteBuffer to byte array.
+        /// </summary>
+        /// <param name="Buffer"></param>
         public static implicit operator byte[](ByteBuffer Buffer)
         {
             return Buffer.GetTotalData();
