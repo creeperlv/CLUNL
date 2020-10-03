@@ -11,13 +11,19 @@ using System.Text;
 
 namespace CLUNL.Data.Layer0
 {
+    /// <summary>
+    /// Basic Key-Value Data which can be operated easily.
+    /// It will look like "Key:Value" by default.
+    /// </summary>
     public class BasicKeyValueData : HoldableObject, IDisposable, ICollection<KeyValuePair<string, string>>, IEnumerable<KeyValuePair<string, string>>, IEnumerable
     {
         IBaseWR __;
         private bool isSyncingData = false;
         internal char Separator = ':';
         internal List<string> Raw = new List<string>();
-
+        /// <summary>
+        /// Indicates the count of data.
+        /// </summary>
         public int Count
         {
             get
@@ -31,8 +37,14 @@ namespace CLUNL.Data.Layer0
                 return C;
             }
         }
-
+        /// <summary>
+        /// Whether the data is read only. (Always return false, it depends on given WR.)
+        /// </summary>
         public bool IsReadOnly => false;
+        /// <summary>
+        /// Return header in front of real data content.
+        /// </summary>
+        /// <returns></returns>
 
         public virtual string GetHeader() => @"#=================================================
 #=INI-Like Data File                             =
@@ -60,6 +72,9 @@ namespace CLUNL.Data.Layer0
                 Raw.Add(Line);
             }
         }
+        /// <summary>
+        /// Close using WR.
+        /// </summary>
         public void Dispose()
         {
             __.Dispose();
@@ -109,11 +124,19 @@ namespace CLUNL.Data.Layer0
             await __.FlushAsync();
             isSyncingData = false;
         }
+        /// <summary>
+        /// Release WR(If WR works properly).
+        /// </summary>
         public void Close()
         {
             Dispose();
             GC.SuppressFinalize(this);
         }
+        /// <summary>
+        /// Clear current data.
+        /// </summary>
+        /// <param name="AutoSave"></param>
+        /// <param name="Handle"></param>
         public void Clear(bool AutoSave = true, int Handle = 0)
         {
             if (HitHandle(Handle) == false)
@@ -127,7 +150,12 @@ namespace CLUNL.Data.Layer0
                 Flush();
             }
         }
-        public string FindValue(String Key)
+        /// <summary>
+        /// Find a value with given key.
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <returns></returns>
+        public string FindValue(string Key)
         {
             //string ___;
             //__.BaseStream.Position = 0;
@@ -153,6 +181,13 @@ namespace CLUNL.Data.Layer0
             }
             return null;
         }
+        /// <summary>
+        /// Delete a key.
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="AutoSave"></param>
+        /// <param name="Handle"></param>
+        /// <returns>When returning false means this object is currently on hold.</returns>
         public bool? DeleteKey(string Key, bool AutoSave = false, int Handle = 0)
         {
             if (HitHandle(Handle) == false)
@@ -178,6 +213,11 @@ namespace CLUNL.Data.Layer0
             return null;
             //Key not exist
         }
+        /// <summary>
+        /// Determines whether contains given key.
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <returns></returns>
         public bool ContainsKey(string Key)
         {
             for (int i = 0; i < Raw.Count; i++)
@@ -195,6 +235,8 @@ namespace CLUNL.Data.Layer0
         /// <param name="Key"></param>
         /// <param name="Value"></param>
         /// <param name="AutoSave">Indicates whether the data will be saved after this operation.</param>
+        /// <param name="Handle"></param>
+        /// <param name="IgnoreDuplicateCheck">Duplicate Check will cause huge performance cost when operating data in a huge scale, recommand ignores it and check it at last.</param>
         /// <returns><p>true: Operate Succeed.</p><br/><p>false: Operation calceld due to other operation is on hold.</p></returns>
         public bool? AddValue(string Key, string Value,bool IgnoreDuplicateCheck=false, bool AutoSave = false, int Handle = 0)
         {
@@ -253,7 +295,16 @@ namespace CLUNL.Data.Layer0
             //    ____.Flush();
             //}
         }
-
+        /// <summary>
+        /// <para>Remove duplicated items that is older. Such as :</para>
+        /// <para>KEY1:OLD</para>
+        /// <para>KEY1:NEWER</para>
+        /// <para>KEY1:NEWEST</para>
+        /// <para>Only KEY1:NETEST will remains.</para>
+        /// </summary>
+        /// <param name="AutoSave"></param>
+        /// <param name="Handle"></param>
+        /// <returns></returns>
         public bool RemoveOldDuplicatedItems(bool AutoSave = true, int Handle = 0)
         {
             if (HitHandle(Handle) == false)
@@ -289,6 +340,12 @@ namespace CLUNL.Data.Layer0
             }
             return true;
         }
+        /// <summary>
+        /// Create a BasicKeyValueData to a file.
+        /// </summary>
+        /// <param name="TargetFile"></param>
+        /// <param name="Separator"></param>
+        /// <returns></returns>
         public static BasicKeyValueData CreateToFile(FileInfo TargetFile, char Separator = ':')
         {
             if (!TargetFile.Exists) TargetFile.Create().Close();
@@ -301,32 +358,58 @@ namespace CLUNL.Data.Layer0
             BasicKeyValueData __＿ = new BasicKeyValueData(fileWR, Separator);
             return __＿;
         }
+        /// <summary>
+        /// Load a BasicKeyValueData from a WR.
+        /// </summary>
+        /// <param name="WR"></param>
+        /// <param name="Separator"></param>
+        /// <returns></returns>
         public static BasicKeyValueData LoadFromWR(IBaseWR WR, char Separator = ':')
         {
             BasicKeyValueData _ω___ = new BasicKeyValueData(WR, Separator);
             return _ω___;
         }
+        /// <summary>
+        /// Load a BasicKeyValueData from a stream.
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="Separator"></param>
+        /// <returns></returns>
         public static BasicKeyValueData LoadFromStream(Stream stream, char Separator = ':')
         {
             BasicKeyValueData _ω___ = new BasicKeyValueData(stream, Separator);
             return _ω___;
         }
 
+        /// <summary>
+        /// Add an item.
+        /// </summary>
+        /// <param name="item"></param>
         public void Add(KeyValuePair<string, string> item)
         {
             AddValue(item.Key, item.Value,false,true,0);
         }
-
+        /// <summary>
+        /// Clear all data.
+        /// </summary>
         public void Clear()
         {
             Clear(true, 0);
         }
-
+        /// <summary>
+        /// Determine whether contains given Key-Value combination.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public bool Contains(KeyValuePair<string, string> item)
         {
             return ContainsKey(item.Key) ? FindValue(item.Key) == item.Value : false;
         }
-
+        /// <summary>
+        /// Copy content to target array.
+        /// </summary>
+        /// <param name="array"></param>
+        /// <param name="arrayIndex"></param>
         public void CopyTo(KeyValuePair<string, string>[] array, int arrayIndex)
         {
             for (int i = 0; i < this.Count; i++)
@@ -334,12 +417,19 @@ namespace CLUNL.Data.Layer0
                 array[arrayIndex + i] = this.ElementAt(i);
             }
         }
-
+        /// <summary>
+        /// Remove target item.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public bool Remove(KeyValuePair<string, string> item)
         {
             return Contains(item) ? (bool)DeleteKey(item.Key) : false;
         }
-
+        /// <summary>
+        /// Get Enumerator.
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
         {
             foreach (var item in Raw)

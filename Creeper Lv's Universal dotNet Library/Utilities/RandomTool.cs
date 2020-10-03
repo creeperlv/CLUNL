@@ -4,8 +4,17 @@ using System.Text;
 
 namespace CLUNL.Utilities
 {
+    /// <summary>
+    /// A tool to generate random string.
+    /// </summary>
     public static class RandomTool
     {
+        /// <summary>
+        /// Generate a random string in give length and range.
+        /// </summary>
+        /// <param name="Length">Target string length.</param>
+        /// <param name="RandomRange">Target string range</param>
+        /// <returns></returns>
         public static string GetRandomString(int Length, RandomStringRange RandomRange)
         {
             char[] data = new char[Length];

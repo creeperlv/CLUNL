@@ -5,15 +5,31 @@ using System.Text;
 
 namespace CLUNL.Data.Layer0.Buffers
 {
+    /// <summary>
+    /// A buffer that allows to directly write any primitive data and will auto convert them.
+    /// </summary>
     public class TypeDataBuffer
     {
+        /// <summary>
+        /// Core byte buffer.
+        /// </summary>
         public ByteBuffer CoreBuffer = new ByteBuffer();
+        /// <summary>
+        /// Obtain a TypeDataBuffer from a byte array.
+        /// </summary>
+        /// <param name="Data"></param>
+        /// <returns></returns>
         public static TypeDataBuffer FromByteArray(byte[] Data)
         {
             TypeDataBuffer Buffer = new TypeDataBuffer();
             Buffer.CoreBuffer = ByteBuffer.FromByteArray(Data);
             return Buffer;
         }
+        /// <summary>
+        /// Obtain a TypeDataBuffer from a ByteBuffer.
+        /// </summary>
+        /// <param name="vs"></param>
+        /// <returns></returns>
         public static TypeDataBuffer FromByteBuffer(ByteBuffer vs)
         {
             TypeDataBuffer Buffer = new TypeDataBuffer();

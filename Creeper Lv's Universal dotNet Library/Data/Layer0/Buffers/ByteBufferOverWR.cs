@@ -6,28 +6,42 @@ using System.Text;
 namespace CLUNL.Data.Layer0.Buffers
 {
     /// <summary>
-    /// Just operates like byte buffer.
+    /// Just operates WR like byte buffer.
     /// </summary>
     public class ByteBufferOverWR:IDisposable
     {
         IBaseWR CoreWR;
+        /// <summary>
+        /// Initialize ByteBufferOverWR with given IBaseWR.
+        /// </summary>
+        /// <param name="baseWR"></param>
         public ByteBufferOverWR(IBaseWR baseWR)
         {
             CoreWR = baseWR;
         }
+        /// <summary>
+        /// Get a byte array.
+        /// </summary>
+        /// <returns></returns>
         public byte[] GetGroup()
         {
             //Length in Byte
-            var BLength=CoreWR.Read(4, 0);
-            var Length32=BitConverter.ToInt32(BLength, 0);
+            var BLength = CoreWR.Read(4, 0);
+            var Length32 = BitConverter.ToInt32(BLength, 0);
             return CoreWR.Read(Length32, 0);
         }
+        /// <summary>
+        /// Append a byte array.
+        /// </summary>
+        /// <param name="Data"></param>
         public void AppendGroup(byte[] Data)
         {
             CoreWR.WriteBytes(Data,Data.Length,0);
             CoreWR.Flush();
         }
-
+        /// <summary>
+        /// Close using WR.
+        /// </summary>
         public void Dispose()
         {
             CoreWR.Dispose();
@@ -55,6 +69,10 @@ namespace CLUNL.Data.Layer0.Buffers
             return L;
         }
 #if ENABLE_UNSTABLE
+        /// <summary>
+        /// Obtain a ByteBuffer from WR. It is unstable. And may not perform correctly when reading from a stream that is mutable such a network stream or MMF stream.
+        /// </summary>
+        /// <returns></returns>
         public ByteBuffer ObtainEntireBuffer()
         {
             ByteBuffer vs = new ByteBuffer();

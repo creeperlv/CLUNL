@@ -5,8 +5,16 @@ using System.Text;
 
 namespace CLUNL.Data.Layer0
 {
+    /// <summary>
+    /// A tool to help to simplify some file operations.
+    /// </summary>
     public static class FileUtilities
     {
+        /// <summary>
+        /// Copy a folder recursively. (Copy the entire folder.)
+        /// </summary>
+        /// <param name="Origin"></param>
+        /// <param name="Target"></param>
         public static void CopyFolderRecursively(string Origin, string Target)
         {
             if (!Directory.Exists(Origin)) throw new DirectoryNotFoundException();
@@ -22,6 +30,11 @@ namespace CLUNL.Data.Layer0
                 CopyFolderRecursively(item.FullName, Path.Combine(directoryInfo1.FullName, item.Name));
             }
         }
+        /// <summary>
+        /// Move a folder recursively. (Move the entire folder.)
+        /// </summary>
+        /// <param name="Origin"></param>
+        /// <param name="Target"></param>
         public static void MoveFolderRecursively(string Origin, string Target)
         {
             if (!Directory.Exists(Origin)) throw new DirectoryNotFoundException();
