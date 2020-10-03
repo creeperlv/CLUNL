@@ -8,8 +8,9 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>bin\Debug\netstandard2.0\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>TRACE;ENABLE_UNSTABLE</DefineConstants>
+    <DocumentationFile>bin\Debug\netstandard2.0\CLUNL.xml</DocumentationFile>
   </PropertyGroup>
 
 

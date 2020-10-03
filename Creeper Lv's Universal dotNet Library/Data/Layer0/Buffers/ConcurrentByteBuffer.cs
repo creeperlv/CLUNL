@@ -6,19 +6,29 @@ using System.Text;
 
 namespace CLUNL.Data.Layer0.Buffers
 {
+    /// <summary>
+    /// ConcurrentByteBuffer that is thread safe.
+    /// </summary>
     public class ConcurrentByteBuffer : IEnumerable<byte[]>
     {
         ConcurrentQueue<byte> buf = new ConcurrentQueue<byte>();
+        /// <summary>
+        /// Same as ByteBuffer.AppendGroup(byte[]).
+        /// </summary>
+        /// <param name="data"></param>
         public void AppendGroup(byte[] data)
         {
-            var H = BitConverter.GetBytes(data.Length);
-            foreach (var item in H)
+            lock (buf)
             {
-                buf.Enqueue(item);
-            }
-            foreach (var item in data)
-            {
-                buf.Enqueue(item);
+                var H = BitConverter.GetBytes(data.Length);
+                foreach (var item in H)
+                {
+                    buf.Enqueue(item);
+                }
+                foreach (var item in data)
+                {
+                    buf.Enqueue(item);
+                }
             }
         }
         public void Clear()

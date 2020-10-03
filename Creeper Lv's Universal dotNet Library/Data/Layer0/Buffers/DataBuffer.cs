@@ -210,6 +210,10 @@ namespace CLUNL.Data.Layer0.Buffers
             }
             return null;
         }
+        /// <summary>
+        /// Write an array with primitive data.
+        /// </summary>
+        /// <param name="array"></param>
         public void WriteArray(Array array)
         {
             vs.AppendGroup(BitConverter.GetBytes(array.Length));
@@ -260,46 +264,90 @@ namespace CLUNL.Data.Layer0.Buffers
                 }
             }
         }
+        /// <summary>
+        /// Write an int value.
+        /// </summary>
+        /// <param name="value"></param>
         public void WriteInt(int value)
         {
             vs.AppendGroup(BitConverter.GetBytes(value));
         }
+        /// <summary>
+        /// Write a float value.
+        /// </summary>
+        /// <param name="value"></param>
         public void WriteFloat(float value)
         {
             vs.AppendGroup(BitConverter.GetBytes(value));
         }
+        /// <summary>
+        /// Write a boolean value.
+        /// </summary>
+        /// <param name="value"></param>
         public void WriteBool(bool value)
         {
             vs.AppendGroup(BitConverter.GetBytes(value));
         }
+        /// <summary>
+        /// Write a double value.
+        /// </summary>
+        /// <param name="value"></param>
         public void WriteDouble(double value)
         {
             vs.AppendGroup(BitConverter.GetBytes(value));
         }
+        /// <summary>
+        /// Write a string.
+        /// </summary>
+        /// <param name="value"></param>
         public void WriteString(string value)
         {
             vs.AppendGroup(Encoding.UTF8.GetBytes(value));
         }
+        /// <summary>
+        /// Write a short value.
+        /// </summary>
+        /// <param name="value"></param>
         public void WriteShort(short value)
         {
             vs.AppendGroup(BitConverter.GetBytes(value));
         }
+        /// <summary>
+        /// Write a long value.
+        /// </summary>
+        /// <param name="value"></param>
         public void WriteLong(long value)
         {
             vs.AppendGroup(BitConverter.GetBytes(value));
         }
+        /// <summary>
+        /// Write a long value that is unsigned.
+        /// </summary>
+        /// <param name="value"></param>
         public void WriteUlong(ulong value)
         {
             vs.AppendGroup(BitConverter.GetBytes(value));
         }
+        /// <summary>
+        /// Write a short value that is unsigned.
+        /// </summary>
+        /// <param name="value"></param>
         public void WriteUShort(ushort value)
         {
             vs.AppendGroup(BitConverter.GetBytes(value));
         }
+        /// <summary>
+        /// Write a char.
+        /// </summary>
+        /// <param name="value"></param>
         public void WriteChar(char value)
         {
             vs.AppendGroup(BitConverter.GetBytes(value));
         }
+        /// <summary>
+        /// Convert from byte array to DataBuffer.
+        /// </summary>
+        /// <param name="Data"></param>
         public static implicit operator DataBuffer(byte[] Data)
         {
             DataBuffer result = new DataBuffer();
@@ -311,6 +359,10 @@ namespace CLUNL.Data.Layer0.Buffers
             result.vs = vs;
             return result;
         }
+        /// <summary>
+        /// Convert from DataBuffer to a byte array.
+        /// </summary>
+        /// <param name="Buffer"></param>
         public static implicit operator byte[](DataBuffer Buffer)
         {
             return Buffer.ObtainByteArray();

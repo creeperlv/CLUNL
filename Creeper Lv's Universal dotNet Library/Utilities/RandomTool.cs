@@ -55,10 +55,25 @@ namespace CLUNL.Utilities
         }
     }
     /// <summary>
-    /// R1: 0~9; R2:0~9&a~z; R3: 0~9&a~z&A~Z,R4: ANY CHARACTER
+    /// R1: 0~9; R2:0~9,a~z; R3: 0~9,a~z,A~Z,R4: ANY CHARACTER
     /// </summary>
     public enum RandomStringRange
     {
-        R1, R2, R3, R4
+        /// <summary>
+        /// From 0 to 9.
+        /// </summary>
+        R1,
+        /// <summary>
+        /// From 0 to 9 and a to z.
+        /// </summary>
+        R2, 
+        /// <summary>
+        /// From 0 to 0 , a to z and A to Z.
+        /// </summary>
+        R3, 
+        /// <summary>
+        /// Any character.
+        /// </summary>
+        R4
     }
 }
