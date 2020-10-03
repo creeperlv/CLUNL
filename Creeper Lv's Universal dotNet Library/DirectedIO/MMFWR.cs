@@ -18,6 +18,9 @@ namespace CLUNL.DirectedIO
         Stream MemoryFileStream;
         StreamReader StreamReader;
         StreamWriter StreamWriter;
+        /// <summary>
+        /// Get the core memory mapped file.
+        /// </summary>
         public MemoryMappedFile CoreFile
         {
             get => file;private set
@@ -51,7 +54,13 @@ namespace CLUNL.DirectedIO
             WR.CoreFile = MemoryMappedFile.OpenExisting(Name);
             return WR;
         }
+        /// <summary>
+        /// Get or set the operating position of current MMF.
+        /// </summary>
         public long Position { get => MemoryFileStream.Position; set => MemoryFileStream.Position = value; }
+        /// <summary>
+        /// Get or set whether perform flush after write somethings.
+        /// </summary>
         public bool AutoFlush { get; set; }
         /// <summary>
         /// Releases operating resources.
@@ -118,6 +127,7 @@ namespace CLUNL.DirectedIO
         public void Write(string Str)
         {
             StreamWriter.Write(Str);
+            if (AutoFlush) StreamWriter.Flush();
         }
         /// <summary>
         /// Write a char.
@@ -126,6 +136,7 @@ namespace CLUNL.DirectedIO
         public void Write(char c)
         {
             StreamWriter.Write(c);
+            if (AutoFlush) StreamWriter.Flush();
         }
         /// <summary>
         /// Write a char asynchronously.
@@ -135,6 +146,7 @@ namespace CLUNL.DirectedIO
         public async Task WriteAsync(char c)
         {
             await StreamWriter.WriteAsync(c);
+            if (AutoFlush) await StreamWriter.FlushAsync();
         }
         /// <summary>
         /// Write a string asynchronously.
@@ -144,6 +156,7 @@ namespace CLUNL.DirectedIO
         public async Task WriteAsync(string Str)
         {
             await StreamWriter.WriteAsync(Str);
+            if (AutoFlush) await StreamWriter.FlushAsync();
         }
         /// <summary>
         /// Write a byte array.
@@ -154,6 +167,7 @@ namespace CLUNL.DirectedIO
         public void WriteBytes(byte[] b, int length, int offset)
         {
             MemoryFileStream.Write(b, offset, length);
+            if (AutoFlush) StreamWriter.Flush();
         }
         /// <summary>
         /// Write a byte array asynchronously.
@@ -165,6 +179,7 @@ namespace CLUNL.DirectedIO
         public async Task WriteBytesAsync(byte[] b, int length, int offset)
         {
             await MemoryFileStream.WriteAsync(b, offset, length);
+            if (AutoFlush) await StreamWriter.FlushAsync();
         }
         /// <summary>
         /// Write a string as a line.
@@ -173,6 +188,7 @@ namespace CLUNL.DirectedIO
         public void WriteLine(string Str)
         {
             StreamWriter.WriteLine(Str);
+            if (AutoFlush) StreamWriter.Flush();
         }
         /// <summary>
         /// Write a string as a line asynchronously.
@@ -182,6 +198,7 @@ namespace CLUNL.DirectedIO
         public async Task WriteLineAsync(string str)
         {
             await StreamWriter.WriteLineAsync(str);
+            if (AutoFlush) await StreamWriter.FlushAsync();
         }
     }
 }
