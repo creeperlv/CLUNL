@@ -6,9 +6,16 @@ using System.Text;
 
 namespace CLUNL.Data.Layer0.Buffers
 {
+    /// <summary>
+    /// Basic byte buffer.
+    /// </summary>
     public class ByteBuffer:IEnumerable<byte[]>
     {
         internal Queue<byte> buf = new Queue<byte>();
+        /// <summary>
+        /// Add a byte array to buffer. (Length will use 4 bytes).
+        /// </summary>
+        /// <param name="data"></param>
         public void AppendGroup(byte[] data)
         {
             var H = BitConverter.GetBytes(data.Length);
@@ -21,10 +28,17 @@ namespace CLUNL.Data.Layer0.Buffers
                 buf.Enqueue(item);
             }
         }
+        /// <summary>
+        /// Clear buffer.
+        /// </summary>
         public void Clear()
         {
             buf.Clear();
         }
+        /// <summary>
+        /// Get enumerator, will enumerate byte array.
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator<byte[]> GetEnumerator()
         {
             while (buf.Count<1)
@@ -32,10 +46,19 @@ namespace CLUNL.Data.Layer0.Buffers
                 yield return GetGroup();
             }
         }
+        /// <summary>
+        /// Get base64 encoded string of buffer data.
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return Convert.ToBase64String(GetTotalData());
         }
+        /// <summary>
+        /// Get ByteBuffer from a base64 string.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         public static ByteBuffer FromBase64String(string str)
         {
             var b = new ByteBuffer();
@@ -46,6 +69,11 @@ namespace CLUNL.Data.Layer0.Buffers
             }
             return b;
         }
+        /// <summary>
+        /// Obtain a ByteBuffer from a byte array.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public static ByteBuffer FromByteArray(byte[]data)
         {
             var b = new ByteBuffer();
