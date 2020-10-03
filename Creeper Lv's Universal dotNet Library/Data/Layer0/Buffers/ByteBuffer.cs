@@ -171,6 +171,12 @@ namespace CLUNL.Data.Layer0.Buffers
             }
             return L;
         }
+        /// <summary>
+        /// Append a byte array.
+        /// </summary>
+        /// <param name="L"></param>
+        /// <param name="R"></param>
+        /// <returns></returns>
         public static ByteBuffer operator *(ByteBuffer L, byte[] R)
         {
             L.AppendGroup(R);

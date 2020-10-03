@@ -44,10 +44,16 @@ namespace CLUNL.DirectedIO
             await writer.FlushAsync();
         }
 
+        /// <summary>
+        /// Reads a byte array in given length from given offset. Will return a null byte array when it reaches the end of the file.
+        /// </summary>
+        /// <param name="length"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
         public byte[] Read(int length, int offset)
         {
             byte[] b = (byte[])Array.CreateInstance(typeof(byte), length);
-            Stream.Read(b, offset, length);
+            if (Stream.Read(b, offset, length) == 0) return null;
             return b;
         }
 

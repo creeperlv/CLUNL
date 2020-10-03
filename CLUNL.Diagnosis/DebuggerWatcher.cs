@@ -21,36 +21,47 @@ namespace CLUNL.Diagnosis
         /// Init the watcher. Will start a thread/task to listen.
         /// </summary>
         /// <param name="WR"></param>
-        public MMFDebuggerWatcher(MMFWR WR)
+        public MMFDebuggerWatcher(MMFWR WR,LogInfoProfile logInfoProfile= LogInfoProfile.R1)
         {
             MMFWR = WR;
-            Task.Run(() => {
-                string line;
-                while ((line=MMFWR.ReadLine())!= ">S[End")
-                {
-                    if (isStop == true)
-                    {
-                        MMFWR.Dispose();
-                        return;
-                    }
-                    try
-                    {
-                        var desc=LogDescription.Analysis(line);
-                        foreach (var item in Listeners)
+            switch (logInfoProfile)
+            {
+                case LogInfoProfile.R0:
+
+                    break;
+                case LogInfoProfile.R1:
+                    Task.Run(() => {
+                        string line;
+                        while ((line = MMFWR.ReadLine()) != ">S[End")
                         {
-                            item.Invoke((desc, line));
+                            if (isStop == true)
+                            {
+                                MMFWR.Dispose();
+                                return;
+                            }
+                            try
+                            {
+                                var desc = LogDescription.Analysis(line);
+                                foreach (var item in Listeners)
+                                {
+                                    item.Invoke((desc, line));
+                                }
+                            }
+                            catch (Exception)
+                            {
+                            }
+                            if (isStop == true)
+                            {
+                                MMFWR.Dispose();
+                                return;
+                            }
                         }
-                    }
-                    catch (Exception)
-                    {
-                    }
-                    if (isStop == true)
-                    {
-                        MMFWR.Dispose();
-                        return;
-                    }
-                }
-            });
+                    });
+                    break;
+                default:
+                    break;
+            }
+            
         }
         List<Action<(LogDescription, string)>> Listeners;
         /// <summary>

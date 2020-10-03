@@ -5,6 +5,12 @@ namespace CLUNL.DirectedIO
 {
     public interface IBaseReader: IDisposable
     {
+        /// <summary>
+        /// Should return a null array when encounter the end of current object.
+        /// </summary>
+        /// <param name="length"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
         byte[] Read(int length, int offset);
         string ReadLine();
         char ReadChar();

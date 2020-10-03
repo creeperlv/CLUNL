@@ -76,7 +76,7 @@ namespace CLUNL.DirectedIO
             await MemoryFileStream.FlushAsync();
         }
         /// <summary>
-        /// Read a byte array.
+        /// Read a byte array. Will return a null byte array if it reaches the end of the MMF.
         /// </summary>
         /// <param name="length"></param>
         /// <param name="offset"></param>
@@ -84,7 +84,7 @@ namespace CLUNL.DirectedIO
         public byte[] Read(int length, int offset)
         {
             byte[] b = new byte[length];
-            MemoryFileStream.Read(b, offset, length);
+            if (MemoryFileStream.Read(b, offset, length) == 0) return null;
             return b;
         }
         /// <summary>

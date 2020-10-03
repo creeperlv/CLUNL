@@ -9,6 +9,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>bin\Debug\netstandard2.0\</OutputPath>
+    <DefineConstants>TRACE;ENABLE_UNSTABLE</DefineConstants>
   </PropertyGroup>
 
 
