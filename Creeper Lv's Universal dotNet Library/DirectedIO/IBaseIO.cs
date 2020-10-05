@@ -40,6 +40,10 @@ namespace CLUNL.DirectedIO
         /// </summary>
         bool AutoFlush { get; set; }
         /// <summary>
+        /// Get or set the lenght of current W.
+        /// </summary>
+        long Length { get; set; }
+        /// <summary>
         /// Write byte array.
         /// </summary>
         /// <param name="b"></param>

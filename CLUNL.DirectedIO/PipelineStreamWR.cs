@@ -137,5 +137,9 @@ namespace CLUNL.DirectedIO
             var Result = WRProcessor.Process(pipelineData);
             await streamWriter.WriteLineAsync((string)Result.PrimaryData);
         }
+        /// <summary>
+        /// Get or set the length of current stream.
+        /// </summary>
+        public long Length { get => stream.Length; set => SetLength(value); }
     }
 }

@@ -164,5 +164,9 @@ namespace CLUNL.DirectedIO
         {
             await writer.WriteLineAsync(str);
         }
+        /// <summary>
+        /// Get or set the length of current stream.
+        /// </summary>
+        public long Length { get => Stream.Length; set => SetLength(value); }
     }
 }

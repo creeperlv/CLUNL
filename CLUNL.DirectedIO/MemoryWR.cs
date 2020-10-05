@@ -103,5 +103,9 @@ namespace CLUNL.DirectedIO
         {
             await StreamWriter.WriteLineAsync(str);
         }
+        /// <summary>
+        /// Get or set the length of current memory block.
+        /// </summary>
+        public long Length { get => MemoryStream.Length; set => SetLength(value); }
     }
 }

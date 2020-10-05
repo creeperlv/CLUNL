@@ -39,6 +39,12 @@ namespace CLUNL.DirectedIO
         /// Get or set whether will auto flush after write method is invoked.
         /// </summary>
         public bool AutoFlush { get => writer.AutoFlush; set => writer.AutoFlush=value; }
+
+        /// <summary>
+        /// Get or set the length of current file.
+        /// </summary>
+        public long Length { get => Stream.Length; set => SetLength(value); }
+
         /// <summary>
         /// Dispose both writer and reader to operating file.
         /// </summary>

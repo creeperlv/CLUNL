@@ -110,5 +110,9 @@ namespace CLUNL.DirectedIO
         {
             await writer.WriteLineAsync(str);
         }
+        /// <summary>
+        /// Get or set the length of current string buffer.
+        /// </summary>
+        public long Length { get => memoryStream.Length; set => SetLength(value); }
     }
 }

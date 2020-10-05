@@ -200,5 +200,9 @@ namespace CLUNL.DirectedIO
             await StreamWriter.WriteLineAsync(str);
             if (AutoFlush) await StreamWriter.FlushAsync();
         }
+        /// <summary>
+        /// Get or set the length of current MMF.
+        /// </summary>
+        public long Length { get => MemoryFileStream.Length; set => SetLength(value); }
     }
 }
