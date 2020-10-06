@@ -17,6 +17,8 @@
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE;ENABLE_UNSTABLE</DefineConstants>
     <DocumentationFile>bin\Release\netstandard2.0\CLUNL.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
 

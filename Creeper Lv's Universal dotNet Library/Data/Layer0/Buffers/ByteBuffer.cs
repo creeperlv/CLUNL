@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 
@@ -9,7 +10,7 @@ namespace CLUNL.Data.Layer0.Buffers
     /// <summary>
     /// Basic byte buffer.
     /// </summary>
-    public class ByteBuffer:IEnumerable<byte[]>
+    public class ByteBuffer : IEnumerable<byte[]>, IEnumerable<byte>
     {
         internal Queue<byte> buf = new Queue<byte>();
         /// <summary>
@@ -45,7 +46,7 @@ namespace CLUNL.Data.Layer0.Buffers
         /// <returns></returns>
         public IEnumerator<byte[]> GetEnumerator()
         {
-            while (buf.Count<1)
+            while (buf.Count < 1)
             {
                 yield return GetGroup();
             }
@@ -78,7 +79,7 @@ namespace CLUNL.Data.Layer0.Buffers
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static ByteBuffer FromByteArray(byte[]data)
+        public static ByteBuffer FromByteArray(byte[] data)
         {
             var b = new ByteBuffer();
             foreach (var item in data)
@@ -132,6 +133,103 @@ namespace CLUNL.Data.Layer0.Buffers
                 yield return GetGroup();
             }
         }
+
+        IEnumerator<byte> IEnumerable<byte>.GetEnumerator()
+        {
+            while (buf.Count < 1)
+            {
+                yield return buf.Dequeue();
+            }
+        }
+        /// <summary>
+        /// Get the index of first given byte.(Slow performance)
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public int IndexOf(byte item)
+        {
+            var a = buf.ToArray();
+            for (int i = 0; i < a.Length; i++)
+            {
+                if (a[i] == item) return i;
+            }
+            throw new ArgumentOutOfRangeException();
+        }
+        /// <summary>
+        /// Insert a byte into given index. (Slow performance)
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="item"></param>
+        public void Insert(int index, byte item)
+        {
+            List<byte> ls = new List<byte>(buf);
+            ls.Insert(index, item);
+            buf = new Queue<byte>(ls);
+        }
+        /// <summary>
+        /// Remove byte at given index.(Slow performance)
+        /// </summary>
+        /// <param name="index"></param>
+        public void RemoveAt(int index)
+        {
+            List<byte> ls = new List<byte>(buf);
+            ls.RemoveAt(index);
+            buf = new Queue<byte>(ls);
+        }
+        /// <summary>
+        /// Add a byte to the end of the buffer.
+        /// </summary>
+        /// <param name="item"></param>
+        public void Add(byte item)
+        {
+            buf.Enqueue(item);
+        }
+        /// <summary>
+        /// Determines whether the buffer contains given byte. (Slow performance)
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public bool Contains(byte item)
+        {
+            List<byte> ls = new List<byte>(buf);
+            return ls.Contains(item);
+        }
+        /// <summary>
+        /// Copy the content of the buffer to given array.
+        /// </summary>
+        /// <param name="array"></param>
+        /// <param name="arrayIndex"></param>
+        public void CopyTo(byte[] array, int arrayIndex)
+        {
+            buf.CopyTo(array, arrayIndex);
+        }
+        /// <summary>
+        /// Remove the given byte.(Slow performance)
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public bool Remove(byte item)
+        {
+            List<byte> ls = new List<byte>(buf);
+            return ls.Remove(item);
+        }
+
+        /// <summary>
+        /// Obtain the first byte of the buffer and remove it.
+        /// </summary>
+        public byte α { get => buf.Dequeue(); }
+        /// <summary>
+        /// Obtain the first byte of the buffer and remove it.
+        /// </summary>
+        public byte First { get => buf.Dequeue(); }
+
+        /// <summary>
+        /// Slow performance
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public byte this[int index] { get => buf.ToArray()[index]; set =>buf=new Queue<byte>(buf.ToArray()[index] = value); }
+
         /// <summary>
         /// Append  right ByteBuffer to left ByteBuffer as-is.
         /// </summary>
@@ -163,7 +261,7 @@ namespace CLUNL.Data.Layer0.Buffers
         /// <param name="L"></param>
         /// <param name="R"></param>
         /// <returns></returns>
-        public static ByteBuffer operator+(ByteBuffer L,byte R)
+        public static ByteBuffer operator +(ByteBuffer L, byte R)
         {
             L.buf.Enqueue(R);
             return L;
@@ -189,7 +287,7 @@ namespace CLUNL.Data.Layer0.Buffers
         /// <param name="L"></param>
         /// <param name="R"></param>
         /// <returns></returns>
-        public static byte[] operator - (ByteBuffer L,int R)
+        public static byte[] operator -(ByteBuffer L, int R)
         {
             byte[] arr = new byte[R];
             for (int i = 0; i < R; i++)
@@ -204,7 +302,7 @@ namespace CLUNL.Data.Layer0.Buffers
         /// <param name="L"></param>
         /// <param name="R"></param>
         /// <returns></returns>
-        public static ByteBuffer[] operator / (ByteBuffer L,int R)
+        public static ByteBuffer[] operator /(ByteBuffer L, int R)
         {
             ByteBuffer[] vs = new ByteBuffer[R];
             for (int i = 0; i < R; i++)
@@ -214,14 +312,14 @@ namespace CLUNL.Data.Layer0.Buffers
             return vs;
         }
         /// <summary>
-        /// Remove byte buffers in given counts and return the rest of the buffer.
+        /// Remove byte arraies in given counts and return the rest of the buffer.
         /// </summary>
         /// <param name="L"></param>
         /// <param name="R"></param>
         /// <returns></returns>
-        public static ByteBuffer operator %(ByteBuffer L,int R)
+        public static ByteBuffer operator %(ByteBuffer L, int R)
         {
-            for(int i = 0; i < R; i++)
+            for (int i = 0; i < R; i++)
             {
                 L.GetGroup();
             }
