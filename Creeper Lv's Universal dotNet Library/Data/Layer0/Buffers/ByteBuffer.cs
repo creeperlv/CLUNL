@@ -13,6 +13,10 @@ namespace CLUNL.Data.Layer0.Buffers
     {
         internal Queue<byte> buf = new Queue<byte>();
         /// <summary>
+        /// Get the length of this buffer.
+        /// </summary>
+        public int Length { get => buf.Count; }
+        /// <summary>
         /// Add a byte array to buffer. (Length will use 4 bytes).
         /// </summary>
         /// <param name="data"></param>

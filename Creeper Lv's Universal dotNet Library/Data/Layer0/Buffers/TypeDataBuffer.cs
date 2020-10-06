@@ -15,6 +15,10 @@ namespace CLUNL.Data.Layer0.Buffers
         /// </summary>
         public ByteBuffer CoreBuffer = new ByteBuffer();
         /// <summary>
+        /// Get the length of this buffer.
+        /// </summary>
+        public int Length { get => CoreBuffer.Length; }
+        /// <summary>
         /// Obtain a TypeDataBuffer from a byte array.
         /// </summary>
         /// <param name="Data"></param>

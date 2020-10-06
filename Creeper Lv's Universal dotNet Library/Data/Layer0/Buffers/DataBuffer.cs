@@ -11,6 +11,10 @@ namespace CLUNL.Data.Layer0.Buffers
     {
         ByteBuffer vs = new ByteBuffer();
         /// <summary>
+        /// Get the length of this buffer.
+        /// </summary>
+        public int Length { get => vs.Length; }
+        /// <summary>
         /// Generate a DataBuffer from a byte array.
         /// </summary>
         /// <param name="Data"></param>

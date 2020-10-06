@@ -13,6 +13,10 @@ namespace CLUNL.Data.Layer0.Buffers
     {
         ConcurrentQueue<byte> buf = new ConcurrentQueue<byte>();
         /// <summary>
+        /// Get the length of this buffer.
+        /// </summary>
+        public int Length { get => buf.Count; }
+        /// <summary>
         /// Same as ByteBuffer.AppendGroup(byte[]).
         /// </summary>
         /// <param name="data"></param>
