@@ -27,7 +27,9 @@ namespace CLUNL.Diagnosis
             switch (logInfoProfile)
             {
                 case LogInfoProfile.R0:
-
+                    Task.Run(() => { 
+                    
+                    });
                     break;
                 case LogInfoProfile.R1:
                     Task.Run(() => {

@@ -29,6 +29,10 @@ namespace CLUNL.DirectedIO
         /// Get or set the position of current R.
         /// </summary>
         long Position { get; set; }
+        /// <summary>
+        /// Get or set the length of R.
+        /// </summary>
+        long Length { get; }
     }
     /// <summary>
     /// Universal interface to W.
@@ -119,5 +123,9 @@ namespace CLUNL.DirectedIO
         /// Hide original Position from both W/R.
         /// </summary>
         new long Position { get; set; }
+        /// <summary>
+        /// Get or set the lenght of current W.
+        /// </summary>
+        new long Length { get; set; }
     }
 }
