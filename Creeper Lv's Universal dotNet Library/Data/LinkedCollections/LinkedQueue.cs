@@ -11,23 +11,26 @@ namespace CLUNL.Data.LinkedCollections
     /// <typeparam name="T"></typeparam>
     public class LinkedQueue<T> : IEnumerable<T>, IEnumerable, IReadOnlyCollection<T>, ICollection
     {
-
+        private QueueItem first = null;
+        private QueueItem last = null;
 #if PUBLIC_INTERNEL_LINKQUEUE
-        public QueueItem First { get; private set; }
+        public QueueItem First { get=>first;private set => first=value;  }
 #else
-        internal QueueItem First { get; set; }
+        internal QueueItem First { get => first; set => first = value; }
 #endif
 #if PUBLIC_INTERNEL_LINKQUEUE
-        public QueueItem Last { get; private set; }
+        public QueueItem Last { get => last; private set => last = value;  }
 #else
-        internal QueueItem Last { get; set; }
+        internal QueueItem Last { get => last; set => last = value; }
 #endif
+        int count = 0;
         /// <summary>
         /// Get the current count of the queue.
         /// </summary>
-        public int Count { get; private set; } = 0;
+        public int Count { get => count; private set => count = value; }
+
         /// <summary>
-        //     Gets a value indicating whether access to the LinkedQueue is synchronized (thread safe).
+        ///  Gets a value indicating whether access to the LinkedQueue is synchronized (thread safe).
         /// </summary>
         public bool IsSynchronized => false;
         /// <summary>
@@ -41,8 +44,8 @@ namespace CLUNL.Data.LinkedCollections
 
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
-            var Current = First;
-            for (int i = 0; i < Count; i++)
+            var Current = first;
+            for (int i = 0; i < count; i++)
             {
                 yield return Current.Item;
                 Current = Current.NextItem;
@@ -51,8 +54,8 @@ namespace CLUNL.Data.LinkedCollections
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            var Current = First;
-            for (int i = 0; i < Count; i++)
+            var Current = first;
+            for (int i = 0; i < count; i++)
             {
                 yield return Current.Item;
                 Current = Current.NextItem;
@@ -65,16 +68,16 @@ namespace CLUNL.Data.LinkedCollections
         public void Add(T item)
         {
             var ITEM = new QueueItem(item);
-            if (Count == 0)
+            if (count == 0)
             {
-                First = ITEM;
+                first = ITEM;
             }
             else
             {
-                Last.NextItem = ITEM;
+                last.NextItem = ITEM;
             }
-            Last = ITEM;
-            Count++;
+            last = ITEM;
+            count++;
 
         }
         /// <summary>
@@ -84,16 +87,17 @@ namespace CLUNL.Data.LinkedCollections
         public void Enqueue(T item)
         {
             var ITEM = new QueueItem(item);
-            if (Count == 0)
+            if (count == 0)
             {
-                First = ITEM;
+                first = ITEM;
             }
             else
             {
-                Last.NextItem = ITEM;
+                last.NextItem = ITEM;
             }
-            Last = ITEM;
-            Count++;
+            last = ITEM;
+            count++;
+            //Count+=1;
         }
         /// <summary>
         /// Dequeue the first element of the queue.
@@ -101,10 +105,10 @@ namespace CLUNL.Data.LinkedCollections
         /// <returns></returns>
         public T Dequeue()
         {
-            if (Count <= 0) throw new ArgumentOutOfRangeException();
-            var Out = First;
-            First = Out.NextItem;
-            Count--;
+            if (count <= 0) throw new ArgumentOutOfRangeException();
+            var Out = first;
+            first = Out.NextItem;
+            count--;
             return Out.Item;
         }
 
@@ -113,13 +117,13 @@ namespace CLUNL.Data.LinkedCollections
         /// </summary>
         public void Clear()
         {
-            First = null;
-            Last = null;
+            first = null;
+            last = null;
         }
         bool Contains(QueueItem item, T Target)
         {
             if (item.Item.Equals(Target)) return true;
-            else if (Last == item) return false;
+            else if (last == item) return false;
             else return Contains(item.NextItem, Target);
 
         }
@@ -131,7 +135,7 @@ namespace CLUNL.Data.LinkedCollections
         /// <returns></returns>
         public bool Contains(T item)
         {
-            return Contains(First, item);
+            return Contains(first, item);
         }
         /// <summary>
         /// Peek the first element without removing it.
@@ -139,7 +143,7 @@ namespace CLUNL.Data.LinkedCollections
         /// <returns></returns>
         public T Peek()
         {
-            return First.Item;
+            return first.Item;
         }
         void CopyTo(ref Array array, QueueItem Item, ref int Index)
         {
@@ -159,9 +163,9 @@ namespace CLUNL.Data.LinkedCollections
         /// <returns></returns>
         public T[] ToArray()
         {
-            T[] ResultArray = new T[Count];
+            T[] ResultArray = new T[count];
             int i = 0;
-            CopyTo(ref ResultArray, First, ref i);
+            CopyTo(ref ResultArray, first, ref i);
             return ResultArray;
         }
         ///<summary> 
@@ -171,7 +175,7 @@ namespace CLUNL.Data.LinkedCollections
         /// <param name="index"></param>
         public void CopyTo(Array array, int index)
         {
-            CopyTo(ref array, First, ref index);
+            CopyTo(ref array, first, ref index);
         }
 
 #if PUBLIC_INTERNEL_LINKQUEUE
