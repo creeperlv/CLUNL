@@ -174,6 +174,10 @@ namespace CLUNL.Pipeline
             {
                 processUnits.Add(new DefaultProcessUnit());
             }
+            else
+            {
+                processUnits = new List<IPipedProcessUnit>(units);
+            }
         }
         public void Init()
         {

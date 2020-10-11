@@ -26,7 +26,7 @@ namespace CLUNL.Pipeline
                     this.DataID = RandomID.Next();
                 }
                 else
-                    this.DataID = Options.GetHashCode();
+                    this.DataID = this.Options.GetHashCode();
             }
         }
         public bool CheckContinuity(PipelineData Target)

@@ -1,12 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>0.0.1.0</Version>
+    <Version>0.0.2.0</Version>
     <Authors>Creeper Lv</Authors>
     <Company />
     <PackageProjectUrl>https://github.com/creeperlv/CLUNL</PackageProjectUrl>
     <RepositoryUrl>https://github.com/creeperlv/CLUNL</RepositoryUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <Description>Pipeline package of Creeper Lv's Universal dotNet Library.</Description>
+    <Copyright>Copyright (C) 2020 Creeper Lv</Copyright>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Creeper Lv's Universal dotNet Library\CLUNL.csproj" />
