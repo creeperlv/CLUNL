@@ -5,6 +5,13 @@
     <!--<RootNamespace>Creeper_Lv_s_Universal_dotNet_Library</RootNamespace>-->
     <RootNamespace>CLUNL</RootNamespace>
     <AssemblyName>CLUNL</AssemblyName>
+    <Version>0.0.1.0</Version>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Copyright>Copyright (C) 2020 Creeper Lv</Copyright>
+    <PackageLicenseExpression></PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/creeperlv/CLUNL</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/creeperlv/CLUNL</RepositoryUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -22,6 +29,13 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 
 
 </Project>
