@@ -34,6 +34,25 @@ namespace CLUNL.Data.Layer0.Buffers
             }
         }
         /// <summary>
+        /// Add a byte array to buffer. (Length will use 4 bytes). This method will lock buf then release it, it may cause thread blocking.
+        /// </summary>
+        /// <param name="data"></param>
+        public void LockedAppendGroup(byte[] data)
+        {
+            lock (buf)
+            {
+                var H = BitConverter.GetBytes(data.Length);
+                foreach (var item in H)
+                {
+                    buf.Enqueue(item);
+                }
+                foreach (var item in data)
+                {
+                    buf.Enqueue(item);
+                }
+            }
+        }
+        /// <summary>
         /// Clear buffer.
         /// </summary>
         public void Clear()
@@ -46,9 +65,10 @@ namespace CLUNL.Data.Layer0.Buffers
         /// <returns></returns>
         public IEnumerator<byte[]> GetEnumerator()
         {
-            while (buf.Count < 1)
+            ByteBuffer vs = FromByteArray(buf.ToArray());
+            while (vs.buf.Count < 1)
             {
-                yield return GetGroup();
+                yield return vs.GetGroup();
             }
         }
         /// <summary>
@@ -125,18 +145,41 @@ namespace CLUNL.Data.Layer0.Buffers
             }
             return RealContent;
         }
-
+        /// <summary>
+        /// Get a byte array with a lock to buffer.
+        /// </summary>
+        /// <returns></returns>
+        public byte[] LockedGetGroup()
+        {
+            lock (buf)
+            {
+                byte[] Header = new byte[4];
+                Header[0] = buf.Dequeue();
+                Header[1] = buf.Dequeue();
+                Header[2] = buf.Dequeue();
+                Header[3] = buf.Dequeue();
+                var TargetLength = BitConverter.ToInt32(Header, 0);
+                byte[] RealContent = new byte[TargetLength];
+                for (int i = 0; i < TargetLength; i++)
+                {
+                    RealContent[i] = buf.Dequeue();
+                }
+                return RealContent;
+            }
+        }
         IEnumerator IEnumerable.GetEnumerator()
         {
-            while (buf.Count < 1)
+            ByteBuffer vs = FromByteArray(buf.ToArray());
+            while (vs.buf.Count < 1)
             {
-                yield return GetGroup();
+                yield return vs.GetGroup();
             }
         }
 
         IEnumerator<byte> IEnumerable<byte>.GetEnumerator()
         {
-            while (buf.Count < 1)
+            ByteBuffer vs = FromByteArray(buf.ToArray());
+            while (vs.buf.Count < 1)
             {
                 yield return buf.Dequeue();
             }
