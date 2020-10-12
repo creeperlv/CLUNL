@@ -23,13 +23,16 @@ namespace CLUNL.DirectedIO
         {
             if (LibraryInfo.GetFlag(FeatureFlags.FileWR_AutoCreateFile) == 1)
             {
-                Stream = file.Open(FileMode.OpenOrCreate);
+                Stream = file.Open(FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
             }
             else
-            Stream = file.Open(FileMode.Open);
+            {
+                Stream = file.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
+            }
+
             reader = new StreamReader(Stream);
             writer = new StreamWriter(Stream);
-            
+
         }
         /// <summary>
         /// Get or set the position of current WR.
@@ -38,7 +41,7 @@ namespace CLUNL.DirectedIO
         /// <summary>
         /// Get or set whether will auto flush after write method is invoked.
         /// </summary>
-        public bool AutoFlush { get => writer.AutoFlush; set => writer.AutoFlush=value; }
+        public bool AutoFlush { get => writer.AutoFlush; set => writer.AutoFlush = value; }
 
         /// <summary>
         /// Get or set the length of current file.
