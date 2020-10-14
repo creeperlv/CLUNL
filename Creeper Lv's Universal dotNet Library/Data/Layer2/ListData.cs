@@ -65,9 +65,7 @@ namespace CLUNL.Data.Layer2
         }
         T ConvertData(string OriginalData)
         {
-
-            var D=RawData.FirstOrDefault();
-            var d=Convert.ChangeType(OriginalData, D.GetType());
+            var d=Convert.ChangeType(OriginalData, typeof(T));
             return (T)d;
         }
         /// <summary>
