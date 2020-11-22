@@ -44,10 +44,15 @@ namespace CLUNL.Data.Layer2
             ListData<T> LD = new ListData<T>();
             LD.RawData = new List<T>();
             LD.BasicKeyValueData= new BasicKeyValueData(new StreamWR(stream), '=', true);
-            var D=int.Parse(LD.BasicKeyValueData.FindValue("Length"));
-            for (int i = 0; i < D; i++)
+            var A = LD.BasicKeyValueData.FindValue("Length");
+            if (A != null)
             {
-                LD.RawData.Add(LD.ConvertData(LD.BasicKeyValueData.FindValue(i + "")));
+                //Avoid situation that the stream is empty. Such as after LWMS.Core.FileSystem.StorageFolder.CreateFile();
+                var D = int.Parse(A);
+                for (int i = 0; i < D; i++)
+                {
+                    LD.RawData.Add(LD.ConvertData(LD.BasicKeyValueData.FindValue(i + "")));
+                }
             }
             return LD;
         }
