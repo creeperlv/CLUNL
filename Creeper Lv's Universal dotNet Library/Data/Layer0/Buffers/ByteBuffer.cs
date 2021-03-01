@@ -34,6 +34,15 @@ namespace CLUNL.Data.Layer0.Buffers
             }
         }
         /// <summary>
+        /// Judge whether the buffer is empty.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsEmpty()
+        {
+            return
+               buf.Count == 0 ? true : false;
+        }
+        /// <summary>
         /// Add a byte array to buffer. (Length will use 4 bytes). This method will lock buf then release it, it may cause thread blocking.
         /// </summary>
         /// <param name="data"></param>

@@ -15,6 +15,15 @@ namespace CLUNL.Data.Layer0.Buffers
         /// </summary>
         public int Length { get => vs.Length; }
         /// <summary>
+        /// Judge whether the buffer is empty.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsEmpty()
+        {
+            return
+               vs.Length== 0 ? true : false;
+        }
+        /// <summary>
         /// Generate a DataBuffer from a byte array.
         /// </summary>
         /// <param name="Data"></param>
