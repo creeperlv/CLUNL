@@ -15,7 +15,7 @@ namespace CLUNLTests
         [TestMethod]
         public void ParameterResolutionTest()
         {
-            var l=Utilities.ResolveParameters("This is a \"Test\\tString, with some\\r\\ndecorations\\\\.\" right#Comments");
+            var l=Utilities.ResolveParameters("This is a S:\"Test\\tString, with some\\r\\ndecorations\\\\.\" right#Comments");
             foreach (var item in l)
             {
                 Trace.WriteLine($"[{item}]");

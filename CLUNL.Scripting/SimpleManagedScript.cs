@@ -1,11 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CLUNL.Scripting
 {
+    /*
+     * SMS Goal Script:
+     * NEW Object1 Int 1
+     * SET Object1 Int:1
+     * NEW StringObj String "Content"
+     * SET StringObj String:"Content2"
+     */
     public class SimpleManagedScript : IEngine
     {
         Environment Base;
@@ -27,23 +35,54 @@ namespace CLUNL.Scripting
             await Task.Run(() => { result = Eval(str); });
             return result;
         }
+        public object Parse(string SrcObj)
+        {
+            if (SrcObj.IndexOf(":") > 0)
+            {
+                string t = SrcObj.Substring(SrcObj.IndexOf(":"));
+                string content = SrcObj.Substring(SrcObj.IndexOf(":") + 1);
+                switch (t)
+                {
+                    case "Int":
+                        return int.Parse(content);
+                    case "Float":
+                        return float.Parse(content);
+                    case "Boolean":
+                    case "Bool":
+                        return bool.Parse(content);
+                    case "String":
+                        return content;
+                    case "Double":
+                        return double.Parse(content);
+
+                    default:
+                        TypeConverter typeConverter = new TypeConverter();
+                        return typeConverter.ConvertFromString( null,SrcObj);
+                        break;
+                }
+            }
+            return null;
+        }
         public void Compile(string Content, ref List<ScriptError> errors)
         {
             StringReader stringReader = new StringReader(Content);
             string Line = null;
             while ((Line = stringReader.ReadLine()) != null)
             {
-                Line=Line.Trim();
-                if(!Line.StartsWith("#"))
+                Line = Line.Trim();
+
+                if (!Line.StartsWith("#"))
                     if (!Line.StartsWith(";"))
                     {
-                        var Operator = Line.Substring(0, Line.IndexOf(" "));
+                        SMSSingleCommand command = new SMSSingleCommand();
+                        var CMDs = Utilities.ResolveParameters(Line);
+                        var Operator = CMDs[0];
                         var Op = (SMSOperation)Enum.Parse(typeof(SMSOperation), Operator);
                         switch (Op)
                         {
                             case SMSOperation.NEW:
                                 {
-                                    var temp = Line.Substring(Line.IndexOf(" ")+1);
+                                    command.OperateDatapath = CMDs[1];
                                 }
                                 break;
                             case SMSOperation.SET:
@@ -169,14 +208,12 @@ namespace CLUNL.Scripting
     }
     internal enum SMSOperation
     {
-        NEW = 0x00, SET = 0x01, EXEC = 0x02, IF = 0x03, J = 0x04, LABEL = 0x05, END = 0x06, ENDLABEL = 0x07, DEL = 0x08
+        NEW = 0x00, SET = 0x01, EXEC = 0x02, IF = 0x03, J = 0x04, LABEL = 0x05, END = 0x06, ENDLABEL = 0x07, DEL = 0x08, ADD = 0x09, ADDI = 0x0A, MULT = 0x0B, DIV = 0x0C,USE=0x0D
     }
     internal struct SMSSingleCommand
     {
         internal SMSOperation operation;
-
         internal string OperateDatapath;
-        internal string Op1;
-        internal string Op2;
+        internal string[] parameters;
     }
 }

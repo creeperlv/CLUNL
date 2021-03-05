@@ -81,7 +81,7 @@ namespace CLUNL.Scripting
                         b = true;
                         continue;
                     }
-                    if (c == '#')
+                    if (c == '#'|| c == ';')
                     {
                         if (a == false)
                         {
