@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,18 +13,93 @@ namespace CLUNL.Scripting
         List<SMSSingleCommand> CommandSet = new List<SMSSingleCommand>();
         Dictionary<string, int> Labels = new Dictionary<string, int>();
         Dictionary<string, Data> Memory = new Dictionary<string, Data>();
-        public void Eval(string str)
+        public List<ScriptError> Eval(string str)
         {
 
+            List<ScriptError> result = new List<ScriptError>();
+            Compile(str, ref result);
             throw new NotImplementedException();
         }
 
-        public Task EvalAsync(string str)
+        public async Task<List<ScriptError>> EvalAsync(string str)
         {
-            throw new NotImplementedException();
+            List<ScriptError> result = null;
+            await Task.Run(() => { result = Eval(str); });
+            return result;
         }
+        public void Compile(string Content, ref List<ScriptError> errors)
+        {
+            StringReader stringReader = new StringReader(Content);
+            string Line = null;
+            while ((Line = stringReader.ReadLine()) != null)
+            {
+                Line=Line.Trim();
+                if(!Line.StartsWith("#"))
+                    if (!Line.StartsWith(";"))
+                    {
+                        var Operator = Line.Substring(0, Line.IndexOf(" "));
+                        var Op = (SMSOperation)Enum.Parse(typeof(SMSOperation), Operator);
+                        switch (Op)
+                        {
+                            case SMSOperation.NEW:
+                                break;
+                            case SMSOperation.SET:
+                                break;
+                            case SMSOperation.EXEC:
+                                break;
+                            case SMSOperation.IF:
+                                break;
+                            case SMSOperation.J:
+                                break;
+                            case SMSOperation.LABEL:
+                                break;
+                            case SMSOperation.END:
+                                break;
+                            case SMSOperation.ENDLABEL:
+                                break;
+                            case SMSOperation.DEL:
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+            }
+        }
+        public void ScanForLabel()
+        {
 
-        public void ExecuteLoadedCommandSet()
+            for (int i = 0; i < CommandSet.Count; i++)
+            {
+                var command = CommandSet[i];
+                switch (command.operation)
+                {
+                    case SMSOperation.NEW:
+                        break;
+                    case SMSOperation.SET:
+                        break;
+                    case SMSOperation.EXEC:
+                        break;
+                    case SMSOperation.IF:
+                        break;
+                    case SMSOperation.J:
+                        {
+                        }
+                        break;
+                    case SMSOperation.LABEL:
+                        {
+                            Labels.Add(command.OperateDatapath, i);
+                        }
+                        break;
+                    case SMSOperation.END:
+                        break;
+                    case SMSOperation.ENDLABEL:
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        public void ExecuteLoadedCommandSet(ref List<ScriptError> errors)
         {
             for (int i = 0; i < CommandSet.Count; i++)
             {
@@ -44,11 +120,15 @@ namespace CLUNL.Scripting
                                 i = Labels[command.OperateDatapath];
                             else
                             {
-
+                                errors.Add(new ScriptError() { ErrorType = ErrorType.Error, ID = 0, ErrorTime = ErrorTime.Execute, Position = i, Message = $"Cannot find label:{command.OperateDatapath} (At Command {i})" });
+                                return;
                             }
                         }
                         break;
                     case SMSOperation.LABEL:
+                        {
+
+                        }
                         break;
                     case SMSOperation.END:
                         break;
