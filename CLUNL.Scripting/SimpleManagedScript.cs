@@ -42,6 +42,9 @@ namespace CLUNL.Scripting
                         switch (Op)
                         {
                             case SMSOperation.NEW:
+                                {
+                                    var temp = Line.Substring(Line.IndexOf(" ")+1);
+                                }
                                 break;
                             case SMSOperation.SET:
                                 break;
@@ -157,11 +160,6 @@ namespace CLUNL.Scripting
         {
             Base = environment;
             Current = Base.HardCopy();
-        }
-
-        Task IEngine.Eval(string str)
-        {
-            throw new NotImplementedException();
         }
     }
     public struct Data

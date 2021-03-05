@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5</TargetFramework>
@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CLUNL.Packaging\CLUNL.Packaging.csproj" />
     <ProjectReference Include="..\CLUNL.Pipeline\CLUNL.Pipeline.csproj" />
+    <ProjectReference Include="..\CLUNL.Scripting\CLUNL.Scripting.csproj" />
     <ProjectReference Include="..\Creeper Lv's Universal dotNet Library\CLUNL.csproj" />
   </ItemGroup>
 
