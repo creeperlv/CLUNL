@@ -22,6 +22,10 @@ namespace CLUNL.Scripting
     {
         Compile,Execute
     }
+    public static class ScriptErrorIDs
+    {
+        public readonly static int WRONG_SYNATX = 0x0001;
+    }
     public struct ScriptError
     {
         public ErrorType ErrorType;
