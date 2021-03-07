@@ -58,8 +58,52 @@ namespace CLUNL.Scripting
                         }
                         break;
                     case SMSOperation.SET:
+                        {
+                            if (Memory.ContainsKey(current.OperateDatapath))
+                            {
+                                var d = Memory[current.OperateDatapath];
+                                d.CoreData = Parse(current.parameters[0]);
+                                Memory[current.OperateDatapath] = d;
+                            }
+                            else
+                            {
+                                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"SET Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
+                                return result;
+                            }
+                        }
                         break;
                     case SMSOperation.EXEC:
+                        {
+                            object ReferencedTarget = null;
+
+                            if (Memory.ContainsKey(current.OperateDatapath))
+                            {
+                                ReferencedTarget = Memory[current.OperateDatapath].CoreData;
+                            }
+                            else if (Current.ExposedObjects.ContainsKey(current.OperateDatapath))
+                            {
+                                ReferencedTarget = Current.ExposedObjects[current.OperateDatapath];
+                            }
+                            if (ReferencedTarget == null)
+                            {
+                                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.LABEL_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"EXEC Failed: Target label \"{current.OperateDatapath}\" does not exist!.", Position = Index });
+                                return result;
+                            }
+                            var m = ReferencedTarget.GetType().GetMethod(current.parameters[0]);
+                            object[] parameters = null;
+
+                            if (current.parameters.Length > 1)
+                            {
+                                parameters = new object[current.parameters.Length - 1];
+
+                                for (int _i = 1; _i < current.parameters.Length; _i++)
+                                {
+                                    parameters[_i - 1] = Parse(current.parameters[_i]);
+                                }
+
+                            }
+                            m.Invoke(ReferencedTarget, parameters);
+                        }
                         break;
                     case SMSOperation.IF:
                         break;
@@ -69,6 +113,7 @@ namespace CLUNL.Scripting
                             if (i == -1)
                             {
                                 result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.LABEL_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"Jumper Failed: Target label \"{current.OperateDatapath}\" does not exist!.", Position = Index });
+                                return result;
                             }
                         }
                         break;
