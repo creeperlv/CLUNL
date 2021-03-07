@@ -25,6 +25,8 @@ namespace CLUNL.Scripting
     public static class ScriptErrorIDs
     {
         public readonly static int WRONG_SYNATX = 0x0001;
+        public readonly static int REFERENCE_DOES_NOT_EXIST = 0x0002;
+        public readonly static int LABEL_DOES_NOT_EXIST = 0x0003;
     }
     public struct ScriptError
     {

@@ -29,6 +29,91 @@ namespace CLUNL.Scripting
 
             List<ScriptError> result = new List<ScriptError>();
             Compile(str, ref result);
+            for (int Index = 0; Index < CommandSet.Count; Index++)
+            {
+                var current = CommandSet[Index];
+                switch (current.operation)
+                {
+                    case SMSOperation.NEW:
+                        {
+                            Data d = new Data();
+                            d.DataType = FindType(current.parameters[0]);
+                            if (current.parameters.Length > 1)
+                            {
+                                object[] parameters = new object[current.parameters.Length - 1];
+
+                                for (int _i = 1; _i < current.parameters.Length; _i++)
+                                {
+                                    parameters[_i - 1] = Parse(current.parameters[_i]);
+                                }
+                                d.CoreData = Activator.CreateInstance(d.DataType, parameters);
+                            }
+                            else
+                            {
+                                d.CoreData = Activator.CreateInstance(d.DataType);
+                            }
+                            if (!Memory.ContainsKey(current.OperateDatapath))
+                                Memory.Add(current.OperateDatapath, d);
+                            else Memory[current.OperateDatapath] = d;
+                        }
+                        break;
+                    case SMSOperation.SET:
+                        break;
+                    case SMSOperation.EXEC:
+                        break;
+                    case SMSOperation.IF:
+                        break;
+                    case SMSOperation.J:
+                        {
+                            var i = FindLabel(current.OperateDatapath);
+                            if (i == -1)
+                            {
+                                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.LABEL_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"Jumper Failed: Target label \"{current.OperateDatapath}\" does not exist!.", Position = Index });
+                            }
+                        }
+                        break;
+                    case SMSOperation.LABEL:
+                        break;
+                    case SMSOperation.END:
+                        break;
+                    case SMSOperation.ENDLABEL:
+                        break;
+                    case SMSOperation.DEL:
+                        {
+                            if (Memory.ContainsKey(current.OperateDatapath))
+                            {
+                                Memory.Remove(current.OperateDatapath);
+                            }
+                            else
+                            {
+                                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"Deletion Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
+                            }
+                        }
+                        break;
+                    case SMSOperation.ADD:
+                        break;
+                    case SMSOperation.ADDI:
+                        break;
+                    case SMSOperation.MULT:
+                        break;
+                    case SMSOperation.MULTI:
+                        break;
+                    case SMSOperation.DIV:
+                        break;
+                    case SMSOperation.DIVI:
+                        break;
+                    case SMSOperation.DIVII:
+                        break;
+                    case SMSOperation.SW:
+                        break;
+                    case SMSOperation.ADDW:
+                        break;
+                    case SMSOperation.LW:
+                        break;
+                    default:
+                        break;
+                }
+            }
             throw new NotImplementedException();
         }
 
@@ -171,7 +256,7 @@ namespace CLUNL.Scripting
                                 case SMSOperation.LABEL:
                                     break;
                                 case SMSOperation.END:
-                                    if (command.OperateDatapath != null&& command.OperateDatapath != "")
+                                    if (command.OperateDatapath != null && command.OperateDatapath != "")
                                     {
                                         errors.Add(new ScriptError() { ErrorType = ErrorType.Error, ErrorTime = ErrorTime.Compile, ID = ScriptErrorIDs.WRONG_SYNATX, Message = "END command should have no parameters." });
                                     }
@@ -204,6 +289,7 @@ namespace CLUNL.Scripting
                                     break;
                             }
                         }
+                        CommandSet.Add(command);
                         //switch (Op)
                         //{
                         //    case SMSOperation.NEW:
@@ -233,7 +319,12 @@ namespace CLUNL.Scripting
                     }
             }
         }
-        public void ScanForLabel()
+        public int FindLabel(string Name)
+        {
+            if (Labels.ContainsKey(Name)) return Labels[Name];
+            else return -1;
+        }
+        public void GatherLabels()
         {
 
             for (int i = 0; i < CommandSet.Count; i++)
@@ -322,7 +413,7 @@ namespace CLUNL.Scripting
         NEW = 0x00,             //Create new object.
         SET = 0x01,             //Set value to an object.
         EXEC = 0x02,            //Execute external method.
-        IF = 0x03,              //If sentence.
+        IF = 0x03,              //If sentence. ID BOOLEANOBJ LABEL
         J = 0x04,               //Jump to label.
         LABEL = 0x05,           //Define label.
         END = 0x06,             //End of program.
@@ -331,13 +422,13 @@ namespace CLUNL.Scripting
         ADD = 0x09,             //Add Object0 = Object1 + Object2.  ADD TYPE OBJ0 OBJ1 OBJ2
         ADDI = 0x0A,            //Add immediately. ADD TYPE OBJ0 OBJ1 NUMBER
         MULT = 0x0B,            //Multiply Object0=Object1*Object2. MULT TYPE OBJ0 OBJ1 OBJ2
-        MULTI=0x0C,             //Multiply immediately. MULT TYPE OBJ0 OBJ1 NUMBER
+        MULTI = 0x0C,             //Multiply immediately. MULT TYPE OBJ0 OBJ1 NUMBER
         DIV = 0x0D,             //Divide Object0=Object1/Object2. DIV TYPE OBJ0 OBJ1 OBJ2
         DIVI = 0x0E,            //Divide immediately. DIVI TYPE OBJ0 OBJ1 NUMBER
-        DIVII=0x0F,             //Divide inversed immediately. DIVI TYPE OBJ0 NUMBER OBJ1
-        SW=0x10,                //Save Word. SW ARRAY_OBJECT INDEX TYPE:NUMBER
-        ADDW=0x11,              //Add word to ArrayList. ADDW LIST_OBJECT TYPE:DATA                        
-        LW=0x12,                //Load word. LW ARRAY_OBJECT INDEX TARGET_OBJECT
+        DIVII = 0x0F,             //Divide inversed immediately. DIVI TYPE OBJ0 NUMBER OBJ1
+        SW = 0x10,                //Save Word. SW ARRAY_OBJECT INDEX TYPE:NUMBER
+        ADDW = 0x11,              //Add word to ArrayList. ADDW LIST_OBJECT TYPE:DATA                        
+        LW = 0x12,                //Load word. LW ARRAY_OBJECT INDEX TARGET_OBJECT
     }
     internal struct SMSSingleCommand
     {
