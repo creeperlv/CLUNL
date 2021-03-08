@@ -21,5 +21,18 @@ namespace CLUNLTests
                 Trace.WriteLine($"[{item}]");
             }
         }
+        [TestMethod]
+        public void ScriptingTest()
+        {
+            SimpleManagedScript simpleManagedScript = new SimpleManagedScript();
+            List<ScriptError> errors;
+            CLUNL.Scripting.Environment environment = new CLUNL.Scripting.Environment();
+            simpleManagedScript.SetEnvironmentBase(environment);
+            string script = @"
+ADD Result Int 100 200
+";
+            var obj=simpleManagedScript.Eval(script,out errors);
+            Trace.WriteLine(obj + "");
+        }
     }
 }

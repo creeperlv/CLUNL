@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Numerics;
 using System.Reflection;
@@ -24,9 +25,10 @@ namespace CLUNL.Scripting
         Dictionary<string, int> Labels = new Dictionary<string, int>();
         Dictionary<string, Data> Memory = new Dictionary<string, Data>();
         List<string> UsingNamespaces = new List<string>();
-        public object Eval(string str,out List<ScriptError> result)
+        public object Eval(string str, out List<ScriptError> result)
         {
-            Current.Expose("Result", null);
+            object __result = null;
+            Current.Expose("Result", __result);
             result = new List<ScriptError>();
             Compile(str, ref result);
             for (int Index = 0; Index < CommandSet.Count; Index++)
@@ -188,7 +190,7 @@ namespace CLUNL.Scripting
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
                                     return null;
                                 }
-                                SetObject(Target, i1 + i2, null, ref result,Index);
+                                SetObject(Target, i1 + i2, null, ref result, Index);
                             }
                             else if (t == typeof(byte))
                             {
@@ -299,8 +301,8 @@ namespace CLUNL.Scripting
                             else if (t == typeof(float))
                             {
                                 object obj1 = FindObject(current.parameters[1]);
-                                float i1 ;
-                                float i2 ;
+                                float i1;
+                                float i2;
                                 if (obj1 != null)
                                 {
                                     i1 = (float)obj1;
@@ -320,7 +322,7 @@ namespace CLUNL.Scripting
                             else if (t == typeof(byte))
                             {
                                 object obj1 = FindObject(current.parameters[1]);
-                                byte i1 ;
+                                byte i1;
                                 byte i2;
                                 if (obj1 != null)
                                 {
@@ -341,8 +343,8 @@ namespace CLUNL.Scripting
                             else if (t == typeof(double))
                             {
                                 object obj1 = FindObject(current.parameters[1]);
-                                double i1 ;
-                                double i2 ;
+                                double i1;
+                                double i2;
                                 if (obj1 != null)
                                 {
                                     i1 = (double)obj1;
@@ -1000,12 +1002,12 @@ namespace CLUNL.Scripting
             return Current.ExposedObjects["Result"];
         }
 
-        public async Task<(object,List<ScriptError>)> EvalAsync(string str)
+        public async Task<(object, List<ScriptError>)> EvalAsync(string str)
         {
             List<ScriptError> result = null;
-            object _result=null;
-            await Task.Run(() => { _result = Eval(str,out result); });
-            return (_result,result);
+            object _result = null;
+            await Task.Run(() => { _result = Eval(str, out result); });
+            return (_result, result);
         }
         public object Parse(string SrcObj)
         {
@@ -1051,7 +1053,7 @@ namespace CLUNL.Scripting
             }
             return null;
         }
-        public bool SetObject(string name, object data, Type t, ref List<ScriptError> result,int Index)
+        public bool SetObject(string name, object data, Type t, ref List<ScriptError> result, int Index)
         {
             if (Current.ExposedObjects.ContainsKey(name))
             {
@@ -1086,6 +1088,28 @@ namespace CLUNL.Scripting
         }
         public Type FindType(string Name)
         {
+            switch (Name)
+            {
+                case "Int":
+                    return typeof(int);
+                case "Float":
+                    return typeof(float);
+                case "Boolean":
+                case "Bool":
+                    return typeof(bool);
+                case "String":
+                    return typeof(string);
+                case "Double":
+                    return typeof(double);
+                case "Byte":
+                    return typeof(byte);
+                case "UInt":
+                    return typeof(uint);
+                case "Long":
+                    return typeof(long);
+                case "BigInt":
+                    return typeof(BigInteger);
+            }
             if (Name.IndexOf(".") > -1)
             {
                 foreach (var item in Current.ExposedTypes)
@@ -1137,6 +1161,7 @@ namespace CLUNL.Scripting
                 if (!Line.StartsWith("#"))
                     if (!Line.StartsWith(";"))
                     {
+                        if (Line == "") continue;
                         SMSSingleCommand command = new SMSSingleCommand();
                         var CMDs = Utilities.ResolveParameters(Line);
                         var Operator = CMDs[0];

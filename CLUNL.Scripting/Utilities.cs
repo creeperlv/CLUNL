@@ -93,6 +93,13 @@ namespace CLUNL.Scripting
                 }
                 stringBuilder.Append(c);
             }
+            if (stringBuilder.Length > 0)
+            {
+
+                vs.Add(stringBuilder.ToString());
+                stringBuilder.Clear();
+
+            }
             return vs;
         }
     }
