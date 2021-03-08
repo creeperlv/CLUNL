@@ -30,6 +30,8 @@ namespace CLUNLTests
             simpleManagedScript.SetEnvironmentBase(environment);
             string script = @"
 ADD Result Int 100 200
+ADD Result Int Result 50
+MULT Result Double Result 21.232
 ";
             var obj=simpleManagedScript.Eval(script,out errors);
             Trace.WriteLine(obj + "");

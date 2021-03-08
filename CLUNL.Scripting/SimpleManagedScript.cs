@@ -148,7 +148,7 @@ namespace CLUNL.Scripting
                                 int i2;
                                 if (obj1 != null)
                                 {
-                                    i1 = (int)obj1;
+                                    i1 = Convert.ToInt32(obj1);
                                 }
                                 else if (!int.TryParse(current.parameters[1], out i1))
                                 {
@@ -157,7 +157,7 @@ namespace CLUNL.Scripting
                                 }
                                 if (obj2 != null)
                                 {
-                                    i2 = (int)obj1;
+                                    i2 = Convert.ToInt32(obj2);
                                 }
                                 else if (!int.TryParse(current.parameters[2], out i2))
                                 {
@@ -174,7 +174,7 @@ namespace CLUNL.Scripting
                                 float i2;
                                 if (obj1 != null)
                                 {
-                                    i1 = (float)obj1;
+                                    i1 = Convert.ToSingle(obj1);
                                 }
                                 else if (!float.TryParse(current.parameters[1], out i1))
                                 {
@@ -183,7 +183,7 @@ namespace CLUNL.Scripting
                                 }
                                 if (obj2 != null)
                                 {
-                                    i2 = (float)obj1;
+                                    i2 = Convert.ToSingle(obj2);
                                 }
                                 else if (!float.TryParse(current.parameters[2], out i2))
                                 {
@@ -200,7 +200,7 @@ namespace CLUNL.Scripting
                                 byte i2;
                                 if (obj1 != null)
                                 {
-                                    i1 = (byte)obj1;
+                                    i1 = Convert.ToByte(obj1);
                                 }
                                 else if (!byte.TryParse(current.parameters[1], out i1))
                                 {
@@ -209,7 +209,7 @@ namespace CLUNL.Scripting
                                 }
                                 if (obj2 != null)
                                 {
-                                    i2 = (byte)obj1;
+                                    i2 = Convert.ToByte(obj2);
                                 }
                                 else if (!byte.TryParse(current.parameters[2], out i2))
                                 {
@@ -235,7 +235,7 @@ namespace CLUNL.Scripting
                                 }
                                 if (obj2 != null)
                                 {
-                                    i2 = (double)obj1;
+                                    i2 = Convert.ToDouble(obj2);
                                 }
                                 else if (!double.TryParse(current.parameters[2], out i2))
                                 {
@@ -261,7 +261,7 @@ namespace CLUNL.Scripting
                                 }
                                 if (obj2 != null)
                                 {
-                                    i2 = (long)obj1;
+                                    i2 = Convert.ToInt64(obj2);
                                 }
                                 else if (!long.TryParse(current.parameters[2], out i2))
                                 {
@@ -284,7 +284,7 @@ namespace CLUNL.Scripting
                                 int i2;
                                 if (obj1 != null)
                                 {
-                                    i1 = (int)obj1;
+                                    i1 = Convert.ToInt32(obj1);
                                 }
                                 else if (!int.TryParse(current.parameters[1], out i1))
                                 {
@@ -305,7 +305,7 @@ namespace CLUNL.Scripting
                                 float i2;
                                 if (obj1 != null)
                                 {
-                                    i1 = (float)obj1;
+                                    i1 = Convert.ToSingle(obj1);
                                 }
                                 else if (!float.TryParse(current.parameters[1], out i1))
                                 {
@@ -326,7 +326,7 @@ namespace CLUNL.Scripting
                                 byte i2;
                                 if (obj1 != null)
                                 {
-                                    i1 = (byte)obj1;
+                                    i1 = Convert.ToByte(obj1);
                                 }
                                 else if (!byte.TryParse(current.parameters[1], out i1))
                                 {
@@ -347,7 +347,7 @@ namespace CLUNL.Scripting
                                 double i2;
                                 if (obj1 != null)
                                 {
-                                    i1 = (double)obj1;
+                                    i1 = Convert.ToDouble(obj1);
                                 }
                                 else if (!double.TryParse(current.parameters[1], out i1))
                                 {
@@ -368,7 +368,7 @@ namespace CLUNL.Scripting
                                 long i2;
                                 if (obj1 != null)
                                 {
-                                    i1 = (long)obj1;
+                                    i1 = Convert.ToInt64(obj1);
                                 }
                                 else if (!long.TryParse(current.parameters[1], out i1))
                                 {
@@ -396,7 +396,7 @@ namespace CLUNL.Scripting
                                 int i2;
                                 if (obj1 != null)
                                 {
-                                    i1 = (int)obj1;
+                                    i1 = Convert.ToInt32(obj1);
                                 }
                                 else if (!int.TryParse(current.parameters[1], out i1))
                                 {
@@ -405,7 +405,7 @@ namespace CLUNL.Scripting
                                 }
                                 if (obj2 != null)
                                 {
-                                    i2 = (int)obj1;
+                                    i2 = Convert.ToInt32(obj2);
                                 }
                                 else if (!int.TryParse(current.parameters[2], out i2))
                                 {
@@ -422,7 +422,7 @@ namespace CLUNL.Scripting
                                 float i2;
                                 if (obj1 != null)
                                 {
-                                    i1 = (float)obj1;
+                                    i1 = Convert.ToSingle(obj1);
                                 }
                                 else if (!float.TryParse(current.parameters[1], out i1))
                                 {
@@ -431,7 +431,7 @@ namespace CLUNL.Scripting
                                 }
                                 if (obj2 != null)
                                 {
-                                    i2 = (float)obj1;
+                                    i2 = Convert.ToSingle(obj2);
                                 }
                                 else if (!float.TryParse(current.parameters[2], out i2))
                                 {
@@ -448,7 +448,7 @@ namespace CLUNL.Scripting
                                 byte i2;
                                 if (obj1 != null)
                                 {
-                                    i1 = (byte)obj1;
+                                    i1 = Convert.ToByte(obj1);
                                 }
                                 else if (!byte.TryParse(current.parameters[1], out i1))
                                 {
@@ -457,7 +457,7 @@ namespace CLUNL.Scripting
                                 }
                                 if (obj2 != null)
                                 {
-                                    i2 = (byte)obj1;
+                                    i2 = Convert.ToByte(obj2);
                                 }
                                 else if (!byte.TryParse(current.parameters[2], out i2))
                                 {
@@ -474,7 +474,7 @@ namespace CLUNL.Scripting
                                 double i2;
                                 if (obj1 != null)
                                 {
-                                    i1 = (double)obj1;
+                                    i1 = Convert.ToDouble(obj1);
                                 }
                                 else if (!double.TryParse(current.parameters[1], out i1))
                                 {
@@ -483,7 +483,7 @@ namespace CLUNL.Scripting
                                 }
                                 if (obj2 != null)
                                 {
-                                    i2 = (double)obj1;
+                                    i2 = Convert.ToDouble(obj2);
                                 }
                                 else if (!double.TryParse(current.parameters[2], out i2))
                                 {
@@ -500,7 +500,7 @@ namespace CLUNL.Scripting
                                 long i2 = 0;
                                 if (obj1 != null)
                                 {
-                                    i1 = (long)obj1;
+                                    i1 = Convert.ToInt64(obj1);
                                 }
                                 else if (!long.TryParse(current.parameters[1], out i1))
                                 {
@@ -509,7 +509,7 @@ namespace CLUNL.Scripting
                                 }
                                 if (obj2 != null)
                                 {
-                                    i2 = (long)obj1;
+                                    i2 = Convert.ToInt64(obj2);
                                 }
                                 else if (!long.TryParse(current.parameters[2], out i2))
                                 {
@@ -531,7 +531,7 @@ namespace CLUNL.Scripting
                                 int i2;
                                 if (obj1 != null)
                                 {
-                                    i1 = (int)obj1;
+                                    i1 = Convert.ToInt32(obj1);
                                 }
                                 else if (!int.TryParse(current.parameters[1], out i1))
                                 {
@@ -552,7 +552,7 @@ namespace CLUNL.Scripting
                                 float i2;
                                 if (obj1 != null)
                                 {
-                                    i1 = (float)obj1;
+                                    i1 = Convert.ToSingle(obj1);
                                 }
                                 else if (!float.TryParse(current.parameters[1], out i1))
                                 {
@@ -573,7 +573,7 @@ namespace CLUNL.Scripting
                                 byte i2;
                                 if (obj1 != null)
                                 {
-                                    i1 = (byte)obj1;
+                                    i1 = Convert.ToByte(obj1);
                                 }
                                 else if (!byte.TryParse(current.parameters[1], out i1))
                                 {
@@ -594,7 +594,7 @@ namespace CLUNL.Scripting
                                 double i2;
                                 if (obj1 != null)
                                 {
-                                    i1 = (double)obj1;
+                                    i1 = Convert.ToDouble(obj1);
                                 }
                                 else if (!double.TryParse(current.parameters[1], out i1))
                                 {
@@ -615,7 +615,7 @@ namespace CLUNL.Scripting
                                 long i2;
                                 if (obj1 != null)
                                 {
-                                    i1 = (long)obj1;
+                                    i1 = Convert.ToInt64(obj1);
                                 }
                                 else if (!long.TryParse(current.parameters[1], out i1))
                                 {
@@ -643,7 +643,7 @@ namespace CLUNL.Scripting
                                 int i2;
                                 if (obj1 != null)
                                 {
-                                    i1 = (int)obj1;
+                                    i1 = Convert.ToInt32(obj1);
                                 }
                                 else if (!int.TryParse(current.parameters[1], out i1))
                                 {
@@ -652,14 +652,14 @@ namespace CLUNL.Scripting
                                 }
                                 if (obj2 != null)
                                 {
-                                    i2 = (int)obj1;
+                                    i2 = Convert.ToInt32(obj2);
                                 }
                                 else if (!int.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
                                     return null;
                                 }
-                                SetObject(Target, i1 * i2, null, ref result, Index);
+                                SetObject(Target, i1 / i2, null, ref result, Index);
                             }
                             else if (t == typeof(float))
                             {
@@ -669,7 +669,7 @@ namespace CLUNL.Scripting
                                 float i2;
                                 if (obj1 != null)
                                 {
-                                    i1 = (float)obj1;
+                                    i1 = Convert.ToSingle(obj1);
                                 }
                                 else if (!float.TryParse(current.parameters[1], out i1))
                                 {
@@ -678,14 +678,14 @@ namespace CLUNL.Scripting
                                 }
                                 if (obj2 != null)
                                 {
-                                    i2 = (float)obj1;
+                                    i2 = Convert.ToSingle(obj2);
                                 }
                                 else if (!float.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
                                     return null;
                                 }
-                                SetObject(Target, i1 * i2, null, ref result, Index);
+                                SetObject(Target, i1 / i2, null, ref result, Index);
                             }
                             else if (t == typeof(byte))
                             {
@@ -695,7 +695,7 @@ namespace CLUNL.Scripting
                                 byte i2;
                                 if (obj1 != null)
                                 {
-                                    i1 = (byte)obj1;
+                                    i1 = Convert.ToByte(obj1);
                                 }
                                 else if (!byte.TryParse(current.parameters[1], out i1))
                                 {
@@ -704,14 +704,14 @@ namespace CLUNL.Scripting
                                 }
                                 if (obj2 != null)
                                 {
-                                    i2 = (byte)obj1;
+                                    i2 = Convert.ToByte(obj2);
                                 }
                                 else if (!byte.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
                                     return null;
                                 }
-                                SetObject(Target, i1 * i2, null, ref result, Index);
+                                SetObject(Target, i1 / i2, null, ref result, Index);
                             }
                             else if (t == typeof(double))
                             {
@@ -721,7 +721,7 @@ namespace CLUNL.Scripting
                                 double i2;
                                 if (obj1 != null)
                                 {
-                                    i1 = (double)obj1;
+                                    i1 = Convert.ToDouble(obj1);
                                 }
                                 else if (!double.TryParse(current.parameters[1], out i1))
                                 {
@@ -730,14 +730,14 @@ namespace CLUNL.Scripting
                                 }
                                 if (obj2 != null)
                                 {
-                                    i2 = (double)obj1;
+                                    i2 = Convert.ToDouble(obj2);
                                 }
                                 else if (!double.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
                                     return null;
                                 }
-                                SetObject(Target, i1 * i2, null, ref result, Index);
+                                SetObject(Target, i1 / i2, null, ref result, Index);
                             }
                             else if (t == typeof(long))
                             {
@@ -747,7 +747,7 @@ namespace CLUNL.Scripting
                                 long i2 = 0;
                                 if (obj1 != null)
                                 {
-                                    i1 = (long)obj1;
+                                    i1 = Convert.ToInt64(obj1);
                                 }
                                 else if (!long.TryParse(current.parameters[1], out i1))
                                 {
@@ -756,14 +756,14 @@ namespace CLUNL.Scripting
                                 }
                                 if (obj2 != null)
                                 {
-                                    i2 = (long)obj1;
+                                    i2 = Convert.ToInt64(obj2);
                                 }
                                 else if (!long.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
                                     return null;
                                 }
-                                SetObject(Target, i1 * i2, null, ref result, Index);
+                                SetObject(Target, i1 / i2, null, ref result, Index);
                             }
                         }
                         break;
@@ -778,7 +778,7 @@ namespace CLUNL.Scripting
                                 int i2;
                                 if (obj1 != null)
                                 {
-                                    i1 = (int)obj1;
+                                    i1 = Convert.ToInt32(obj1);
                                 }
                                 else if (!int.TryParse(current.parameters[1], out i1))
                                 {
@@ -799,7 +799,7 @@ namespace CLUNL.Scripting
                                 float i2;
                                 if (obj1 != null)
                                 {
-                                    i1 = (float)obj1;
+                                    i1 = Convert.ToSingle(obj1);
                                 }
                                 else if (!float.TryParse(current.parameters[1], out i1))
                                 {
@@ -820,7 +820,7 @@ namespace CLUNL.Scripting
                                 byte i2;
                                 if (obj1 != null)
                                 {
-                                    i1 = (byte)obj1;
+                                    i1 = Convert.ToByte(obj1);
                                 }
                                 else if (!byte.TryParse(current.parameters[1], out i1))
                                 {
@@ -841,7 +841,7 @@ namespace CLUNL.Scripting
                                 double i2;
                                 if (obj1 != null)
                                 {
-                                    i1 = (double)obj1;
+                                    i1 = Convert.ToDouble(obj1);
                                 }
                                 else if (!double.TryParse(current.parameters[1], out i1))
                                 {
@@ -862,7 +862,7 @@ namespace CLUNL.Scripting
                                 long i2;
                                 if (obj1 != null)
                                 {
-                                    i1 = (long)obj1;
+                                    i1 = Convert.ToInt64(obj1);
                                 }
                                 else if (!long.TryParse(current.parameters[1], out i1))
                                 {
@@ -889,7 +889,7 @@ namespace CLUNL.Scripting
                                 int i2;
                                 if (obj1 != null)
                                 {
-                                    i2 = (int)obj1;
+                                    i2 = Convert.ToInt32(obj1);
                                 }
                                 else if (!int.TryParse(current.parameters[2], out i2))
                                 {
@@ -910,7 +910,7 @@ namespace CLUNL.Scripting
                                 float i2;
                                 if (obj1 != null)
                                 {
-                                    i2 = (float)obj1;
+                                    i2 = Convert.ToSingle(obj1);
                                 }
                                 else if (!float.TryParse(current.parameters[2], out i2))
                                 {
@@ -931,7 +931,7 @@ namespace CLUNL.Scripting
                                 byte i2;
                                 if (obj1 != null)
                                 {
-                                    i2 = (byte)obj1;
+                                    i2 = Convert.ToByte(obj1);
                                 }
                                 else if (!byte.TryParse(current.parameters[2], out i2))
                                 {
@@ -952,7 +952,7 @@ namespace CLUNL.Scripting
                                 double i2;
                                 if (obj1 != null)
                                 {
-                                    i2 = (double)obj1;
+                                    i2 = Convert.ToDouble(obj1);
                                 }
                                 else if (!double.TryParse(current.parameters[2], out i2))
                                 {
@@ -973,7 +973,7 @@ namespace CLUNL.Scripting
                                 long i2;
                                 if (obj1 != null)
                                 {
-                                    i2 = (long)obj1;
+                                    i2 = Convert.ToInt64(obj1);
                                 }
                                 else if (!long.TryParse(current.parameters[2], out i2))
                                 {
