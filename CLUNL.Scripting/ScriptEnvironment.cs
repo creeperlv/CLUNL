@@ -3,11 +3,17 @@ using System.Collections.Generic;
 
 namespace CLUNL.Scripting
 {
-    public class Environment : IDisposable
+    public class ScriptEnvironment : IDisposable
     {
         public Dictionary<string, object> ExposedObjects = new Dictionary<string, object>();
         public Dictionary<string, Type> ExposedTypes = new Dictionary<string, Type>();
-        public void Expose(string name,object Target)
+        public ScriptEnvironment()
+        {
+            Expose("null", (object)null);
+            Expose("Null", (object)null);
+            Expose("NULL", (object)null);
+        }
+        public void Expose(string name, object Target)
         {
             if (ExposedObjects.ContainsKey(name))
             {
@@ -15,7 +21,7 @@ namespace CLUNL.Scripting
             }
             else ExposedObjects.Add(name, Target);
         }
-        public void Expose(string name,Type t)
+        public void Expose(string name, Type t)
         {
             if (ExposedTypes.ContainsKey(name))
             {
@@ -37,16 +43,18 @@ namespace CLUNL.Scripting
         {
             ExposedObjects = null;
         }
-        public Environment HardCopy()
+        public ScriptEnvironment HardCopy()
         {
-            Environment environment = new Environment();
+            ScriptEnvironment environment = new ScriptEnvironment();
             foreach (var item in ExposedObjects)
             {
-                environment.ExposedObjects.Add(item.Key, item.Value);
+                if (!environment.ExposedObjects.ContainsKey(item.Key)) //Ignore pre-exposed objects.
+                    environment.ExposedObjects.Add(item.Key, item.Value);
             }
             foreach (var item in ExposedTypes)
             {
-                environment.ExposedTypes.Add(item.Key, item.Value);
+                if (!environment.ExposedTypes.ContainsKey(item.Key))//Ignore pre-exposed types.
+                    environment.ExposedTypes.Add(item.Key, item.Value);
             }
             return environment;
         }
