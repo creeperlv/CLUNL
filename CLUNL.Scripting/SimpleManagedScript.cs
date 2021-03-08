@@ -59,12 +59,8 @@ namespace CLUNL.Scripting
                         break;
                     case SMSOperation.SET:
                         {
-                            if (Memory.ContainsKey(current.OperateDatapath))
-                            {
-                                var d = Memory[current.OperateDatapath];
-                                d.CoreData = Parse(current.parameters[0]);
-                                Memory[current.OperateDatapath] = d;
-                            }
+                            if (SetObject(current.OperateDatapath, Parse(current.parameters[0]), null, ref result, Index))
+                            { }
                             else
                             {
                                 result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"SET Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
@@ -120,8 +116,10 @@ namespace CLUNL.Scripting
                     case SMSOperation.LABEL:
                         break;
                     case SMSOperation.END:
-                        break;
+                        //End the execution of the script immediately.
+                        return result;
                     case SMSOperation.ENDLABEL:
+                        //A mark of the end of previous label.
                         break;
                     case SMSOperation.DEL:
                         {
@@ -132,12 +130,257 @@ namespace CLUNL.Scripting
                             else
                             {
                                 result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"Deletion Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
+                                return result;
                             }
                         }
                         break;
                     case SMSOperation.ADD:
+                        {
+                            Type t = FindType(current.parameters[0]);
+                            String Target = current.OperateDatapath;
+                            if (t == typeof(int))
+                            {
+                                object obj1 = FindObject(current.parameters[1]);
+                                object obj2 = FindObject(current.parameters[2]);
+                                int i1 = 0;
+                                int i2 = 0;
+                                if (obj1 != null)
+                                {
+                                    i1 = (int)obj1;
+                                }
+                                else if (!int.TryParse(current.parameters[1], out i1))
+                                {
+                                    result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
+                                    return result;
+                                }
+                                if (obj2 != null)
+                                {
+                                    i2 = (int)obj1;
+                                }
+                                else if (!int.TryParse(current.parameters[2], out i2))
+                                {
+                                    result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
+                                    return result;
+                                }
+                                SetObject(Target, i1 + i2, null, ref result, Index);
+                            }
+                            else if (t == typeof(float))
+                            {
+                                object obj1 = FindObject(current.parameters[1]);
+                                object obj2 = FindObject(current.parameters[2]);
+                                float i1 = 0;
+                                float i2 = 0;
+                                if (obj1 != null)
+                                {
+                                    i1 = (float)obj1;
+                                }
+                                else if (!float.TryParse(current.parameters[1], out i1))
+                                {
+                                    result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
+                                    return result;
+                                }
+                                if (obj2 != null)
+                                {
+                                    i2 = (float)obj1;
+                                }
+                                else if (!float.TryParse(current.parameters[2], out i2))
+                                {
+                                    result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
+                                    return result;
+                                }
+                                SetObject(Target, i1 + i2, null, ref result,Index);
+                            }
+                            else if (t == typeof(byte))
+                            {
+                                object obj1 = FindObject(current.parameters[1]);
+                                object obj2 = FindObject(current.parameters[2]);
+                                byte i1 = 0;
+                                byte i2 = 0;
+                                if (obj1 != null)
+                                {
+                                    i1 = (byte)obj1;
+                                }
+                                else if (!byte.TryParse(current.parameters[1], out i1))
+                                {
+                                    result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
+                                    return result;
+                                }
+                                if (obj2 != null)
+                                {
+                                    i2 = (byte)obj1;
+                                }
+                                else if (!byte.TryParse(current.parameters[2], out i2))
+                                {
+                                    result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
+                                    return result;
+                                }
+                                SetObject(Target, i1 + i2, null, ref result, Index);
+                            }
+                            else if (t == typeof(double))
+                            {
+                                object obj1 = FindObject(current.parameters[1]);
+                                object obj2 = FindObject(current.parameters[2]);
+                                double i1 = 0;
+                                double i2 = 0;
+                                if (obj1 != null)
+                                {
+                                    i1 = (double)obj1;
+                                }
+                                else if (!double.TryParse(current.parameters[1], out i1))
+                                {
+                                    result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
+                                    return result;
+                                }
+                                if (obj2 != null)
+                                {
+                                    i2 = (double)obj1;
+                                }
+                                else if (!double.TryParse(current.parameters[2], out i2))
+                                {
+                                    result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
+                                    return result;
+                                }
+                                SetObject(Target, i1 + i2, null, ref result, Index);
+                            }
+                            else if (t == typeof(long))
+                            {
+                                object obj1 = FindObject(current.parameters[1]);
+                                object obj2 = FindObject(current.parameters[2]);
+                                long i1 = 0;
+                                long i2 = 0;
+                                if (obj1 != null)
+                                {
+                                    i1 = (long)obj1;
+                                }
+                                else if (!long.TryParse(current.parameters[1], out i1))
+                                {
+                                    result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
+                                    return result;
+                                }
+                                if (obj2 != null)
+                                {
+                                    i2 = (long)obj1;
+                                }
+                                else if (!long.TryParse(current.parameters[2], out i2))
+                                {
+                                    result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
+                                    return result;
+                                }
+                                SetObject(Target, i1 + i2, null, ref result, Index);
+                            }
+                        }
                         break;
                     case SMSOperation.ADDI:
+
+                        {
+                            Type t = FindType(current.parameters[0]);
+                            String Target = current.OperateDatapath;
+                            if (t == typeof(int))
+                            {
+                                object obj1 = FindObject(current.parameters[1]);
+                                int i1;
+                                int i2;
+                                if (obj1 != null)
+                                {
+                                    i1 = (int)obj1;
+                                }
+                                else if (!int.TryParse(current.parameters[1], out i1))
+                                {
+                                    result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
+                                    return result;
+                                }
+                                if (!int.TryParse(current.parameters[2], out i2))
+                                {
+                                    result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.NUMBER_CONVERSION_ERROR, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target data \"{current.OperateDatapath}\" is not a number!.", Position = Index });
+                                    return result;
+                                }
+                                SetObject(Target, i1 + i2, null, ref result, Index);
+                            }
+                            else if (t == typeof(float))
+                            {
+                                object obj1 = FindObject(current.parameters[1]);
+                                float i1 ;
+                                float i2 ;
+                                if (obj1 != null)
+                                {
+                                    i1 = (float)obj1;
+                                }
+                                else if (!float.TryParse(current.parameters[1], out i1))
+                                {
+                                    result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
+                                    return result;
+                                }
+                                if (!float.TryParse(current.parameters[2], out i2))
+                                {
+                                    result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.NUMBER_CONVERSION_ERROR, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target data \"{current.OperateDatapath}\" is not a number!.", Position = Index });
+                                    return result;
+                                }
+                                SetObject(Target, i1 + i2, null, ref result, Index);
+                            }
+                            else if (t == typeof(byte))
+                            {
+                                object obj1 = FindObject(current.parameters[1]);
+                                byte i1 ;
+                                byte i2;
+                                if (obj1 != null)
+                                {
+                                    i1 = (byte)obj1;
+                                }
+                                else if (!byte.TryParse(current.parameters[1], out i1))
+                                {
+                                    result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
+                                    return result;
+                                }
+                                if (!byte.TryParse(current.parameters[2], out i2))
+                                {
+                                    result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.NUMBER_CONVERSION_ERROR, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target data \"{current.OperateDatapath}\" is not a number!.", Position = Index });
+                                    return result;
+                                }
+                                SetObject(Target, i1 + i2, null, ref result, Index);
+                            }
+                            else if (t == typeof(double))
+                            {
+                                object obj1 = FindObject(current.parameters[1]);
+                                double i1 ;
+                                double i2 ;
+                                if (obj1 != null)
+                                {
+                                    i1 = (double)obj1;
+                                }
+                                else if (!double.TryParse(current.parameters[1], out i1))
+                                {
+                                    result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
+                                    return result;
+                                }
+                                if (!double.TryParse(current.parameters[2], out i2))
+                                {
+                                    result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.NUMBER_CONVERSION_ERROR, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target data \"{current.OperateDatapath}\" is not a number!.", Position = Index });
+                                    return result;
+                                }
+                                SetObject(Target, i1 + i2, null, ref result, Index);
+                            }
+                            else if (t == typeof(long))
+                            {
+                                object obj1 = FindObject(current.parameters[1]);
+                                long i1;
+                                long i2;
+                                if (obj1 != null)
+                                {
+                                    i1 = (long)obj1;
+                                }
+                                else if (!long.TryParse(current.parameters[1], out i1))
+                                {
+                                    result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
+                                    return result;
+                                }
+                                if (!long.TryParse(current.parameters[2], out i2))
+                                {
+                                    result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.NUMBER_CONVERSION_ERROR, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target data \"{current.OperateDatapath}\" is not a number!.", Position = Index });
+                                    return result;
+                                }
+                                SetObject(Target, i1 + i2, null, ref result, Index);
+                            }
+                        }
                         break;
                     case SMSOperation.MULT:
                         break;
@@ -201,24 +444,47 @@ namespace CLUNL.Scripting
                         return new DirectoryInfo(content);
                     case "E":
                         {
-                            foreach (var ObjectItem in Current.ExposedObjects)
-                            {
-                                if (ObjectItem.Key == content)
-                                    return ObjectItem.Value;
-                            }
-                            foreach (var item in Memory)
-                            {
-                                if (item.Key == content)
-                                    return item.Value;
-                            }
+                            return FindObject(content);
                         }
-                        break;
                     default:
                         Type TargetT = FindType(t);
                         if (TargetT == null) return null;
                         var c = TypeDescriptor.GetConverter(TargetT);
                         return c.ConvertFromString(content);
                 }
+            }
+            return null;
+        }
+        public bool SetObject(string name, object data, Type t, ref List<ScriptError> result,int Index)
+        {
+            if (Current.ExposedObjects.ContainsKey(name))
+            {
+                Current.ExposedObjects[name] = data;
+
+            }
+            else
+            if (Memory.ContainsKey(name))
+            {
+                var d = Memory[name];
+                d.CoreData = data;
+                Memory[name] = d;
+            }
+            else
+            {
+                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"SET Failed: Target reference \"{name}\" does not exist!.", Position = Index });
+                return false;
+            }
+            return true;
+        }
+        public object FindObject(string Name)
+        {
+            if (Current.ExposedObjects.ContainsKey(Name))
+            {
+                return Current.ExposedObjects[Name];
+            }
+            else if (Memory.ContainsKey(Name))
+            {
+                return Memory[Name].CoreData;
             }
             return null;
         }
@@ -464,13 +730,13 @@ namespace CLUNL.Scripting
         END = 0x06,             //End of program.
         ENDLABEL = 0x07,        //End of label.
         DEL = 0x08,             //Delete object.
-        ADD = 0x09,             //Add Object0 = Object1 + Object2.  ADD TYPE OBJ0 OBJ1 OBJ2
-        ADDI = 0x0A,            //Add immediately. ADD TYPE OBJ0 OBJ1 NUMBER
-        MULT = 0x0B,            //Multiply Object0=Object1*Object2. MULT TYPE OBJ0 OBJ1 OBJ2
-        MULTI = 0x0C,             //Multiply immediately. MULT TYPE OBJ0 OBJ1 NUMBER
-        DIV = 0x0D,             //Divide Object0=Object1/Object2. DIV TYPE OBJ0 OBJ1 OBJ2
-        DIVI = 0x0E,            //Divide immediately. DIVI TYPE OBJ0 OBJ1 NUMBER
-        DIVII = 0x0F,             //Divide inversed immediately. DIVI TYPE OBJ0 NUMBER OBJ1
+        ADD = 0x09,             //Add Object0 = Object1 + Object2.  ADD OBJ0 TYPE OBJ1 OBJ2
+        ADDI = 0x0A,            //Add immediately. ADD OBJ0 TYPE OBJ1 NUMBER
+        MULT = 0x0B,            //Multiply Object0=Object1*Object2. MULT OBJ0 TYPE OBJ1 OBJ2
+        MULTI = 0x0C,             //Multiply immediately. MULT OBJ0 TYPE OBJ1 NUMBER
+        DIV = 0x0D,             //Divide Object0=Object1/Object2. DIV OBJ0 TYPE OBJ1 OBJ2
+        DIVI = 0x0E,            //Divide immediately. DIVI OBJ0 TYPE OBJ1 NUMBER
+        DIVII = 0x0F,             //Divide inversed immediately. DIVI OBJ0 TYPE NUMBER OBJ1
         SW = 0x10,                //Save Word. SW ARRAY_OBJECT INDEX TYPE:NUMBER
         ADDW = 0x11,              //Add word to ArrayList. ADDW LIST_OBJECT TYPE:DATA                        
         LW = 0x12,                //Load word. LW ARRAY_OBJECT INDEX TARGET_OBJECT
