@@ -24,7 +24,7 @@ namespace CLUNL.Scripting.SMS
         List<SMSSingleCommand> CommandSet = new List<SMSSingleCommand>();
         Dictionary<string, int> Labels = new Dictionary<string, int>();
         Dictionary<string, Data> Memory = new Dictionary<string, Data>();
-        List<string> UsingNamespaces = new List<string>();
+        
         public object Eval(string str, out List<ScriptError> result)
         {
             object __result = null;
@@ -592,25 +592,28 @@ namespace CLUNL.Scripting.SMS
     }
     internal enum SMSOperation
     {
-        NEW = 0x00,             //Create new object.
-        SET = 0x01,             //Set value to an object.
-        EXEC = 0x02,            //Execute external method.
-        IF = 0x03,              //If sentence. ID BOOLEANOBJ LABEL
-        J = 0x04,               //Jump to label.
-        LABEL = 0x05,           //Define label.
-        END = 0x06,             //End of program.
-        ENDLABEL = 0x07,        //End of label.
-        DEL = 0x08,             //Delete object.
+        NEW = 0x00,             //Create new object. NEW Object Type [Parameter0 Parameter1 ...]
+        SET = 0x01,             //Set value to an object. SET Object Value
+        SETF = 0x14,            //Set value to a field of an object. SETF Object Field Value
+        EXEC = 0x02,            //Execute external method. EXEC Object/Type MethodName [Parameter0 Parameter1 ...]
+        EXER = 0x13,            //Execute external method and receive return value. EXER Object/Type MethodName WhereToStoreRetureValue [Parameter0 Parameter1 ...]
+        IF = 0x03,              //If sentence. ID BOOL_VALUE LABEL
+        EQL = 0x15,             //Judge if two object is equal. EQL BoolObj Obj0 Obj1. To implement !=, recommend: EQL BOOL_VALUE BOOL_VALUE Bool:False
+        J = 0x04,               //Jump to label. J Label_Name
+        LABEL = 0x05,           //Define label. LABEL Label_Name
+        END = 0x06,             //End of program. END
+        ENDLABEL = 0x07,        //End of label. ENDLABEL
+        DEL = 0x08,             //Delete object. DEL Object0
         ADD = 0x09,             //Add Object0 = Object1 + Object2.  ADD OBJ0 TYPE OBJ1 OBJ2
         ADDI = 0x0A,            //Add immediately. ADD OBJ0 TYPE OBJ1 NUMBER
         MULT = 0x0B,            //Multiply Object0=Object1*Object2. MULT OBJ0 TYPE OBJ1 OBJ2
-        MULTI = 0x0C,             //Multiply immediately. MULT OBJ0 TYPE OBJ1 NUMBER
+        MULTI = 0x0C,           //Multiply immediately. MULT OBJ0 TYPE OBJ1 NUMBER
         DIV = 0x0D,             //Divide Object0=Object1/Object2. DIV OBJ0 TYPE OBJ1 OBJ2
         DIVI = 0x0E,            //Divide immediately. DIVI OBJ0 TYPE OBJ1 NUMBER
-        DIVII = 0x0F,             //Divide inversed immediately. DIVI OBJ0 TYPE NUMBER OBJ1
-        SW = 0x10,                //Save Word. SW ARRAY_OBJECT INDEX TYPE:NUMBER
-        ADDW = 0x11,              //Add word to ArrayList. ADDW LIST_OBJECT TYPE:DATA                        
-        LW = 0x12,                //Load word. LW ARRAY_OBJECT INDEX TARGET_OBJECT
+        DIVII = 0x0F,           //Divide inversed immediately. DIVI OBJ0 TYPE NUMBER OBJ1
+        SW = 0x10,              //Save Word. SW ARRAY_OBJECT INDEX TYPE:NUMBER
+        ADDW = 0x11,            //Add word to ArrayList. ADDW LIST_OBJECT TYPE:DATA                        
+        LW = 0x12,              //Load word. LW ARRAY_OBJECT INDEX TARGET_OBJECT
     }
     internal struct SMSSingleCommand
     {
