@@ -9,8 +9,8 @@ namespace CLUNL.Scripting
     {
         Environment GetCurrentEnvironment();
         void SetEnvironmentBase(Environment environment);
-        List<ScriptError> Eval(string str);
-        Task<List<ScriptError>> EvalAsync(string str);
+        object Eval(string str,out List<ScriptError> result);
+        Task<(object,List<ScriptError>)> EvalAsync(string str);
         void ResetEngine();
         Dictionary<string, Data> GetMemory();
     }

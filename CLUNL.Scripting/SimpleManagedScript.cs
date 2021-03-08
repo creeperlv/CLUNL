@@ -24,10 +24,10 @@ namespace CLUNL.Scripting
         Dictionary<string, int> Labels = new Dictionary<string, int>();
         Dictionary<string, Data> Memory = new Dictionary<string, Data>();
         List<string> UsingNamespaces = new List<string>();
-        public List<ScriptError> Eval(string str)
+        public object Eval(string str,out List<ScriptError> result)
         {
-
-            List<ScriptError> result = new List<ScriptError>();
+            Current.Expose("Result", null);
+            result = new List<ScriptError>();
             Compile(str, ref result);
             for (int Index = 0; Index < CommandSet.Count; Index++)
             {
@@ -64,7 +64,7 @@ namespace CLUNL.Scripting
                             else
                             {
                                 result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"SET Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                return result;
+                                return null;
                             }
                         }
                         break;
@@ -83,7 +83,7 @@ namespace CLUNL.Scripting
                             if (ReferencedTarget == null)
                             {
                                 result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.LABEL_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"EXEC Failed: Target label \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                return result;
+                                return null;
                             }
                             var m = ReferencedTarget.GetType().GetMethod(current.parameters[0]);
                             object[] parameters = null;
@@ -109,7 +109,7 @@ namespace CLUNL.Scripting
                             if (i == -1)
                             {
                                 result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.LABEL_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"Jumper Failed: Target label \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                return result;
+                                return null;
                             }
                         }
                         break;
@@ -117,7 +117,7 @@ namespace CLUNL.Scripting
                         break;
                     case SMSOperation.END:
                         //End the execution of the script immediately.
-                        return result;
+                        return null;
                     case SMSOperation.ENDLABEL:
                         //A mark of the end of previous label.
                         break;
@@ -130,7 +130,7 @@ namespace CLUNL.Scripting
                             else
                             {
                                 result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"Deletion Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                return result;
+                                return null;
                             }
                         }
                         break;
@@ -151,7 +151,7 @@ namespace CLUNL.Scripting
                                 else if (!int.TryParse(current.parameters[1], out i1))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 if (obj2 != null)
                                 {
@@ -160,7 +160,7 @@ namespace CLUNL.Scripting
                                 else if (!int.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 SetObject(Target, i1 + i2, null, ref result, Index);
                             }
@@ -177,7 +177,7 @@ namespace CLUNL.Scripting
                                 else if (!float.TryParse(current.parameters[1], out i1))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 if (obj2 != null)
                                 {
@@ -186,7 +186,7 @@ namespace CLUNL.Scripting
                                 else if (!float.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 SetObject(Target, i1 + i2, null, ref result,Index);
                             }
@@ -203,7 +203,7 @@ namespace CLUNL.Scripting
                                 else if (!byte.TryParse(current.parameters[1], out i1))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 if (obj2 != null)
                                 {
@@ -212,7 +212,7 @@ namespace CLUNL.Scripting
                                 else if (!byte.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 SetObject(Target, i1 + i2, null, ref result, Index);
                             }
@@ -229,7 +229,7 @@ namespace CLUNL.Scripting
                                 else if (!double.TryParse(current.parameters[1], out i1))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 if (obj2 != null)
                                 {
@@ -238,7 +238,7 @@ namespace CLUNL.Scripting
                                 else if (!double.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 SetObject(Target, i1 + i2, null, ref result, Index);
                             }
@@ -255,7 +255,7 @@ namespace CLUNL.Scripting
                                 else if (!long.TryParse(current.parameters[1], out i1))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 if (obj2 != null)
                                 {
@@ -264,7 +264,7 @@ namespace CLUNL.Scripting
                                 else if (!long.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 SetObject(Target, i1 + i2, null, ref result, Index);
                             }
@@ -287,12 +287,12 @@ namespace CLUNL.Scripting
                                 else if (!int.TryParse(current.parameters[1], out i1))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 if (!int.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.NUMBER_CONVERSION_ERROR, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target data \"{current.OperateDatapath}\" is not a number!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 SetObject(Target, i1 + i2, null, ref result, Index);
                             }
@@ -308,12 +308,12 @@ namespace CLUNL.Scripting
                                 else if (!float.TryParse(current.parameters[1], out i1))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 if (!float.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.NUMBER_CONVERSION_ERROR, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target data \"{current.OperateDatapath}\" is not a number!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 SetObject(Target, i1 + i2, null, ref result, Index);
                             }
@@ -329,12 +329,12 @@ namespace CLUNL.Scripting
                                 else if (!byte.TryParse(current.parameters[1], out i1))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 if (!byte.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.NUMBER_CONVERSION_ERROR, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target data \"{current.OperateDatapath}\" is not a number!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 SetObject(Target, i1 + i2, null, ref result, Index);
                             }
@@ -350,12 +350,12 @@ namespace CLUNL.Scripting
                                 else if (!double.TryParse(current.parameters[1], out i1))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 if (!double.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.NUMBER_CONVERSION_ERROR, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target data \"{current.OperateDatapath}\" is not a number!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 SetObject(Target, i1 + i2, null, ref result, Index);
                             }
@@ -371,12 +371,12 @@ namespace CLUNL.Scripting
                                 else if (!long.TryParse(current.parameters[1], out i1))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 if (!long.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.NUMBER_CONVERSION_ERROR, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target data \"{current.OperateDatapath}\" is not a number!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 SetObject(Target, i1 + i2, null, ref result, Index);
                             }
@@ -399,7 +399,7 @@ namespace CLUNL.Scripting
                                 else if (!int.TryParse(current.parameters[1], out i1))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 if (obj2 != null)
                                 {
@@ -408,7 +408,7 @@ namespace CLUNL.Scripting
                                 else if (!int.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 SetObject(Target, i1 * i2, null, ref result, Index);
                             }
@@ -425,7 +425,7 @@ namespace CLUNL.Scripting
                                 else if (!float.TryParse(current.parameters[1], out i1))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 if (obj2 != null)
                                 {
@@ -434,7 +434,7 @@ namespace CLUNL.Scripting
                                 else if (!float.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 SetObject(Target, i1 * i2, null, ref result, Index);
                             }
@@ -451,7 +451,7 @@ namespace CLUNL.Scripting
                                 else if (!byte.TryParse(current.parameters[1], out i1))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 if (obj2 != null)
                                 {
@@ -460,7 +460,7 @@ namespace CLUNL.Scripting
                                 else if (!byte.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 SetObject(Target, i1 * i2, null, ref result, Index);
                             }
@@ -477,7 +477,7 @@ namespace CLUNL.Scripting
                                 else if (!double.TryParse(current.parameters[1], out i1))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 if (obj2 != null)
                                 {
@@ -486,7 +486,7 @@ namespace CLUNL.Scripting
                                 else if (!double.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 SetObject(Target, i1 * i2, null, ref result, Index);
                             }
@@ -503,7 +503,7 @@ namespace CLUNL.Scripting
                                 else if (!long.TryParse(current.parameters[1], out i1))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 if (obj2 != null)
                                 {
@@ -512,7 +512,7 @@ namespace CLUNL.Scripting
                                 else if (!long.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 SetObject(Target, i1 * i2, null, ref result, Index);
                             }
@@ -534,12 +534,12 @@ namespace CLUNL.Scripting
                                 else if (!int.TryParse(current.parameters[1], out i1))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 if (!int.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.NUMBER_CONVERSION_ERROR, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target data \"{current.OperateDatapath}\" is not a number!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 SetObject(Target, i1 * i2, null, ref result, Index);
                             }
@@ -555,12 +555,12 @@ namespace CLUNL.Scripting
                                 else if (!float.TryParse(current.parameters[1], out i1))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 if (!float.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.NUMBER_CONVERSION_ERROR, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target data \"{current.OperateDatapath}\" is not a number!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 SetObject(Target, i1 * i2, null, ref result, Index);
                             }
@@ -576,12 +576,12 @@ namespace CLUNL.Scripting
                                 else if (!byte.TryParse(current.parameters[1], out i1))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 if (!byte.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.NUMBER_CONVERSION_ERROR, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target data \"{current.OperateDatapath}\" is not a number!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 SetObject(Target, i1 * i2, null, ref result, Index);
                             }
@@ -597,12 +597,12 @@ namespace CLUNL.Scripting
                                 else if (!double.TryParse(current.parameters[1], out i1))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 if (!double.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.NUMBER_CONVERSION_ERROR, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target data \"{current.OperateDatapath}\" is not a number!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 SetObject(Target, i1 * i2, null, ref result, Index);
                             }
@@ -618,12 +618,12 @@ namespace CLUNL.Scripting
                                 else if (!long.TryParse(current.parameters[1], out i1))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 if (!long.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.NUMBER_CONVERSION_ERROR, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target data \"{current.OperateDatapath}\" is not a number!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 SetObject(Target, i1 * i2, null, ref result, Index);
                             }
@@ -646,7 +646,7 @@ namespace CLUNL.Scripting
                                 else if (!int.TryParse(current.parameters[1], out i1))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 if (obj2 != null)
                                 {
@@ -655,7 +655,7 @@ namespace CLUNL.Scripting
                                 else if (!int.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 SetObject(Target, i1 * i2, null, ref result, Index);
                             }
@@ -672,7 +672,7 @@ namespace CLUNL.Scripting
                                 else if (!float.TryParse(current.parameters[1], out i1))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 if (obj2 != null)
                                 {
@@ -681,7 +681,7 @@ namespace CLUNL.Scripting
                                 else if (!float.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 SetObject(Target, i1 * i2, null, ref result, Index);
                             }
@@ -698,7 +698,7 @@ namespace CLUNL.Scripting
                                 else if (!byte.TryParse(current.parameters[1], out i1))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 if (obj2 != null)
                                 {
@@ -707,7 +707,7 @@ namespace CLUNL.Scripting
                                 else if (!byte.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 SetObject(Target, i1 * i2, null, ref result, Index);
                             }
@@ -724,7 +724,7 @@ namespace CLUNL.Scripting
                                 else if (!double.TryParse(current.parameters[1], out i1))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 if (obj2 != null)
                                 {
@@ -733,7 +733,7 @@ namespace CLUNL.Scripting
                                 else if (!double.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 SetObject(Target, i1 * i2, null, ref result, Index);
                             }
@@ -750,7 +750,7 @@ namespace CLUNL.Scripting
                                 else if (!long.TryParse(current.parameters[1], out i1))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 if (obj2 != null)
                                 {
@@ -759,7 +759,7 @@ namespace CLUNL.Scripting
                                 else if (!long.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 SetObject(Target, i1 * i2, null, ref result, Index);
                             }
@@ -781,12 +781,12 @@ namespace CLUNL.Scripting
                                 else if (!int.TryParse(current.parameters[1], out i1))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 if (!int.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.NUMBER_CONVERSION_ERROR, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target data \"{current.OperateDatapath}\" is not a number!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 SetObject(Target, i1 / i2, null, ref result, Index);
                             }
@@ -802,12 +802,12 @@ namespace CLUNL.Scripting
                                 else if (!float.TryParse(current.parameters[1], out i1))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 if (!float.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.NUMBER_CONVERSION_ERROR, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target data \"{current.OperateDatapath}\" is not a number!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 SetObject(Target, i1 / i2, null, ref result, Index);
                             }
@@ -823,12 +823,12 @@ namespace CLUNL.Scripting
                                 else if (!byte.TryParse(current.parameters[1], out i1))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 if (!byte.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.NUMBER_CONVERSION_ERROR, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target data \"{current.OperateDatapath}\" is not a number!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 SetObject(Target, i1 / i2, null, ref result, Index);
                             }
@@ -844,12 +844,12 @@ namespace CLUNL.Scripting
                                 else if (!double.TryParse(current.parameters[1], out i1))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 if (!double.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.NUMBER_CONVERSION_ERROR, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target data \"{current.OperateDatapath}\" is not a number!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 SetObject(Target, i1 / i2, null, ref result, Index);
                             }
@@ -865,12 +865,12 @@ namespace CLUNL.Scripting
                                 else if (!long.TryParse(current.parameters[1], out i1))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 if (!long.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.NUMBER_CONVERSION_ERROR, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target data \"{current.OperateDatapath}\" is not a number!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 SetObject(Target, i1 / i2, null, ref result, Index);
                             }
@@ -892,12 +892,12 @@ namespace CLUNL.Scripting
                                 else if (!int.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 if (!int.TryParse(current.parameters[1], out i1))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.NUMBER_CONVERSION_ERROR, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target data \"{current.OperateDatapath}\" is not a number!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 SetObject(Target, i1 / i2, null, ref result, Index);
                             }
@@ -913,12 +913,12 @@ namespace CLUNL.Scripting
                                 else if (!float.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 if (!float.TryParse(current.parameters[1], out i1))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.NUMBER_CONVERSION_ERROR, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target data \"{current.OperateDatapath}\" is not a number!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 SetObject(Target, i1 / i2, null, ref result, Index);
                             }
@@ -934,12 +934,12 @@ namespace CLUNL.Scripting
                                 else if (!byte.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 if (!byte.TryParse(current.parameters[1], out i1))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.NUMBER_CONVERSION_ERROR, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target data \"{current.OperateDatapath}\" is not a number!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 SetObject(Target, i1 / i2, null, ref result, Index);
                             }
@@ -955,12 +955,12 @@ namespace CLUNL.Scripting
                                 else if (!double.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 if (!double.TryParse(current.parameters[1], out i1))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.NUMBER_CONVERSION_ERROR, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target data \"{current.OperateDatapath}\" is not a number!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 SetObject(Target, i1 / i2, null, ref result, Index);
                             }
@@ -976,12 +976,12 @@ namespace CLUNL.Scripting
                                 else if (!long.TryParse(current.parameters[2], out i2))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 if (!long.TryParse(current.parameters[1], out i1))
                                 {
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.NUMBER_CONVERSION_ERROR, ErrorType = ErrorType.Error, Message = $"ADD Failed: Target data \"{current.OperateDatapath}\" is not a number!.", Position = Index });
-                                    return result;
+                                    return null;
                                 }
                                 SetObject(Target, i1 / i2, null, ref result, Index);
                             }
@@ -997,14 +997,15 @@ namespace CLUNL.Scripting
                         break;
                 }
             }
-            throw new NotImplementedException();
+            return Current.ExposedObjects["Result"];
         }
 
-        public async Task<List<ScriptError>> EvalAsync(string str)
+        public async Task<(object,List<ScriptError>)> EvalAsync(string str)
         {
             List<ScriptError> result = null;
-            await Task.Run(() => { result = Eval(str); });
-            return result;
+            object _result=null;
+            await Task.Run(() => { _result = Eval(str,out result); });
+            return (_result,result);
         }
         public object Parse(string SrcObj)
         {
