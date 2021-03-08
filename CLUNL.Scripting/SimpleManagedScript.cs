@@ -72,35 +72,69 @@ namespace CLUNL.Scripting
                         break;
                     case SMSOperation.EXEC:
                         {
-                            object ReferencedTarget = null;
-
-                            if (Memory.ContainsKey(current.OperateDatapath))
-                            {
-                                ReferencedTarget = Memory[current.OperateDatapath].CoreData;
-                            }
-                            else if (Current.ExposedObjects.ContainsKey(current.OperateDatapath))
-                            {
-                                ReferencedTarget = Current.ExposedObjects[current.OperateDatapath];
-                            }
+                            object ReferencedTarget;
+                            Type ReferencedType = null;
+                            ReferencedTarget = FindObject(current.OperateDatapath);
                             if (ReferencedTarget == null)
                             {
-                                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.LABEL_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"EXEC Failed: Target label \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                return null;
-                            }
-                            var m = ReferencedTarget.GetType().GetMethod(current.parameters[0]);
-                            object[] parameters = null;
-
-                            if (current.parameters.Length > 1)
-                            {
-                                parameters = new object[current.parameters.Length - 1];
-
-                                for (int _i = 1; _i < current.parameters.Length; _i++)
+                                ReferencedType = FindType(current.OperateDatapath);
+                                if (ReferencedType == null)
                                 {
-                                    parameters[_i - 1] = Parse(current.parameters[_i]);
-                                }
 
+                                    result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.LABEL_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"EXEC Failed: Target object or type \"{current.OperateDatapath}\" does not exist!.", Position = Index });
+                                    return null;
+                                }
+                                else
+                                {
+                                    
+                                    object[] parameters_t = null;
+                                    if (current.parameters.Length > 1)
+                                    {
+                                        parameters_t = new object[current.parameters.Length - 1];
+
+                                        for (int _i = 1; _i < current.parameters.Length; _i++)
+                                        {
+                                            parameters_t[_i - 1] = Parse(current.parameters[_i]);
+                                        }
+
+                                    }
+                                    Type[] types = ReferencedType == null ? null : new Type[parameters_t.Length];
+                                    if (parameters_t != null)
+                                    {
+                                        for (int i = 0; i < parameters_t.Length; i++)
+                                        {
+                                            types[i] = parameters_t.GetType();
+                                        }
+                                    }
+                                    var m_t = ReferencedType.GetMethod(current.parameters[0],types);
+                                    m_t.Invoke(null, parameters_t);
+                                    continue;
+                                }
                             }
-                            m.Invoke(ReferencedTarget, parameters);
+                            {
+
+                                object[] parameters = null;
+                                if (current.parameters.Length > 1)
+                                {
+                                    parameters = new object[current.parameters.Length - 1];
+
+                                    for (int _i = 1; _i < current.parameters.Length; _i++)
+                                    {
+                                        parameters[_i - 1] = Parse(current.parameters[_i]);
+                                    }
+
+                                }
+                                Type[] types = ReferencedType == null ? null : new Type[parameters.Length];
+                                if (parameters != null)
+                                {
+                                    for (int i = 0; i < parameters.Length; i++)
+                                    {
+                                        types[i] = parameters.GetType();
+                                    }
+                                }
+                                var m = ReferencedTarget.GetType().GetMethod(current.parameters[0],types);
+                                m.Invoke(ReferencedTarget, parameters);
+                            }
                         }
                         break;
                     case SMSOperation.IF:
@@ -1013,7 +1047,7 @@ namespace CLUNL.Scripting
         {
             if (SrcObj.IndexOf(":") > 0)
             {
-                string t = SrcObj.Substring(SrcObj.IndexOf(":"));
+                string t = SrcObj.Substring(0,SrcObj.IndexOf(":"));
                 string content = SrcObj.Substring(SrcObj.IndexOf(":") + 1);
                 switch (t)
                 {
