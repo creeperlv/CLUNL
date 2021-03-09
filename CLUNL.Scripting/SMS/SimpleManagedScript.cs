@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Numerics;
 using System.Reflection;
 using System.Text;
@@ -24,7 +25,7 @@ namespace CLUNL.Scripting.SMS
         List<SMSSingleCommand> CommandSet = new List<SMSSingleCommand>();
         Dictionary<string, int> Labels = new Dictionary<string, int>();
         Dictionary<string, Data> Memory = new Dictionary<string, Data>();
-        
+
         public object Eval(string str, out List<ScriptError> result)
         {
             object __result = null;
@@ -67,6 +68,34 @@ namespace CLUNL.Scripting.SMS
                             else
                             {
                                 result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"SET Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
+                                return null;
+                            }
+                        }
+                        break;
+                    case SMSOperation.SETF:
+                        {
+                            FieldInfo FinalField = null;
+                            object TargetObject = FindObject(current.OperateDatapath);
+                            Type t = TargetObject.GetType();
+                            for (int i = 0; i < current.parameters.Length - 1; i++)
+                            {
+                                FinalField = t.GetField(current.parameters[i]);
+                                if (FinalField != null)
+                                {
+                                    TargetObject = FinalField.GetValue(TargetObject);
+                                    t = FinalField.ReflectedType;
+                                }
+                                else
+                                {
+                                    result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.MEMBER_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"SETF Failed: Target member \"{current.OperateDatapath} ->...-> {current.parameters[i]}\" does not exist!.", Position = Index });
+                                    return null;
+                                }
+                            }
+                            if (FinalField != null)
+                                FinalField.SetValue(TargetObject, Parse(current.parameters.Last()));
+                            else
+                            {
+                                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.MEMBER_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"SETF Failed: Target member \"{current.OperateDatapath} ->...-> null\" does not exist!.", Position = Index });
                                 return null;
                             }
                         }
@@ -201,7 +230,7 @@ namespace CLUNL.Scripting.SMS
                                     }
                                 }
                                 var m = ReferencedTarget.GetType().GetMethod(current.parameters[1], types);
-                                SetObject(current.parameters[0],m.Invoke(ReferencedTarget, parameters),null,ref result,Index);
+                                SetObject(current.parameters[0], m.Invoke(ReferencedTarget, parameters), null, ref result, Index);
                             }
                         }
                         break;
@@ -250,7 +279,7 @@ namespace CLUNL.Scripting.SMS
                     case SMSOperation.IF:
                         {
 
-                            if ((bool)FindObject(current.OperateDatapath)==true)
+                            if ((bool)FindObject(current.OperateDatapath) == true)
                             {
 
                                 var i = FindLabel(current.parameters[0]);
@@ -278,7 +307,8 @@ namespace CLUNL.Scripting.SMS
                         break;
                     case SMSOperation.END:
                         //End the execution of the script immediately.
-                        return null;
+                        Index = CommandSet.Count + 1;
+                        break;
                     case SMSOperation.ENDLABEL:
                         //A mark of the end of previous label.
                         break;
@@ -290,8 +320,7 @@ namespace CLUNL.Scripting.SMS
                             }
                             else
                             {
-                                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"Deletion Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                return null;
+                                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Warning, Message = $"Deletion Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
                             }
                         }
                         break;
@@ -719,7 +748,7 @@ namespace CLUNL.Scripting.SMS
     {
         NEW = 0x00,             //Create new object. NEW Object Type [Parameter0 Parameter1 ...]
         SET = 0x01,             //Set value to an object. SET Object Value
-        SETF = 0x14,            //Set value to a field of an object. SETF Object Field Value
+        SETF = 0x14,            //Set value to a field of an object. SETF Object Field0 Field1 ... Field[N] Value
         EXEC = 0x02,            //Execute external method. EXEC Object/Type MethodName [Parameter0 Parameter1 ...]
         EXER = 0x13,            //Execute external method and receive return value. EXER Object/Type MethodName WhereToStoreRetureValue [Parameter0 Parameter1 ...]
         IF = 0x03,              //If sentence. ID BOOL_VALUE LABEL
