@@ -403,6 +403,12 @@ namespace CLUNL.Scripting.SMS
                         {
 
                             object list = FindObject(current.OperateDatapath);
+                            if (list == null)
+                            {
+                                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.LABEL_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADDW Failed: Target object \"{current.parameters[0]}\" does not exist!.", Position = Index });
+                                return null;
+                            }
+                            else
                             if ((list as IList) != null)
                             {
                                 (list as IList)[Convert.ToInt32(Parse(current.parameters[0]))] = Parse(current.parameters[1]);
@@ -411,13 +417,24 @@ namespace CLUNL.Scripting.SMS
                             {
                                 (list as IDictionary)[Parse(current.parameters[0])] = Parse(current.parameters[1]);
                             }
+                            else
+                            {
+                                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.INVALID_DATA_TYPE, ErrorType = ErrorType.Error, Message = $"ADDW Failed: Target object \"{current.OperateDatapath}\" cannot be casted to IList or IDictionary!.", Position = Index });
+                                return null;
+                            }
                         }
                         break;
                     case SMSOperation.ADDW:
                         {
 
                             object list = FindObject(current.OperateDatapath);
-                            if ((list as IList)!=null)
+                            if (list == null)
+                            {
+                                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.LABEL_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADDW Failed: Target object \"{current.parameters[0]}\" does not exist!.", Position = Index });
+                                return null;
+                            }
+                            else
+                            if ((list as IList) != null)
                             {
 
                                 var l = (list as IList);
@@ -428,6 +445,7 @@ namespace CLUNL.Scripting.SMS
                                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.LABEL_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADDW Failed: Target object \"{current.parameters[0]}\" does not exist!.", Position = Index });
                                     return null;
                                 }
+                                Trace.WriteLine($"Add {current.parameters[0]} to {current.OperateDatapath}");
                                 l.Add(d);
                             }
                             else if ((list as IDictionary) != null)
@@ -439,12 +457,20 @@ namespace CLUNL.Scripting.SMS
                             }
                             else
                             {
+                                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.INVALID_DATA_TYPE, ErrorType = ErrorType.Error, Message = $"ADDW Failed: Target object \"{current.OperateDatapath}\" cannot be casted to IList or IDictionary!.", Position = Index });
+                                return null;
                             }
                         }
                         break;
                     case SMSOperation.LW:
                         {
                             object list = FindObject(current.OperateDatapath);
+                            if (list == null)
+                            {
+                                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.LABEL_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADDW Failed: Target object \"{current.parameters[0]}\" does not exist!.", Position = Index });
+                                return null;
+                            }
+                            else
                             if ((list as IList) != null)
                             {
                                 SetObject(current.parameters[1], (list as IList)[Convert.ToInt32(Parse(current.parameters[0]))], null, ref result, Index);
@@ -452,6 +478,11 @@ namespace CLUNL.Scripting.SMS
                             else if ((list as IDictionary) != null)
                             {
                                 SetObject(current.parameters[1], (list as IDictionary)[Parse(current.parameters[0])], null, ref result, Index);
+                            }
+                            else
+                            {
+                                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.INVALID_DATA_TYPE, ErrorType = ErrorType.Error, Message = $"ADDW Failed: Target object \"{current.OperateDatapath}\" cannot be casted to IList or IDictionary!.", Position = Index });
+                                return null;
                             }
                         }
                         break;

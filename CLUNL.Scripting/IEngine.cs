@@ -35,6 +35,7 @@ namespace CLUNL.Scripting
         public readonly static int NUMBER_CONVERSION_ERROR = 0x0004;
         public readonly static int OBJ_IS_NOT_COMPARABLE = 0x0005;
         public readonly static int MEMBER_DOES_NOT_EXIST = 0x0006;
+        public readonly static int INVALID_DATA_TYPE = 0x0007;
     }
     public struct ScriptError
     {
