@@ -208,12 +208,43 @@ namespace CLUNL.Scripting.SMS
                     case SMSOperation.EQL:
                         {
                             var obj0 = Parse(current.parameters[0]);
-                            if(obj0 is IComparable)
+                            if (obj0 is IComparable)
                             {
-                            SetObject(current.OperateDatapath, ((IComparable)Parse(current.parameters[0])).CompareTo(Parse(current.parameters[1]))==0, typeof(bool), ref result, Index);
+                                SetObject(current.OperateDatapath, ((IComparable)Parse(current.parameters[0])).CompareTo(Parse(current.parameters[1])) == 0, typeof(bool), ref result, Index);
 
-                            }else
-                            SetObject(current.OperateDatapath, Parse(current.parameters[0]).Equals(Parse(current.parameters[1])), typeof(bool), ref result, Index);
+                            }
+                            else
+                                SetObject(current.OperateDatapath, Parse(current.parameters[0]).Equals(Parse(current.parameters[1])), typeof(bool), ref result, Index);
+                        }
+                        break;
+                    case SMSOperation.LGR:
+                        {
+                            var obj0 = Parse(current.parameters[0]);
+                            if (obj0 is IComparable)
+                            {
+                                SetObject(current.OperateDatapath, ((IComparable)Parse(current.parameters[0])).CompareTo(Parse(current.parameters[1])) > 0, typeof(bool), ref result, Index);
+
+                            }
+                            else
+                            {
+                                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.OBJ_IS_NOT_COMPARABLE, ErrorType = ErrorType.Error, Message = $"Comparison Failed: Target object \"{current.OperateDatapath}\" is not comparable!.", Position = Index });
+                                return null;
+                            }
+                        }
+                        break;
+                    case SMSOperation.LGE:
+                        {
+                            var obj0 = Parse(current.parameters[0]);
+                            if (obj0 is IComparable)
+                            {
+                                SetObject(current.OperateDatapath, ((IComparable)Parse(current.parameters[0])).CompareTo(Parse(current.parameters[1])) >= 0, typeof(bool), ref result, Index);
+
+                            }
+                            else
+                            {
+                                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.OBJ_IS_NOT_COMPARABLE, ErrorType = ErrorType.Error, Message = $"Comparison Failed: Target object \"{current.OperateDatapath}\" is not comparable!.", Position = Index });
+                                return null;
+                            }
                         }
                         break;
                     case SMSOperation.IF:
@@ -693,6 +724,8 @@ namespace CLUNL.Scripting.SMS
         EXER = 0x13,            //Execute external method and receive return value. EXER Object/Type MethodName WhereToStoreRetureValue [Parameter0 Parameter1 ...]
         IF = 0x03,              //If sentence. ID BOOL_VALUE LABEL
         EQL = 0x15,             //Judge if two object is equal. EQL BoolObj Obj0 Obj1. To implement !=, recommend: EQL BOOL_VALUE BOOL_VALUE Bool:False
+        LGR = 0x16,             //Judge if object 1 is larger than object 2. LGR BoolObj Obj1 Obj2. To implement '<', it is recommended to swap the order.
+        LGE = 0x17,             //Judge if object 1 is larger than or equal to object 2. LGE BoolObj Obj1 Obj2. This operation is equal to 'BoolObj = Obj1 >= Obj2;'
         J = 0x04,               //Jump to label. J Label_Name
         LABEL = 0x05,           //Define label. LABEL Label_Name
         END = 0x06,             //End of program. END

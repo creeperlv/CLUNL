@@ -33,6 +33,7 @@ namespace CLUNL.Scripting
         public readonly static int REFERENCE_DOES_NOT_EXIST = 0x0002;
         public readonly static int LABEL_DOES_NOT_EXIST = 0x0003;
         public readonly static int NUMBER_CONVERSION_ERROR = 0x0004;
+        public readonly static int OBJ_IS_NOT_COMPARABLE = 0x0005;
     }
     public struct ScriptError
     {

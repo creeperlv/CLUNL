@@ -38,7 +38,7 @@ SET Result Int:0
 LABEL L0
 ADD Result Int Result 1
 EXEC Console WriteLine E:Result
-EQL B E:Result Int:1#A Comment
+LGR B Int:50 E:Result#A Comment
 IF B L0
 ";
             var obj=simpleManagedScript.Eval(script,out errors);
