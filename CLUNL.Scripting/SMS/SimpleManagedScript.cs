@@ -666,6 +666,7 @@ namespace CLUNL.Scripting.SMS
         }
         public void Compile(string Content, ref List<ScriptError> errors)
         {
+            CommandSet.Clear();
             StringReader stringReader = new StringReader(Content);
             string Line = null;
             while ((Line = stringReader.ReadLine()) != null)
@@ -835,6 +836,10 @@ namespace CLUNL.Scripting.SMS
         {
             return Memory;
         }
+        public void ClearMemory()
+        {
+            Memory.Clear();
+        }
         public void ResetEngine()
         {
             Current.Dispose();
@@ -847,6 +852,14 @@ namespace CLUNL.Scripting.SMS
             Base = environment;
             Current = Base.HardCopy();
 
+        }
+
+        public void Dispose()
+        {
+            Current.Dispose();
+            ClearMemory();
+            CommandSet.Clear();
+            Base = null;
         }
     }
     internal enum SMSOperation

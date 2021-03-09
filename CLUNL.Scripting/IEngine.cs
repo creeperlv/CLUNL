@@ -5,13 +5,14 @@ using System.Threading.Tasks;
 
 namespace CLUNL.Scripting
 {
-    public interface IEngine
+    public interface IEngine:IDisposable
     {
         ScriptEnvironment GetCurrentEnvironment();
         void SetEnvironmentBase(ScriptEnvironment environment);
         object Eval(string str,out List<ScriptError> result);
         Task<(object,List<ScriptError>)> EvalAsync(string str);
         void ResetEngine();
+        void ClearMemory();
         Dictionary<string, Data> GetMemory();
     }
     public struct Data
