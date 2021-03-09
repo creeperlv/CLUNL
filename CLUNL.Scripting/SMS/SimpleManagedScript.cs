@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -399,10 +400,83 @@ namespace CLUNL.Scripting.SMS
                         }
                         break;
                     case SMSOperation.SW:
+                        {
+
+                            object list = FindObject(current.OperateDatapath);
+                            if ((list as IList) != null)
+                            {
+                                (list as IList)[Convert.ToInt32(Parse(current.parameters[0]))] = Parse(current.parameters[1]);
+                            }
+                            else if ((list as IDictionary) != null)
+                            {
+                                (list as IDictionary)[Parse(current.parameters[0])] = Parse(current.parameters[1]);
+                            }
+                        }
                         break;
                     case SMSOperation.ADDW:
+                        {
+
+                            object list = FindObject(current.OperateDatapath);
+                            if ((list as IList)!=null)
+                            {
+
+                                var l = (list as IList);
+                                var d = Parse(current.parameters[0]);
+                                if (d == null)
+                                {
+
+                                    result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.LABEL_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADDW Failed: Target object \"{current.parameters[0]}\" does not exist!.", Position = Index });
+                                    return null;
+                                }
+                                l.Add(d);
+                            }
+                            else if ((list as IDictionary) != null)
+                            {
+                                var index = Parse(current.parameters[0]);
+                                var d = (list as IDictionary);
+                                if (d.Contains(index)) d[index] = Parse(current.parameters[1]);
+                                else d.Add(index, Parse(current.parameters[1]));
+                            }
+                            else
+                            {
+                            }
+                        }
                         break;
                     case SMSOperation.LW:
+                        {
+                            object list = FindObject(current.OperateDatapath);
+                            if ((list as IList) != null)
+                            {
+                                SetObject(current.parameters[1], (list as IList)[Convert.ToInt32(Parse(current.parameters[0]))], null, ref result, Index);
+                            }
+                            else if ((list as IDictionary) != null)
+                            {
+                                SetObject(current.parameters[1], (list as IDictionary)[Parse(current.parameters[0])], null, ref result, Index);
+                            }
+                        }
+                        break;
+                    case SMSOperation.NL:
+                        {
+                            var t = typeof(List<int>).Assembly.GetType($"System.Collections.Generic.List`1[{FindType(current.parameters[0])}]");
+                            Data d = new Data();
+                            d.DataType = t;
+                            d.CoreData = Activator.CreateInstance(t);
+                            if (!Memory.ContainsKey(current.OperateDatapath))
+                                Memory.Add(current.OperateDatapath, d);
+                            else Memory[current.OperateDatapath] = d;
+                        }
+                        break;
+                    case SMSOperation.ND:
+                        {
+                            var t = typeof(List<int>).Assembly.GetType($"System.Collections.Generic.Dictionary`2[{FindType(current.parameters[0])},{FindType(current.parameters[1])}]");
+
+                            Data d = new Data();
+                            d.DataType = t;
+                            d.CoreData = Activator.CreateInstance(t);
+                            if (!Memory.ContainsKey(current.OperateDatapath))
+                                Memory.Add(current.OperateDatapath, d);
+                            else Memory[current.OperateDatapath] = d;
+                        }
                         break;
                     default:
                         break;
@@ -767,9 +841,12 @@ namespace CLUNL.Scripting.SMS
         DIV = 0x0D,             //Divide Object0=Object1/Object2. DIV OBJ0 TYPE OBJ1 OBJ2
         DIVI = 0x0E,            //Divide immediately. DIVI OBJ0 TYPE OBJ1 NUMBER
         DIVII = 0x0F,           //Divide inversed immediately. DIVI OBJ0 TYPE NUMBER OBJ1
-        SW = 0x10,              //Save Word. SW ARRAY_OBJECT INDEX TYPE:NUMBER
+        SW = 0x10,              //Save Word. SW ARRAY_OBJECT INDEX TYPE:DATA(Object)
         ADDW = 0x11,            //Add word to ArrayList. ADDW LIST_OBJECT TYPE:DATA                        
         LW = 0x12,              //Load word. LW ARRAY_OBJECT INDEX TARGET_OBJECT
+        NL = 0x18,              //New List
+        ND = 0x19,              //New Dictionary
+        NEWT = 0x1A,
     }
     internal struct SMSSingleCommand
     {

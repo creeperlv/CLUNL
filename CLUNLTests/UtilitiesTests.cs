@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -34,11 +35,18 @@ namespace CLUNLTests
             string script = @"
 
 NEW B Bool
+NL LIST_INT Int
+NEW TEMP_INT Int
+NEW TEMP_INT2 Int
+SET TEMP_INT Int:0
 SET Result Int:0
 LABEL L0
 ADD Result Int Result 1
-EXEC Console WriteLine E:Result
-LGR B Int:50 E:Result#A Comment
+ADDW LIST_INT E:Result
+ADD TEMP_INT2 Int Result -1
+LW LIST_INT E:TEMP_INT2 TEMP_INT
+EXEC Console WriteLine E:TEMP_INT
+LGR B Int:5 E:Result#A Comment
 IF B L0
 ";
             var obj=simpleManagedScript.Eval(script,out errors);
