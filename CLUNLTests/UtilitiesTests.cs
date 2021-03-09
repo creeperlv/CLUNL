@@ -30,16 +30,27 @@ namespace CLUNLTests
             CLUNL.Scripting.ScriptEnvironment environment = new CLUNL.Scripting.ScriptEnvironment();
             environment.Expose("Console", typeof(Console));
             simpleManagedScript.SetEnvironmentBase(environment);
-
+            
             string script = @"
-ADD Result Int 100 200
-ADDI Result Int Result 50
-MULT Result Double Result 3.1415926
-SET Result E:NULL
-EXEC Console WriteLine String:""Hello, World!""
+
+NEW B Bool
+SET Result Int:0
+LABEL L0
+ADD Result Int Result 1
+EXEC Console WriteLine E:Result
+EQL B E:Result Int:1#A Comment
+IF B L0
 ";
             var obj=simpleManagedScript.Eval(script,out errors);
             Trace.WriteLine(obj + "");
+            if (errors.Count != 0)
+            {
+                foreach (var item in errors)
+                {
+
+                    Trace.WriteLine(""+item.Message);
+                }
+            }
         }
     }
 }
