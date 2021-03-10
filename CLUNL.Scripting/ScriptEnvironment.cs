@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace CLUNL.Scripting
 {
@@ -12,6 +13,9 @@ namespace CLUNL.Scripting
             Expose("null", (object)null);
             Expose("Null", (object)null);
             Expose("NULL", (object)null);
+            Expose("Array", typeof(Array));
+            Expose("Trace", typeof(Trace));
+            
         }
         public void Expose(string name, object Target)
         {

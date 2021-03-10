@@ -554,6 +554,8 @@ namespace CLUNL.Scripting.SMS
                         return new FileInfo(content);
                     case "DirectoryInfo":
                         return new DirectoryInfo(content);
+                    case "T":
+                        return FindType(content);
                     case "E":
                         {
                             return FindObject(content);
