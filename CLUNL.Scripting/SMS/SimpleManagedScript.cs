@@ -62,6 +62,16 @@ namespace CLUNL.Scripting.SMS
                             else Memory[current.OperateDatapath] = d;
                         }
                         break;
+                    case SMSOperation.NEWT:
+                        {
+                            Data d = new Data();
+                            d.CoreData = FindType(current.parameters[0]);
+                            d.DataType = typeof(Type);
+                            if (!Memory.ContainsKey(current.OperateDatapath))
+                                Memory.Add(current.OperateDatapath, d);
+                            else Memory[current.OperateDatapath] = d;
+                        }
+                        break;
                     case SMSOperation.SET:
                         {
                             if (SetObject(current.OperateDatapath, Parse(current.parameters[0]), null, ref result, Index))
@@ -892,7 +902,7 @@ namespace CLUNL.Scripting.SMS
         LW = 0x12,              //Load word. LW ARRAY_OBJECT INDEX TARGET_OBJECT
         NL = 0x18,              //New List
         ND = 0x19,              //New Dictionary
-        NEWT = 0x1A,
+        NEWT = 0x1A,            //Create an instance of Type of certain type. NEWT Object Type.
     }
     internal struct SMSSingleCommand
     {
