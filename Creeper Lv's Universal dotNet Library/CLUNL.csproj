@@ -5,9 +5,9 @@
     <!--<RootNamespace>Creeper_Lv_s_Universal_dotNet_Library</RootNamespace>-->
     <RootNamespace>CLUNL</RootNamespace>
     <AssemblyName>CLUNL</AssemblyName>
-    <Version>0.0.2.3</Version>
+    <Version>0.0.2.4</Version>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <Copyright>Copyright (C) 2020 Creeper Lv</Copyright>
+    <Copyright>Copyright (C) 2020-2021 Creeper Lv</Copyright>
     <PackageLicenseExpression></PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/creeperlv/CLUNL</PackageProjectUrl>
     <RepositoryUrl>https://github.com/creeperlv/CLUNL</RepositoryUrl>
@@ -15,9 +15,9 @@
     <Authors>Creeper Lv</Authors>
     <Company>Creeper Lv</Company>
     <Description>Creeper Lv's Universal dotNet Library</Description>
-    <AssemblyVersion>0.0.2.3</AssemblyVersion>
-    <FileVersion>0.0.2.3</FileVersion>
-    <PackageReleaseNotes>ListData will no longer throw an exception when "Length" is null.</PackageReleaseNotes>
+    <AssemblyVersion>0.0.2.4</AssemblyVersion>
+    <FileVersion>0.0.2.4</FileVersion>
+    <PackageReleaseNotes>Added a command-line analyze tool.</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
