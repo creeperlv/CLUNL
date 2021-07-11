@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using CLUNL.Data.Layer0;
+using System;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,15 +11,7 @@ namespace CLUNL.Data.Serializables.CheckpointSystem
     /// </summary>
     public class CheckpointSystem
     {
-        Dictionary<string, ICheckpointData> keyValuePairs = new Dictionary<string, ICheckpointData>();
-        /// <summary>
-        /// Register a checkpoint data to the system's index;
-        /// </summary>
-        /// <param name="data"></param>
-        public void RegisterCheckPointData(ICheckpointData data)
-        {
-            keyValuePairs.Add(data.GetName(), data);
-        }
+
         private CheckpointSystem()
         {
 
@@ -38,13 +30,42 @@ namespace CLUNL.Data.Serializables.CheckpointSystem
             CurrentCheckpointSystem.StorageFolder = new DirectoryInfo(StorageFolder);
         }
         /// <summary>
-        /// Create a checkpoint (snapshot).
+        /// Create a checkpoint with random name.
         /// </summary>
-        public void CreateCheckPoint()
+        public CheckPoint CreateCheckPoint()
         {
             var guid = Guid.NewGuid();
             var subd = StorageFolder.CreateSubdirectory(guid.ToString());
-
+            return new CheckPoint(subd);
+        }
+        /// <summary>
+        /// Remove a checkpoint with given name.
+        /// </summary>
+        /// <param name="Name"></param>
+        /// <param name="throwWhenNotExist"></param>
+        public void RemoveACheckPoint(string Name, bool throwWhenNotExist = false)
+        {
+            var CPD = new DirectoryInfo(Path.Combine(StorageFolder.FullName, Name));
+            if (CPD.Exists) CPD.Delete();
+            else if (throwWhenNotExist) throw new DirectoryNotFoundException();
+        }
+        /// <summary>
+        /// Get or create a check point with given name.
+        /// </summary>
+        /// <param name="Name"></param>
+        /// <returns></returns>
+        public CheckPoint GetOrCreateCheckPoint(string Name)
+        {
+            var CPD = new DirectoryInfo(Path.Combine(StorageFolder.FullName, Name));
+            if (CPD.Exists)
+            {
+                return new CheckPoint(CPD);
+            }
+            else
+            {
+                CPD.Create();
+            }
+            return new CheckPoint(CPD);
         }
         /// <summary>
         /// Enumerate current checkpoints, newest first.
@@ -53,7 +74,7 @@ namespace CLUNL.Data.Serializables.CheckpointSystem
         public string[] EnumerateCheckpoints()
         {
             var d = StorageFolder.EnumerateDirectories().ToArray();
-            Sort(ref d, 0, d.Length - 1,false);
+            FileUtilities.SortDirectoryByDate(ref d, 0, d.Length - 1, false);
             string[] dd = new string[d.Length];
             int i = 0;
             foreach (var item in d)
@@ -64,73 +85,6 @@ namespace CLUNL.Data.Serializables.CheckpointSystem
 
             return dd;
         }
-        /// <summary>
-        /// Load a check point with given name.
-        /// </summary>
-        /// <param name="name"></param>
-        public void LoadCheckPoint(string name)
-        {
-
-        }
-        private static void Sort(ref DirectoryInfo[] Data, int L, int R, bool isAscending = true)
-        {
-            if (L >= R) return;
-            int i = _Sort(ref Data, L, R, isAscending);
-            Sort(ref Data, L, i - 1, isAscending);
-            Sort(ref Data, i + 1, R, isAscending);
-        }
-
-        private static int _Sort(ref DirectoryInfo[] Data, int L, int R, bool isAscending)
-        {
-            DirectoryInfo pivot = Data[L];
-            int __L = L;
-            int __R = R;
-            if (isAscending)
-                while (__L < __R)
-                {
-                    while (Data[__R].CreationTime >= pivot.CreationTime && __L < __R)
-                    {
-                        __R--;
-                    }
-                    Data[__L] = Data[__R];
-                    while (Data[__L].CreationTime <= pivot.CreationTime && __L < __R)
-                    {
-                        __L++;
-                    }
-                    Data[__R] = Data[__L];
-                }
-            else while (__L < __R)
-                {
-                    while (Data[__R].CreationTime <= pivot.CreationTime && __L < __R)
-                    {
-                        __R--;
-                    }
-                    Data[__L] = Data[__R];
-                    while (Data[__L].CreationTime >= pivot.CreationTime && __L < __R)
-                    {
-                        __L++;
-                    }
-                    Data[__R] = Data[__L];
-                }
-            Data[__L] = pivot;
-            return __L;
-        }
     }
-    /// <summary>
-    /// State Manager
-    /// </summary>
-    public interface ICheckpointData
-    {
-        /// <summary>
-        /// The unique name of the check point data.
-        /// </summary>
-        /// <returns></returns>
-        string GetName();
-        /// <summary>
-        /// Save action (CreateCheckPoint)
-        /// </summary>
-        /// <returns></returns>
-        byte[] Save();
-        void Load();
-    }
+
 }

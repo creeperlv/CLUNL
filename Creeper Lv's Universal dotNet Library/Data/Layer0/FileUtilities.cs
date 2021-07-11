@@ -52,5 +52,56 @@ namespace CLUNL.Data.Layer0
                 MoveFolderRecursively(item.FullName, Path.Combine(directoryInfo1.FullName, item.Name));
             }
         }
+
+        /// <summary>
+        /// Sort a directory array by date.
+        /// </summary>
+        /// <param name="Data"></param>
+        /// <param name="L">0</param>
+        /// <param name="R">Data.Length-1</param>
+        /// <param name="isAscending"></param>
+        public static void SortDirectoryByDate(ref DirectoryInfo[] Data, int L, int R, bool isAscending = true)
+        {
+            if (L >= R) return;
+            int i = _Sort(ref Data, L, R, isAscending);
+            SortDirectoryByDate(ref Data, L, i - 1, isAscending);
+            SortDirectoryByDate(ref Data, i + 1, R, isAscending);
+        }
+
+        private static int _Sort(ref DirectoryInfo[] Data, int L, int R, bool isAscending)
+        {
+            DirectoryInfo pivot = Data[L];
+            int __L = L;
+            int __R = R;
+            if (isAscending)
+                while (__L < __R)
+                {
+                    while (Data[__R].CreationTime >= pivot.CreationTime && __L < __R)
+                    {
+                        __R--;
+                    }
+                    Data[__L] = Data[__R];
+                    while (Data[__L].CreationTime <= pivot.CreationTime && __L < __R)
+                    {
+                        __L++;
+                    }
+                    Data[__R] = Data[__L];
+                }
+            else while (__L < __R)
+                {
+                    while (Data[__R].CreationTime <= pivot.CreationTime && __L < __R)
+                    {
+                        __R--;
+                    }
+                    Data[__L] = Data[__R];
+                    while (Data[__L].CreationTime >= pivot.CreationTime && __L < __R)
+                    {
+                        __L++;
+                    }
+                    Data[__R] = Data[__L];
+                }
+            Data[__L] = pivot;
+            return __L;
+        }
     }
 }
