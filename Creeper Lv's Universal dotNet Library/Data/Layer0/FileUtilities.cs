@@ -103,5 +103,55 @@ namespace CLUNL.Data.Layer0
             Data[__L] = pivot;
             return __L;
         }
+        /// <summary>
+        /// Sort a directory array by date.
+        /// </summary>
+        /// <param name="Data"></param>
+        /// <param name="L"></param>
+        /// <param name="R"></param>
+        /// <param name="isAscending"></param>
+        public static void SortFileByDate(ref FileInfo[] Data, int L, int R, bool isAscending = true)
+        {
+            if (L >= R) return;
+            int i = __Sort(ref Data, L, R, isAscending);
+            SortFileByDate(ref Data, L, i - 1, isAscending);
+            SortFileByDate(ref Data, i + 1, R, isAscending);
+        }
+
+        private static int __Sort(ref FileInfo[] Data, int L, int R, bool isAscending)
+        {
+            FileInfo pivot = Data[L];
+            int __L = L;
+            int __R = R;
+            if (isAscending)
+                while (__L < __R)
+                {
+                    while (Data[__R].CreationTime >= pivot.CreationTime && __L < __R)
+                    {
+                        __R--;
+                    }
+                    Data[__L] = Data[__R];
+                    while (Data[__L].CreationTime <= pivot.CreationTime && __L < __R)
+                    {
+                        __L++;
+                    }
+                    Data[__R] = Data[__L];
+                }
+            else while (__L < __R)
+                {
+                    while (Data[__R].CreationTime <= pivot.CreationTime && __L < __R)
+                    {
+                        __R--;
+                    }
+                    Data[__L] = Data[__R];
+                    while (Data[__L].CreationTime >= pivot.CreationTime && __L < __R)
+                    {
+                        __L++;
+                    }
+                    Data[__R] = Data[__L];
+                }
+            Data[__L] = pivot;
+            return __L;
+        }
     }
 }

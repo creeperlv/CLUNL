@@ -1,5 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using CLUNL.Data.Layer0;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace CLUNL.Data.Serializables.CheckpointSystem
 {
@@ -9,6 +13,10 @@ namespace CLUNL.Data.Serializables.CheckpointSystem
     public class CheckPoint
     {
         DirectoryInfo StorageFolder;
+        static JsonSerializerSettings serializerSettings = new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.All
+        };
         internal CheckPoint(DirectoryInfo di)
         {
             StorageFolder = di;
@@ -18,21 +26,42 @@ namespace CLUNL.Data.Serializables.CheckpointSystem
         /// The name of the checkpoint.
         /// </summary>
         public string Name { get => StorageFolder.Name; }
-        Dictionary<string, ICheckpointData> keyValuePairs = new Dictionary<string, ICheckpointData>();
+        Dictionary<string, ICheckpointData> ReferenceDatas = new Dictionary<string, ICheckpointData>();
         /// <summary>
         /// Register a checkpoint data to the system's index;
         /// </summary>
         /// <param name="data"></param>
         public void RegisterCheckPointData(ICheckpointData data)
         {
-            keyValuePairs.Add(data.GetName(), data);
+            ReferenceDatas.Add(data.GetName(), data);
         }
         /// <summary>
         /// Create a snapshot of current state.
         /// </summary>
         public void CreateSnapshot()
         {
-
+            Dictionary<string, List<object>> RealData = new Dictionary<string, List<object>>();
+            foreach (var item in ReferenceDatas)
+            {
+                RealData.Add(item.Key, item.Value.Save());
+            }
+            var Name = Guid.NewGuid().ToString() + ".json";
+            File.WriteAllText(Path.Combine(StorageFolder.FullName, Name), JsonConvert.SerializeObject(RealData, serializerSettings));
+        }
+        /// <summary>
+        /// Enumerate the names of snapshots
+        /// </summary>
+        /// <returns></returns>
+        public string[] EnumerateSnapshots()
+        {
+            var arr = StorageFolder.EnumerateFiles().ToArray();
+            FileUtilities.SortFileByDate(ref arr, 0, arr.Length - 1, false);
+            string[] result = new string[arr.Length];
+            for (int i = 0; i < result.Length; i++)
+            {
+                result[i] = arr[i].Name;
+            }
+            return result;
         }
     }
     /// <summary>
@@ -49,10 +78,10 @@ namespace CLUNL.Data.Serializables.CheckpointSystem
         /// Save action (CreateCheckPoint)
         /// </summary>
         /// <returns></returns>
-        byte[] Save();
+        List<object> Save();
         /// <summary>
         /// Load action.
         /// </summary>
-        void Load();
+        void Load(List<object> data);
     }
 }
