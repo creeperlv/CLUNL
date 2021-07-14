@@ -45,8 +45,26 @@ namespace CLUNL.Data.Serializables.CheckpointSystem
             {
                 RealData.Add(item.Key, item.Value.Save());
             }
-            var Name = Guid.NewGuid().ToString() + ".json";
+            var Name = Guid.NewGuid().ToString();
             File.WriteAllText(Path.Combine(StorageFolder.FullName, Name), JsonConvert.SerializeObject(RealData, serializerSettings));
+        }
+        /// <summary>
+        /// Load a snapshot with given name of the checkpoint.
+        /// </summary>
+        public void LoadSnapshot(string Name)
+        {
+            var path = Path.Combine(StorageFolder.FullName, Name);
+            if (File.Exists(path))
+            {
+
+                Dictionary<string, List<object>> RealData;
+                RealData = JsonConvert.DeserializeObject<Dictionary<string, List<object>>>(File.ReadAllText(path), serializerSettings);
+                foreach (var item in RealData)
+                {
+                    ReferenceDatas[item.Key].Load(item.Value);
+                }
+
+            }
         }
         /// <summary>
         /// Enumerate the names of snapshots
