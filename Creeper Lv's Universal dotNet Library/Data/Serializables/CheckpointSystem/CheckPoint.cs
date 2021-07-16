@@ -1,4 +1,5 @@
 ﻿using CLUNL.Data.Layer0;
+using CLUNL.Data.Serializables.CheckpointSystem.Types;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -73,7 +74,7 @@ namespace CLUNL.Data.Serializables.CheckpointSystem
                 {
                     if (RealData.ContainsKey($"{item.Key}.Count"))
                     {
-                        int Count = (int)RealData[$"{item.Key}.Count"];
+                        IntNumber Count = (long)RealData[$"{item.Key}.Count"];
                         List<Object> d = new List<object>();
                         for (int i = 0; i < Count; i++)
                         {

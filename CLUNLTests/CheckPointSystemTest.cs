@@ -1,4 +1,5 @@
 ﻿using CLUNL.Data.Serializables.CheckpointSystem;
+using CLUNL.Data.Serializables.CheckpointSystem.Types;
 using CLUNL.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -55,16 +56,13 @@ namespace CLUNLTests
     {
         public string Name;
         public string GetName() => Name;
-        public int Field00;
-        public int Field01;
+        public IntNumber Field00;
+        public IntNumber Field01;
         public string Field02;
         public void Load(List<object> data)
         {
-            Trace.WriteLine(data[0]+":"+data[0].GetType());
-            Trace.WriteLine(data[1] + ":" + data[1].GetType());
-            Trace.WriteLine(data[2] + ":" + data[2].GetType());
-            Field00 = (int)data[0];
-            Field01 = (int)data[1];
+            Field00 = (IntNumber)data[0];
+            Field01 = (IntNumber)data[1];
             Field02 = (string)data[2];
         }
         public override bool Equals(object obj)
