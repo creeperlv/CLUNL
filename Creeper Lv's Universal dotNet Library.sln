@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30105.148
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31521.260
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CLUNL", "Creeper Lv's Universal dotNet Library\CLUNL.csproj", "{597737F0-9561-49FF-B000-F45DF6156B2D}"
 EndProject
@@ -29,7 +29,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CLUNL.Data.Layer0.Buffers.U
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CLUNL.Diagnosis", "CLUNL.Diagnosis\CLUNL.Diagnosis.csproj", "{7FD0CFB4-7CAD-4E38-8092-D3A4B2033476}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLUNL.Scripting", "CLUNL.Scripting\CLUNL.Scripting.csproj", "{897B3DAD-B205-4771-8112-3357928B0801}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CLUNL.Scripting", "CLUNL.Scripting\CLUNL.Scripting.csproj", "{897B3DAD-B205-4771-8112-3357928B0801}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLUNL.ConsoleAppHelper", "CLUNL.ConsoleAppHelper\CLUNL.ConsoleAppHelper.csproj", "{166A9243-50CA-4530-A4A7-71F27745675C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLUNL.Localization", "CLUNL.Localization\CLUNL.Localization.csproj", "{92E8596E-2690-460B-BA6F-6CEE8167BBC1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,6 +77,14 @@ Global
 		{897B3DAD-B205-4771-8112-3357928B0801}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{897B3DAD-B205-4771-8112-3357928B0801}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{897B3DAD-B205-4771-8112-3357928B0801}.Release|Any CPU.Build.0 = Release|Any CPU
+		{166A9243-50CA-4530-A4A7-71F27745675C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{166A9243-50CA-4530-A4A7-71F27745675C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{166A9243-50CA-4530-A4A7-71F27745675C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{166A9243-50CA-4530-A4A7-71F27745675C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92E8596E-2690-460B-BA6F-6CEE8167BBC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92E8596E-2690-460B-BA6F-6CEE8167BBC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92E8596E-2690-460B-BA6F-6CEE8167BBC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92E8596E-2690-460B-BA6F-6CEE8167BBC1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
