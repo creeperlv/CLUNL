@@ -9,6 +9,9 @@ namespace CLUNL.Localization
     {
         void ApplyLanguage();
     }
+    /// <summary>
+    /// Represent a language resource collection.
+    /// </summary>
     public class Language
     {
         private const string Locales = "Locales";
@@ -111,6 +114,56 @@ namespace CLUNL.Localization
                         if (!LanguageStrings.ContainsKey(pairName))
                             LanguageStrings.Add(pairName, pairContent);
                         else LanguageStrings[pairName] = pairContent;
+                    }
+                }
+            }
+        }
+        public static void LoadFromStringArray(string [] contents)
+        {
+            foreach (var item in contents)
+            {
+                var pitem = item.Trim();
+                if (pitem.StartsWith("#") || pitem.StartsWith(";") || pitem.StartsWith("//"))
+                {
+                    continue;
+                }
+                else
+                {
+                    var index = pitem.IndexOf(EqualSymbol);
+                    if (index > 0)
+                    {
+                        var pairName = pitem.Substring(0, index);
+                        var pairContent = pitem.Substring(index + 1);
+                        if (!LanguageStrings.ContainsKey(pairName))
+                            LanguageStrings.Add(pairName, pairContent);
+                        else LanguageStrings[pairName] = pairContent;
+                    }
+                }
+            }
+        }
+        public static void LoadFromString(string content)
+        {
+            using (StringReader stringReader = new StringReader(content))
+            {
+                string item=null;
+                while ((item =stringReader.ReadLine())!=null)
+                {
+                    var pitem = item.Trim();
+                    if (pitem.StartsWith("#") || pitem.StartsWith(";") || pitem.StartsWith("//"))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        var index = pitem.IndexOf(EqualSymbol);
+                        if (index > 0)
+                        {
+                            var pairName = pitem.Substring(0, index);
+                            var pairContent = pitem.Substring(index + 1);
+                            if (!LanguageStrings.ContainsKey(pairName))
+                                LanguageStrings.Add(pairName, pairContent);
+                            else LanguageStrings[pairName] = pairContent;
+                        }
                     }
                 }
             }
