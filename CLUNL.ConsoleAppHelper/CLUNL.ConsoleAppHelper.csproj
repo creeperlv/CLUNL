@@ -2,10 +2,27 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <Version>0.0.1.0</Version>
+    <PackageLicenseExpression></PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/creeperlv/CLUNL</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/creeperlv/CLUNL</RepositoryUrl>
+    <Description>Console App Helper of Creeper Lv's Universal dotNet Library</Description>
+    <Authors>Creeper Lv</Authors>
+    <Company>Creeper Lv</Company>
+    <Copyright>Copyright (C) 2020-2021 Creeper Lv</Copyright>
+    <PackageReleaseNotes>First version of CLUNL.ConsoleAppHelper.</PackageReleaseNotes>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CLUNL.Localization\CLUNL.Localization.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 </Project>

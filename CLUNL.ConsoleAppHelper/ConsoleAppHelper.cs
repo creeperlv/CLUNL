@@ -10,27 +10,58 @@ using CLUNL.Localization;
 
 namespace CLUNL.ConsoleAppHelper
 {
-    [System.AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = true)]
+    /// <summary>
+    /// Indicates that a class is a console Application feature.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = true)]
     public sealed class DependentFeatureAttribute : Attribute
     {
         readonly string nameString;
         readonly string featureCollectionID;
+        /// <summary>
+        /// Initializes a new instance of the `DependentFeatureAttribute` class.
+        /// </summary>
+        /// <param name="featureCollectionID">The ID of the collection, in case an assembly contains features that should be accessed in separated dependent application.</param>
+        /// <param name="nameString"></param>
         public DependentFeatureAttribute(string featureCollectionID, string nameString)
         {
             this.nameString = nameString;
             this.featureCollectionID = featureCollectionID;
         }
+
+        /// <summary>
+        /// The ID of the collection, in case an assembly contains features that should be accessed in separated dependent application.
+        /// </summary>
         public string FeatureCollectionID { get => featureCollectionID; }
+        /// <summary>
+        /// The name of the feature.
+        /// </summary>
         public string Name
         {
             get { return nameString; }
         }
+        /// <summary>
+        /// Description of the feature.
+        /// </summary>
         public string Description { get; set; } = "";
+        /// <summary>
+        /// Available options.
+        /// </summary>
         public string[] Options { get; set; }
+        /// <summary>
+        /// Option descriptions.
+        /// </summary>
         public string[] OptionDescriptions { get; set; }
     }
+    /// <summary>
+    /// Main class of the CLUNL.ConsoleAppHelper.
+    /// </summary>
     public class ConsoleAppHelper
     {
+        /// <summary>
+        /// Output an error message.
+        /// </summary>
+        /// <param name="msg"></param>
         public static void Out(ErrorMsg msg)
         {
             if (isBatchMode)
@@ -43,6 +74,10 @@ namespace CLUNL.ConsoleAppHelper
                 Out(Language.Find(CurrentFeatureCollectionID + ".Errors." + msg.ID, msg.Fallback));
             }
         }
+        /// <summary>
+        /// Output an error message, followed by the current line terminator.
+        /// </summary>
+        /// <param name="msg"></param>
         public static void OutLine(ErrorMsg msg)
         {
             if (isBatchMode)
@@ -55,6 +90,10 @@ namespace CLUNL.ConsoleAppHelper
                 OutLine(Language.Find(CurrentFeatureCollectionID + ".Errors." + msg.ID, msg.Fallback));
             }
         }
+        /// <summary>
+        /// Output a warning message.
+        /// </summary>
+        /// <param name="msg"></param>
         public static void Out(WarnMsg msg)
         {
             if (isBatchMode)
@@ -67,6 +106,10 @@ namespace CLUNL.ConsoleAppHelper
                 Out(Language.Find(CurrentFeatureCollectionID + ".Errors." + msg.ID, msg.Fallback));
             }
         }
+        /// <summary>
+        /// Output a warning message, followed by the current line terminator.
+        /// </summary>
+        /// <param name="msg"></param>
         public static void OutLine(WarnMsg msg)
         {
             if (isBatchMode)
@@ -79,6 +122,10 @@ namespace CLUNL.ConsoleAppHelper
                 OutLine(Language.Find(CurrentFeatureCollectionID + ".Errors." + msg.ID, msg.Fallback));
             }
         }
+        /// <summary>
+        /// Output an object.
+        /// </summary>
+        /// <param name="o"></param>
         public static void Out(object o)
         {
             if (isSlientMode is false && isBatchMode == false)
@@ -86,6 +133,9 @@ namespace CLUNL.ConsoleAppHelper
                 Console.Write(o);
             }
         }
+        /// <summary>
+        /// Output a blank line.
+        /// </summary>
         public static void OutLine()
         {
             if (isSlientMode is false && isBatchMode == false)
@@ -93,6 +143,10 @@ namespace CLUNL.ConsoleAppHelper
                 Console.WriteLine();
             }
         }
+        /// <summary>
+        /// OUtput on object, followed by the current line terminator.
+        /// </summary>
+        /// <param name="o"></param>
         public static void OutLine(object o)
         {
             if (isSlientMode is false && isBatchMode == false)
@@ -102,6 +156,11 @@ namespace CLUNL.ConsoleAppHelper
         }
 
         private const string Separator = ": ";
+        /// <summary>
+        /// Output two object in format of "`o1` : `o1`", followed by the current line terminator.
+        /// </summary>
+        /// <param name="o1"></param>
+        /// <param name="o2"></param>
 
         public static void OutLine(object o1, object o2)
         {
@@ -118,6 +177,11 @@ namespace CLUNL.ConsoleAppHelper
         static Dictionary<string, IFeature> features = new Dictionary<string, IFeature>();
         static Dictionary<string, DependentFeatureAttribute> infos = new Dictionary<string, DependentFeatureAttribute>();
         internal static string CurrentFeatureCollectionID;
+        /// <summary>
+        /// Initialize ConsoleAppHelper
+        /// </summary>
+        /// <param name="FeatureCollectionID"></param>
+        /// <param name="ProductName"></param>
         public static void Init(string FeatureCollectionID, string ProductName = "CLUNL")
         {
             StackTrace stackTrace = new StackTrace();
@@ -159,6 +223,9 @@ namespace CLUNL.ConsoleAppHelper
             if (Language.IsInited() is false)
                 Language.Init(FeatureCollectionID + "Language", ProductName);
         }
+        /// <summary>
+        /// Print out a auto-generated help document.
+        /// </summary>
         public static void PrintHelp()
         {
             OutLine(Language.Find(CurrentFeatureCollectionID + ".Title", CurrentFeatureCollectionID));
@@ -189,6 +256,10 @@ namespace CLUNL.ConsoleAppHelper
                 PrintHelp(item.Key);
             }
         }
+        /// <summary>
+        /// Print out a auto-generated help document for a certain feature.
+        /// </summary>
+        /// <param name="FeatureName"></param>
         public static void PrintHelp(string FeatureName)
         {
             var FeatureDesc = Language.Find($"{CurrentFeatureCollectionID}.Commands.{FeatureName}", infos[FeatureName].Description);
@@ -248,10 +319,17 @@ namespace CLUNL.ConsoleAppHelper
 
             }
         }
+        /// <summary>
+        /// Print out localized version message.
+        /// </summary>
         public static void PrintVersion()
         {
             Output.OutLine("General.Console.Version", "Version: {0}", VersionProvider.GetVersionString());
         }
+        /// <summary>
+        /// Execute a feature. Usually, it should be called by ConsoleAppHelper it self.
+        /// </summary>
+        /// <param name="parameters"></param>
         public static void Execute(params string[] parameters)
         {
             IFeature toExecute = null;
@@ -394,9 +472,18 @@ namespace CLUNL.ConsoleAppHelper
             }
         }
     }
+    /// <summary>
+    /// Parameter List.
+    /// </summary>
     public class ParameterList
     {
+        /// <summary>
+        /// Options.
+        /// </summary>
         public Dictionary<string, object> Options = new Dictionary<string, object>();
+        /// <summary>
+        /// Parameters and its variants, e.g.: -Output and --o.
+        /// </summary>
         public Dictionary<string, string> Parameters = new Dictionary<string, string>();//Variant -> main key
         internal void AddKey(string Key, object Value)
         {
@@ -404,14 +491,29 @@ namespace CLUNL.ConsoleAppHelper
                 Options.Add(Parameters[Key.ToUpper()], Value);
             else Options[Parameters[Key.ToUpper()]] = Value;
         }
+        /// <summary>
+        /// Query a parameter.
+        /// </summary>
+        /// <param name="KeyVariant"></param>
+        /// <returns></returns>
         public object Query(string KeyVariant)
         {
             return Options[Parameters[KeyVariant.ToUpper()]];
         }
+        /// <summary>
+        /// Query a parameter.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="KeyVariant"></param>
+        /// <returns></returns>
         public T Query<T>(string KeyVariant)
         {
             return (T)Options[Parameters[KeyVariant.ToUpper()]];
         }
+        /// <summary>
+        /// Internal usage.
+        /// </summary>
+        /// <param name="dependentFeatureAttribute"></param>
         public void ApplyDescription(DependentFeatureAttribute dependentFeatureAttribute)
         {
             foreach (var item in dependentFeatureAttribute.Options)
@@ -425,12 +527,27 @@ namespace CLUNL.ConsoleAppHelper
             }
         }
     }
+    /// <summary>
+    /// Defines a method of getting version.
+    /// </summary>
     public interface IFeatureCollectionVersion
     {
+        /// <summary>
+        /// Returns a version string.
+        /// </summary>
+        /// <returns></returns>
         string GetVersionString();
     }
+    /// <summary>
+    /// Defines a method of Console feature.
+    /// </summary>
     public interface IFeature
     {
+        /// <summary>
+        /// Entry method of a feature.
+        /// </summary>
+        /// <param name="Parameters"></param>
+        /// <param name="MainParameter"></param>
         void Execute(ParameterList Parameters, string MainParameter);
     }
 }

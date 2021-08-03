@@ -4,6 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <Version>0.0.1.0</Version>
+    <PackageLicenseExpression></PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/creeperlv/CLUNL</PackageProjectUrl>
     <RepositoryUrl>https://github.com/creeperlv/CLUNL</RepositoryUrl>
     <Description>Localization processing part of Creeper Lv's Universal dotNet Library</Description>
@@ -11,6 +12,13 @@
     <Company>Creeper Lv</Company>
     <Copyright>Copyright (C) 2020-2021 Creeper Lv</Copyright>
     <PackageReleaseNotes>First version of CLUNL.Localization.</PackageReleaseNotes>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 </Project>
