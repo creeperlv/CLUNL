@@ -32,13 +32,19 @@ namespace CLUNL.ConsoleAppHelper
         /// <summary>
         /// The ID of the collection, in case an assembly contains features that should be accessed in separated dependent application.
         /// </summary>
-        public string FeatureCollectionID { get => featureCollectionID; }
+        public string FeatureCollectionID
+        {
+            get => featureCollectionID;
+        }
         /// <summary>
         /// The name of the feature.
         /// </summary>
         public string Name
         {
-            get { return nameString; }
+            get
+            {
+                return nameString;
+            }
         }
         /// <summary>
         /// Description of the feature.
@@ -47,11 +53,17 @@ namespace CLUNL.ConsoleAppHelper
         /// <summary>
         /// Available options.
         /// </summary>
-        public string[] Options { get; set; }
+        public string[] Options
+        {
+            get; set;
+        }
         /// <summary>
         /// Option descriptions.
         /// </summary>
-        public string[] OptionDescriptions { get; set; }
+        public string[] OptionDescriptions
+        {
+            get; set;
+        }
     }
     /// <summary>
     /// Main class of the CLUNL.ConsoleAppHelper.
@@ -200,7 +212,7 @@ namespace CLUNL.ConsoleAppHelper
                     {
                         if (Feature.FeatureCollectionID == FeatureCollectionID)
                         {
-                            features.Add(Feature.Name.ToUpper(), (IFeature)Activator.CreateInstance(type));
+                            features.Add(Feature.Name.ToUpper(), (IFeature) Activator.CreateInstance(type));
                             infos.Add(Feature.Name.ToUpper(), Feature);
                         }
                     }
@@ -215,7 +227,7 @@ namespace CLUNL.ConsoleAppHelper
                     {
                         if (Feature.FeatureCollectionID == FeatureCollectionID)
                         {
-                            VersionProvider = (IFeatureCollectionVersion)Activator.CreateInstance(type);
+                            VersionProvider = (IFeatureCollectionVersion) Activator.CreateInstance(type);
                         }
                     }
                 }
@@ -327,8 +339,18 @@ namespace CLUNL.ConsoleAppHelper
             Output.OutLine("General.Console.Version", "Version: {0}", VersionProvider.GetVersionString());
         }
         /// <summary>
-        /// Execute a feature. Usually, it should be called by ConsoleAppHelper it self.
+        /// Use it to handle parameters.
         /// </summary>
+        /// <example>
+        ///     class Program
+        ///    {
+        ///        static void Main(string[] args)
+        ///        {
+        ///            ConsoleAppHelper.ConsoleAppHelper.Init("Sample");
+        ///            ConsoleAppHelper.ConsoleAppHelper.Execute(args);
+        ///        }
+        ///    }
+        /// </example>
         /// <param name="parameters"></param>
         public static void Execute(params string[] parameters)
         {
@@ -378,7 +400,8 @@ namespace CLUNL.ConsoleAppHelper
                     {
                         if (FeatureName != "")
                             PrintHelp(FeatureName);
-                        else PrintHelp();
+                        else
+                            PrintHelp();
                         //Terminate immediately.
                         toExecute = new DefaultBlankFeature();
                         return;
@@ -450,7 +473,8 @@ namespace CLUNL.ConsoleAppHelper
                         {
                             RawOptions.Add(Name, BI);
                         }
-                        else RawOptions.Add(Name, Value);
+                        else
+                            RawOptions.Add(Name, Value);
                     }
                 }
             }
@@ -489,7 +513,8 @@ namespace CLUNL.ConsoleAppHelper
         {
             if (!Options.ContainsKey(Parameters[Key.ToUpper()]))
                 Options.Add(Parameters[Key.ToUpper()], Value);
-            else Options[Parameters[Key.ToUpper()]] = Value;
+            else
+                Options[Parameters[Key.ToUpper()]] = Value;
         }
         /// <summary>
         /// Query a parameter.
@@ -508,7 +533,7 @@ namespace CLUNL.ConsoleAppHelper
         /// <returns></returns>
         public T Query<T>(string KeyVariant)
         {
-            return (T)Options[Parameters[KeyVariant.ToUpper()]];
+            return (T) Options[Parameters[KeyVariant.ToUpper()]];
         }
         /// <summary>
         /// Internal usage.
