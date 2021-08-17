@@ -30,7 +30,8 @@ namespace CLUNL.Utilities
             {
                 if (item.isSwitch)
                 {
-                    if (item.SwitchName == Key.ToUpper()) return true;
+                    if (item.SwitchName == Key.ToUpper())
+                        return true;
                 }
             }
             return false;
@@ -45,7 +46,8 @@ namespace CLUNL.Utilities
             var K = Key.ToUpper();
             if (SpecifiedParameter.ContainsKey(K))
                 return SpecifiedParameter[K];
-            else return new List<string>();
+            else
+                return new List<string>();
         }
         /// <summary>
         /// Get a string array of given key, an empty array if key not found.
@@ -57,7 +59,8 @@ namespace CLUNL.Utilities
             var K = Key.ToUpper();
             if (SpecifiedParameter.ContainsKey(K))
                 return SpecifiedParameter[K].ToArray();
-            else return new string[0];
+            else
+                return new string[0];
         }
     }
     /// <summary>
@@ -83,13 +86,17 @@ namespace CLUNL.Utilities
 
                 List<string> vs = new List<string>();
                 StringBuilder stringBuilder = new StringBuilder();
+                StringBuilder stringBuilder2 = new StringBuilder();
                 bool a = false;
                 bool b = false;
-                int l = EntireArgument.Length; char c;
+                int l = EntireArgument.Length;
+                char c;
                 bool isKeyLocated = false;
                 for (int i = 1; i < l; i++)
                 {
                     c = EntireArgument[i];
+                    if (isKeyLocated)
+                        stringBuilder2.Append(c);
                     if (b == true)
                     {
                         switch (c)
@@ -142,7 +149,8 @@ namespace CLUNL.Utilities
                                     {
                                         isKeyLocated = true;
 
-                                        CollectionName = ((stringBuilder.ToString())).ToUpper();
+                                        CollectionNameStrictCase = stringBuilder.ToString();
+                                        CollectionName = CollectionNameStrictCase.ToUpper();
                                         stringBuilder.Clear();
                                         continue;
                                     }
@@ -170,9 +178,12 @@ namespace CLUNL.Utilities
                 }
                 if (isKeyLocated == true)
                 {
+                    UnsegmentedCollectionString = stringBuilder2.ToString();
                     isCollection = true;
                     Collection = vs;
                 }
+                stringBuilder2.Clear();
+                stringBuilder.Clear();
             }
         }
         /// <summary>
@@ -188,9 +199,13 @@ namespace CLUNL.Utilities
         /// </summary>
         public bool isCollection = false;
         /// <summary>
-        /// The Key of a value collection in the parameter form like -key:value0;value1;...
+        /// The Key of a value collection in the parameter form like `-key:value0;value1;...`, upper cased.
         /// </summary>
         public string CollectionName = null;
+        /// <summary>
+        /// The Key of a value collection in the parameter form like `-key:value0;value1;...`, the case is strict to original string
+        /// </summary>
+        public string CollectionNameStrictCase = null;
         /// <summary>
         /// The collection of values that in parameter form like: -key:value0;value1...
         /// </summary>
@@ -199,7 +214,10 @@ namespace CLUNL.Utilities
         /// The original string of the argument;
         /// </summary>
         public string EntireArgument;
-
+        /// <summary>
+        /// The unsegmented string of collection part;
+        /// </summary>
+        public string UnsegmentedCollectionString;
         /// <summary>
         /// Using the entire argument;
         /// </summary>
@@ -251,7 +269,8 @@ namespace CLUNL.Utilities
             StringBuilder stringBuilder = new StringBuilder();
             bool a = false;
             bool b = false;
-            int l = cmd.Length; char c;
+            int l = cmd.Length;
+            char c;
             for (int i = 0; i < l; i++)
             {
                 c = cmd[i];
