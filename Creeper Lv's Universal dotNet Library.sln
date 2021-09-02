@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31521.260
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31624.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CLUNL", "Creeper Lv's Universal dotNet Library\CLUNL.csproj", "{597737F0-9561-49FF-B000-F45DF6156B2D}"
 EndProject
@@ -31,9 +31,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CLUNL.Diagnosis", "CLUNL.Di
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CLUNL.Scripting", "CLUNL.Scripting\CLUNL.Scripting.csproj", "{897B3DAD-B205-4771-8112-3357928B0801}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLUNL.ConsoleAppHelper", "CLUNL.ConsoleAppHelper\CLUNL.ConsoleAppHelper.csproj", "{166A9243-50CA-4530-A4A7-71F27745675C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CLUNL.ConsoleAppHelper", "CLUNL.ConsoleAppHelper\CLUNL.ConsoleAppHelper.csproj", "{166A9243-50CA-4530-A4A7-71F27745675C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLUNL.Localization", "CLUNL.Localization\CLUNL.Localization.csproj", "{92E8596E-2690-460B-BA6F-6CEE8167BBC1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CLUNL.Localization", "CLUNL.Localization\CLUNL.Localization.csproj", "{92E8596E-2690-460B-BA6F-6CEE8167BBC1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{EA434C75-880E-4D80-9415-8B91AE5431BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleConsoleApp", "SampleConsoleApp\SampleConsoleApp.csproj", "{01F9D58F-B60C-48F9-A2E7-9AEFC2E77321}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,6 +89,10 @@ Global
 		{92E8596E-2690-460B-BA6F-6CEE8167BBC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92E8596E-2690-460B-BA6F-6CEE8167BBC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92E8596E-2690-460B-BA6F-6CEE8167BBC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01F9D58F-B60C-48F9-A2E7-9AEFC2E77321}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01F9D58F-B60C-48F9-A2E7-9AEFC2E77321}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01F9D58F-B60C-48F9-A2E7-9AEFC2E77321}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01F9D58F-B60C-48F9-A2E7-9AEFC2E77321}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -92,6 +100,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{09947DA9-3CE4-4E7E-9087-B8083DC26DB9} = {5BE49C17-34E3-4EED-BA8F-F967683C6232}
 		{4E577367-A548-4C58-BB3C-DA55F6D424E1} = {5BE49C17-34E3-4EED-BA8F-F967683C6232}
+		{01F9D58F-B60C-48F9-A2E7-9AEFC2E77321} = {EA434C75-880E-4D80-9415-8B91AE5431BA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C906856E-1A4B-4972-8D20-2B10DA48F4D0}

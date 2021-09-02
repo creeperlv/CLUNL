@@ -212,7 +212,7 @@ namespace CLUNL.ConsoleAppHelper
                     {
                         if (Feature.FeatureCollectionID == FeatureCollectionID)
                         {
-                            features.Add(Feature.Name.ToUpper(), (IFeature) Activator.CreateInstance(type));
+                            features.Add(Feature.Name.ToUpper(), (IFeature)Activator.CreateInstance(type));
                             infos.Add(Feature.Name.ToUpper(), Feature);
                         }
                     }
@@ -227,7 +227,7 @@ namespace CLUNL.ConsoleAppHelper
                     {
                         if (Feature.FeatureCollectionID == FeatureCollectionID)
                         {
-                            VersionProvider = (IFeatureCollectionVersion) Activator.CreateInstance(type);
+                            VersionProvider = (IFeatureCollectionVersion)Activator.CreateInstance(type);
                         }
                     }
                 }
@@ -283,53 +283,58 @@ namespace CLUNL.ConsoleAppHelper
                 OutLine(FeatureDesc);
                 OutLine();
             }
-            OutLine("\t" + Language.Find("General.Console.Options", "Options:"));
-            OutLine();
-            ParameterList p = new ParameterList();
-            p.ApplyDescription(infos[FeatureName]);
-            Dictionary<string, List<string>> keyValuePairs = new Dictionary<string, List<string>>();
-            foreach (var item in p.Parameters)
-            {
-                if (keyValuePairs.ContainsKey(item.Value))
+            if (infos[FeatureName].Options != null)
+                if (infos[FeatureName].OptionDescriptions != null)
                 {
-                    keyValuePairs[item.Value].Add(item.Key);
-                }
-                else
-                {
-                    keyValuePairs.Add(item.Value, new List<string>() { item.Value });
-                }
-            }
-            foreach (var item in keyValuePairs)
-            {
-                Out("\t");
-                for (int i = 0; i < item.Value.Count; i++)
-                {
-                    if (i == 0)
+                    OutLine("\t" + Language.Find("General.Console.Options", "Options:"));
+                    OutLine();
+                    ParameterList p = new ParameterList();
+                    p.ApplyDescription(infos[FeatureName]);
+                    Dictionary<string, List<string>> keyValuePairs = new Dictionary<string, List<string>>();
+                    foreach (var item in p.Parameters)
                     {
-                        Out($"-{item.Value[i]}");
+                        if (keyValuePairs.ContainsKey(item.Value))
+                        {
+                            keyValuePairs[item.Value].Add(item.Key);
+                        }
+                        else
+                        {
+                            keyValuePairs.Add(item.Value, new List<string>() { item.Value });
+                        }
                     }
-                    else
-                        Out($", -{item.Value[i]}");
-                }
-                OutLine();
-                int index = -1;
-                for (int i = 0; i < p.Options.Count; i++)
-                {
-                    if (p.Options.ElementAt(i).Key == item.Key)
+                    foreach (var item in keyValuePairs)
                     {
-                        index = i;
-                        break;
-                    }
-                }
-                string fallback = "";
-                if (infos[FeatureName].OptionDescriptions is not null)
-                    if (infos[FeatureName].OptionDescriptions.Length > 0 && index is not -1)
-                    {
-                        fallback = infos[FeatureName].OptionDescriptions[index];
-                    }
-                OutLine($"\t{Language.Find(CurrentFeatureCollectionID + ".Options." + item.Key, fallback)}");
+                        Out("\t");
+                        for (int i = 0; i < item.Value.Count; i++)
+                        {
+                            if (i == 0)
+                            {
+                                Out($"-{item.Value[i]}");
+                            }
+                            else
+                                Out($", -{item.Value[i]}");
+                        }
+                        OutLine();
+                        int index = -1;
+                        for (int i = 0; i < p.Options.Count; i++)
+                        {
+                            if (p.Options.ElementAt(i).Key == item.Key)
+                            {
+                                index = i;
+                                break;
+                            }
+                        }
+                        string fallback = "";
+                        if (infos[FeatureName].OptionDescriptions is not null)
+                            if (infos[FeatureName].OptionDescriptions.Length > 0 && index is not -1)
+                            {
+                                fallback = infos[FeatureName].OptionDescriptions[index];
+                            }
+                        OutLine($"\t{Language.Find(CurrentFeatureCollectionID + ".Options." + item.Key, fallback)}");
 
-            }
+                    }
+
+                }
         }
         /// <summary>
         /// Print out localized version message.
@@ -533,7 +538,7 @@ namespace CLUNL.ConsoleAppHelper
         /// <returns></returns>
         public T Query<T>(string KeyVariant)
         {
-            return (T) Options[Parameters[KeyVariant.ToUpper()]];
+            return (T)Options[Parameters[KeyVariant.ToUpper()]];
         }
         /// <summary>
         /// Internal usage.
