@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <Version>0.0.2.0</Version>
+    <Version>0.0.3.0</Version>
     <PackageLicenseExpression></PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/creeperlv/CLUNL</PackageProjectUrl>
     <RepositoryUrl>https://github.com/creeperlv/CLUNL</RepositoryUrl>
@@ -11,7 +11,7 @@
     <Authors>Creeper Lv</Authors>
     <Company>Creeper Lv</Company>
     <Copyright>Copyright (C) 2020-2021 Creeper Lv</Copyright>
-    <PackageReleaseNotes>First version of CLUNL.Localization.</PackageReleaseNotes>
+    <PackageReleaseNotes>CLUNL.Localization, please see github for release note.</PackageReleaseNotes>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
