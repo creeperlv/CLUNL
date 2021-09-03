@@ -1,3 +1,5 @@
 ﻿# Default Language File
 # Created By Creeper Lv
+Sample.Title=Sample Console App
+Sample.Description=A sample console app that aims on the sample of CLUNL.ConsoleAppHelper.
 Warning.000=Test

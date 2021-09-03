@@ -203,6 +203,7 @@ namespace CLUNL.ConsoleAppHelper
             Console.InputEncoding = Encoding.UTF8;
             CurrentFeatureCollectionID = FeatureCollectionID;
             var asms = AppDomain.CurrentDomain.GetAssemblies();
+            var LibAsm = typeof(ConsoleAppHelper).Assembly;
             foreach (var asm in asms)
             {
                 foreach (var type in asm.GetTypes())
@@ -218,19 +219,22 @@ namespace CLUNL.ConsoleAppHelper
                     }
                 }
             }
+            var T_DFCV = typeof(DefaultFeatureCollectionVersion);
             foreach (var asm in asms)
             {
-                foreach (var type in asm.GetTypes())
-                {
-                    var Feature = type.GetCustomAttribute<DependentVersionAttribute>();
-                    if (Feature is not null)
+                if (asm != LibAsm)
+                    foreach (var type in asm.GetTypes())
                     {
-                        if (Feature.FeatureCollectionID == FeatureCollectionID)
-                        {
-                            VersionProvider = (IFeatureCollectionVersion)Activator.CreateInstance(type);
-                        }
+                        var Feature = type.GetCustomAttribute<DependentVersionAttribute>();
+                        if (Feature is not null)
+                            if (type != T_DFCV)
+                            {
+                                if (Feature.FeatureCollectionID == FeatureCollectionID)
+                                {
+                                    VersionProvider = (IFeatureCollectionVersion)Activator.CreateInstance(type);
+                                }
+                            }
                     }
-                }
             }
             if (Language.IsInited() is false)
                 Language.Init(FeatureCollectionID + "Language", ProductName);
@@ -242,11 +246,21 @@ namespace CLUNL.ConsoleAppHelper
         {
             OutLine(Language.Find(CurrentFeatureCollectionID + ".Title", CurrentFeatureCollectionID));
             OutLine();
-            var c = Language.Find(CurrentFeatureCollectionID + ".Copyright", null);
-            if (c is not null)
             {
-                OutLine(c);
-                OutLine();
+                var c = Language.Find(CurrentFeatureCollectionID + ".Description", null);
+                if (c is not null)
+                {
+                    OutLine(c);
+                    OutLine();
+                }
+            }
+            {
+                var c = Language.Find(CurrentFeatureCollectionID + ".Copyright", null);
+                if (c is not null)
+                {
+                    OutLine(c);
+                    OutLine();
+                }
             }
             var l = Language.Find(CurrentFeatureCollectionID + ".License", null);
             if (l is not null)
@@ -314,7 +328,6 @@ namespace CLUNL.ConsoleAppHelper
                             else
                                 Out($", -{item.Value[i]}");
                         }
-                        OutLine();
                         int index = -1;
                         for (int i = 0; i < p.Options.Count; i++)
                         {
@@ -330,7 +343,14 @@ namespace CLUNL.ConsoleAppHelper
                             {
                                 fallback = infos[FeatureName].OptionDescriptions[index];
                             }
-                        OutLine($"\t{Language.Find(CurrentFeatureCollectionID + ".Options." + item.Key, fallback)}");
+                        var final = Language.Find(CurrentFeatureCollectionID + ".Options." + item.Key, fallback);
+                        if (final != "")
+                        {
+
+                            OutLine(Environment.NewLine);
+                            OutLine($"\t\t{Language.Find(CurrentFeatureCollectionID + ".Options." + item.Key, fallback)}");
+                            OutLine();
+                        }
 
                     }
 
@@ -498,62 +518,6 @@ namespace CLUNL.ConsoleAppHelper
                     }
                 }
                 toExecute.Execute(p, MainParameter);
-            }
-        }
-    }
-    /// <summary>
-    /// Parameter List.
-    /// </summary>
-    public class ParameterList
-    {
-        /// <summary>
-        /// Options.
-        /// </summary>
-        public Dictionary<string, object> Options = new Dictionary<string, object>();
-        /// <summary>
-        /// Parameters and its variants, e.g.: -Output and --o.
-        /// </summary>
-        public Dictionary<string, string> Parameters = new Dictionary<string, string>();//Variant -> main key
-        internal void AddKey(string Key, object Value)
-        {
-            if (!Options.ContainsKey(Parameters[Key.ToUpper()]))
-                Options.Add(Parameters[Key.ToUpper()], Value);
-            else
-                Options[Parameters[Key.ToUpper()]] = Value;
-        }
-        /// <summary>
-        /// Query a parameter.
-        /// </summary>
-        /// <param name="KeyVariant"></param>
-        /// <returns></returns>
-        public object Query(string KeyVariant)
-        {
-            return Options[Parameters[KeyVariant.ToUpper()]];
-        }
-        /// <summary>
-        /// Query a parameter.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="KeyVariant"></param>
-        /// <returns></returns>
-        public T Query<T>(string KeyVariant)
-        {
-            return (T)Options[Parameters[KeyVariant.ToUpper()]];
-        }
-        /// <summary>
-        /// Internal usage.
-        /// </summary>
-        /// <param name="dependentFeatureAttribute"></param>
-        public void ApplyDescription(DependentFeatureAttribute dependentFeatureAttribute)
-        {
-            foreach (var item in dependentFeatureAttribute.Options)
-            {
-                var variants = item.Split(',');
-                foreach (var variant in variants)
-                {
-                    Parameters.Add(variant.ToUpper(), variants[0].ToUpper());
-                }
-                Options.Add(variants[0].ToUpper(), false);
             }
         }
     }
