@@ -4,7 +4,7 @@
     <!--<RootNamespace>Creeper_Lv_s_Universal_dotNet_Library</RootNamespace>-->
     <RootNamespace>CLUNL</RootNamespace>
     <AssemblyName>CLUNL</AssemblyName>
-    <Version>0.0.4.0</Version>
+    <Version>0.0.5.0</Version>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Copyright>Copyright (C) 2020-2021 Creeper Lv</Copyright>
     <PackageLicenseExpression></PackageLicenseExpression>
@@ -14,9 +14,7 @@
     <Authors>Creeper Lv</Authors>
     <Company>Creeper Lv</Company>
     <Description>Creeper Lv's Universal dotNet Library</Description>
-    <PackageReleaseNotes>BREAK CHANGE: Upgraded from .Net Standard 2.0 to .Net Standard 2.1 for Unity 2021.2 is now supporting .Net Standard 2.1
-#Introducing Shell Script Style serialization
-Shell Script Style serialization is capable of serializing a List object into a format that looks like shell script.</PackageReleaseNotes>
+    <PackageReleaseNotes>Improved SSS.</PackageReleaseNotes>
     <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
 
