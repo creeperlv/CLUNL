@@ -8,6 +8,10 @@ namespace SampleConsoleApp
         static void Main(string[] args)
         {
             ConsoleAppHelper.Init("Sample", "Sample");
+            ConsoleAppHelper.Colorful = true;
+            ConsoleAppHelper.PreExecution = () => {
+                Output.OutLine("This software/library is licensed under the MIT Licenes.");
+            };
             ConsoleAppHelper.Execute(args);
         }
     }

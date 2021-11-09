@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using CLUNL.Localization;
 
@@ -71,18 +72,49 @@ namespace CLUNL.ConsoleAppHelper
     public class ConsoleAppHelper
     {
         /// <summary>
+        /// Method to execute before the execution (after the analysis of parameters).
+        /// </summary>
+        public static Action PreExecution = null;
+        /// <summary>
+        /// If the output uses color.
+        /// </summary>
+        public static bool Colorful = false;
+        /// <summary>
         /// Output an error message.
         /// </summary>
         /// <param name="msg"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Out(ErrorMsg msg)
         {
             if (isBatchMode)
             {
                 if (!isSlientMode)
-                    Console.Write("E:" + msg.ID);
+                {
+                    if (Colorful)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                    }
+                    Out("E:");
+
+                    if (Colorful)
+                    {
+                        Console.ResetColor();
+                    }
+                    Out(msg.ID);
+
+                }
             }
             else
             {
+                if (Colorful)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                }
+                Out("Error:");
+                if (Colorful)
+                {
+                    Console.ResetColor();
+                }
                 Out(Language.Find(CurrentFeatureCollectionID + ".Errors." + msg.ID, msg.Fallback));
             }
         }
@@ -90,15 +122,37 @@ namespace CLUNL.ConsoleAppHelper
         /// Output an error message, followed by the current line terminator.
         /// </summary>
         /// <param name="msg"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void OutLine(ErrorMsg msg)
         {
             if (isBatchMode)
             {
                 if (!isSlientMode)
-                    Console.WriteLine("E:" + msg.ID);
+                {
+                    if (Colorful)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                    }
+                    Out("E:");
+
+                    if (Colorful)
+                    {
+                        Console.ResetColor();
+                    }
+                    OutLine(msg.ID);
+                }
             }
             else
             {
+                if (Colorful)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                }
+                Out("Error:");
+                if (Colorful)
+                {
+                    Console.ResetColor();
+                }
                 OutLine(Language.Find(CurrentFeatureCollectionID + ".Errors." + msg.ID, msg.Fallback));
             }
         }
@@ -106,15 +160,38 @@ namespace CLUNL.ConsoleAppHelper
         /// Output a warning message.
         /// </summary>
         /// <param name="msg"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Out(WarnMsg msg)
         {
             if (isBatchMode)
             {
                 if (!isSlientMode)
-                    Console.Write("W:" + msg.ID);
+                {
+
+                    if (Colorful)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                    }
+                    Out("W:");
+                    if (Colorful)
+                    {
+                        Console.ResetColor();
+                    }
+                    Out(msg.ID);
+                }
             }
             else
             {
+
+                if (Colorful)
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                }
+                Out("Warning:");
+                if (Colorful)
+                {
+                    Console.ResetColor();
+                }
                 Out(Language.Find(CurrentFeatureCollectionID + ".Errors." + msg.ID, msg.Fallback));
             }
         }
@@ -122,15 +199,38 @@ namespace CLUNL.ConsoleAppHelper
         /// Output a warning message, followed by the current line terminator.
         /// </summary>
         /// <param name="msg"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void OutLine(WarnMsg msg)
         {
             if (isBatchMode)
             {
                 if (!isSlientMode)
-                    Console.WriteLine("W:" + msg.ID);
+                {
+
+
+                    if (Colorful)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                    }
+                    Out("W:");
+                    if (Colorful)
+                    {
+                        Console.ResetColor();
+                    }
+                    OutLine(msg.ID);
+                }
             }
             else
             {
+                if (Colorful)
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                }
+                Out("Warning:");
+                if (Colorful)
+                {
+                    Console.ResetColor();
+                }
                 OutLine(Language.Find(CurrentFeatureCollectionID + ".Errors." + msg.ID, msg.Fallback));
             }
         }
@@ -138,6 +238,7 @@ namespace CLUNL.ConsoleAppHelper
         /// Output an object.
         /// </summary>
         /// <param name="o"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Out(object o)
         {
             if (isSlientMode is false && isBatchMode == false)
@@ -148,6 +249,7 @@ namespace CLUNL.ConsoleAppHelper
         /// <summary>
         /// Output a blank line.
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void OutLine()
         {
             if (isSlientMode is false && isBatchMode == false)
@@ -159,6 +261,7 @@ namespace CLUNL.ConsoleAppHelper
         /// OUtput on object, followed by the current line terminator.
         /// </summary>
         /// <param name="o"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void OutLine(object o)
         {
             if (isSlientMode is false && isBatchMode == false)
@@ -174,6 +277,7 @@ namespace CLUNL.ConsoleAppHelper
         /// <param name="o1"></param>
         /// <param name="o2"></param>
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void OutLine(object o1, object o2)
         {
             if (isSlientMode is false || isBatchMode == false)
@@ -421,8 +525,11 @@ namespace CLUNL.ConsoleAppHelper
                 void Process(string Item, int prefixLength)
                 {
                     var oN = Item.Substring(prefixLength).ToUpper();
+
                     if (oN == "?" || oN == "H" || oN == "HELP")
                     {
+                        if (PreExecution is not null)
+                            PreExecution();
                         if (FeatureName != "")
                             PrintHelp(FeatureName);
                         else
@@ -433,6 +540,8 @@ namespace CLUNL.ConsoleAppHelper
                     }
                     if (oN == "V" || oN == "VER" || oN == "VERSION")
                     {
+                        if (PreExecution is not null)
+                            PreExecution();
                         PrintVersion();
                         toExecute = new DefaultBlankFeature();
                         return;
@@ -505,10 +614,16 @@ namespace CLUNL.ConsoleAppHelper
             }
             if (toExecute == null)
             {
+                if (PreExecution is not null)
+                    PreExecution();
                 PrintHelp();
             }
             else
             {
+                if (toExecute is DefaultBlankFeature)
+                {
+                    return;
+                }
                 if (FeatureName != "")
                 {
                     p.ApplyDescription(infos[FeatureName]);
@@ -517,6 +632,8 @@ namespace CLUNL.ConsoleAppHelper
                         p.AddKey(item.Key, item.Value);
                     }
                 }
+                if (PreExecution is not null)
+                    PreExecution();
                 toExecute.Execute(p, MainParameter);
             }
         }
