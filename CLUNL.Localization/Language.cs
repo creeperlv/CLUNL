@@ -66,10 +66,14 @@ namespace CLUNL.Localization
         {
             SettingFileName = SettingsFileName;
             Language.ProductName = ProductName;
-            Init(ObtainInstalled());
+            Init(ObtainLanguageInUse());
         }
         static string configuration = null;
-        static string ObtainInstalled()
+        /// <summary>
+        /// Get the language code in use.
+        /// </summary>
+        /// <returns></returns>
+        public static string ObtainLanguageInUse()
         {
             if (configuration != null)
             {
