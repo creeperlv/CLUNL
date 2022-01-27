@@ -1,4 +1,5 @@
 ﻿using CLUNL.ConsoleAppHelper;
+using CLUNL.Localization;
 using System;
 
 namespace SampleConsoleApp
@@ -8,6 +9,13 @@ namespace SampleConsoleApp
         static void Main(string[] args)
         {
             ConsoleAppHelper.Init("Sample", "Sample");
+            {
+                var codes = Language.EnumerateLanguageCodes();
+                foreach (var item in codes)
+                {
+                    Console.WriteLine(item);
+                }
+            }
             ConsoleAppHelper.Colorful = true;
             ConsoleAppHelper.PreExecution = () => {
                 Output.OutLine("This software/library is licensed under the MIT Licenes.");
