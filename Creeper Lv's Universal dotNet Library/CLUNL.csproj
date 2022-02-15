@@ -1,49 +1,50 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <!--<RootNamespace>Creeper_Lv_s_Universal_dotNet_Library</RootNamespace>-->
-    <RootNamespace>CLUNL</RootNamespace>
-    <AssemblyName>CLUNL</AssemblyName>
-    <Version>0.0.5.0</Version>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <Copyright>Copyright (C) 2020-2021 Creeper Lv</Copyright>
-    <PackageLicenseExpression></PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/creeperlv/CLUNL</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/creeperlv/CLUNL</RepositoryUrl>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <Authors>Creeper Lv</Authors>
-    <Company>Creeper Lv</Company>
-    <Description>Creeper Lv's Universal dotNet Library</Description>
-    <PackageReleaseNotes>Improved SSS.</PackageReleaseNotes>
-    <TargetFramework>netstandard2.1</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<!--<RootNamespace>Creeper_Lv_s_Universal_dotNet_Library</RootNamespace>-->
+		<RootNamespace>CLUNL</RootNamespace>
+		<AssemblyName>CLUNL</AssemblyName>
+		<Version>0.0.6.0</Version>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+		<Copyright>Copyright (C) 2020-2022 Creeper Lv</Copyright>
+		<PackageLicenseExpression></PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/creeperlv/CLUNL</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/creeperlv/CLUNL</RepositoryUrl>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<Authors>Creeper Lv</Authors>
+		<Company>Creeper Lv</Company>
+		<Description>Creeper Lv's Universal dotNet Library</Description>
+		<PackageReleaseNotes>CLUNL, please see github for release note.</PackageReleaseNotes>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;ENABLE_UNSTABLE</DefineConstants>
-    <DocumentationFile>bin\Debug\netstandard2.0\CLUNL.xml</DocumentationFile>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<OutputPath>bin\Debug\</OutputPath>
+		<DefineConstants>DEBUG;TRACE;ENABLE_UNSTABLE</DefineConstants>
+		<DocumentationFile></DocumentationFile>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;ENABLE_UNSTABLE</DefineConstants>
-    <DocumentationFile>bin\Release\netstandard2.0\CLUNL.xml</DocumentationFile>
-    <Optimize>true</Optimize>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<OutputPath>bin\Release\</OutputPath>
+		<DefineConstants>TRACE;ENABLE_UNSTABLE</DefineConstants>
+		<DocumentationFile></DocumentationFile>
+		<Optimize>true</Optimize>
+		<PlatformTarget>AnyCPU</PlatformTarget>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Include="..\LICENSE">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="..\LICENSE">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+	</ItemGroup>
 
 
 </Project>
