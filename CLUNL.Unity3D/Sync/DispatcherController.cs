@@ -15,6 +15,7 @@ namespace CLUNL.Unity3D.Sync
                 Destroy(gameObject);
                 return;
             }
+            Dispatcher.MarkInit();
             DontDestroyOnLoad(gameObject);
         }
         public void Update()
