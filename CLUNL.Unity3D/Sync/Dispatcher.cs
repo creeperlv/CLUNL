@@ -12,6 +12,17 @@ namespace CLUNL.Unity3D.Sync
         //static ImmutableQueue<Action> iactions = ImmutableQueue<Action>.Empty;
         static ConcurrentQueue<Action> actions = new ConcurrentQueue<Action>();
         static object _lock = new object();
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool Inited()
+        {
+            return init;
+        }
+        static bool init = false;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MarkInit()
+        {
+            init = true;
+        }
         /// <summary>
         /// Call to perform a sync operation every frame.
         /// </summary>
