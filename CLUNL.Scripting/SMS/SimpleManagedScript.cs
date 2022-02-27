@@ -36,239 +36,280 @@ namespace CLUNL.Scripting.SMS
             for (int Index = 0; Index < CommandSet.Count; Index++)
             {
                 var current = CommandSet[Index];
-                switch (current.operation)
-                {
-                    case SMSOperation.NEW:
-                        {
-                            NEW_Operation
-                                (current);
-                        }
-                        break;
-                    case SMSOperation.NEWT:
-                        {
-                            NEWT_Operation(current);
-                        }
-                        break;
-                    case SMSOperation.SET:
-                        {
-                            if (SET_Operation(ref result, Index, current)) return null;
-                        }
-                        break;
-                    case SMSOperation.SETF:
-                        {
-                            if (SETF_Operation(result, Index, current)) return null;
-                        }
-                        break;
-                    case SMSOperation.EXEC:
-                        {
-                            if (EXEC_Operation(result, Index, current)) return null;
-                        }
-                        break;
-                    case SMSOperation.EXER:
-                        {
-                            if (EXER_Operation(ref result, Index, current)) return null;
-                        }
-                        break;
-                    case SMSOperation.EQL:
-                        {
-                            result = EQL_Operation(result, Index, current);
-                        }
-                        break;
-                    case SMSOperation.LGR:
-                        {
-                            var obj0 = Parse(current.parameters[0]);
-                            if (obj0 is IComparable)
-                            {
-                                SetObject(current.OperateDatapath, ((IComparable)Parse(current.parameters[0])).CompareTo(Parse(current.parameters[1])) > 0, typeof(bool), ref result, Index);
-                            }
-                            else
-                            {
-                                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.OBJ_IS_NOT_COMPARABLE, ErrorType = ErrorType.Error, Message = $"Comparison Failed: Target object \"{current.OperateDatapath}\" is not comparable!.", Position = Index });
-                                return null;
-                            }
-                        }
-                        break;
-                    case SMSOperation.LGE:
-                        {
-                            var obj0 = Parse(current.parameters[0]);
-                            if (obj0 is IComparable)
-                            {
-                                SetObject(current.OperateDatapath, ((IComparable)Parse(current.parameters[0])).CompareTo(Parse(current.parameters[1])) >= 0, typeof(bool), ref result, Index);
-
-                            }
-                            else
-                            {
-                                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.OBJ_IS_NOT_COMPARABLE, ErrorType = ErrorType.Error, Message = $"Comparison Failed: Target object \"{current.OperateDatapath}\" is not comparable!.", Position = Index });
-                                return null;
-                            }
-                        }
-                        break;
-                    case SMSOperation.IF:
-                        {
-
-                            if ((bool)FindObject(current.OperateDatapath) == true)
-                            {
-
-                                var i = FindLabel(current.parameters[0]);
-                                if (i == -1)
-                                {
-                                    result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.LABEL_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"Jumper Failed: Target label \"{current.parameters[0]}\" does not exist!.", Position = Index });
-                                    return null;
-                                }
-                                Index = i;
-                            }
-                        }
-                        break;
-                    case SMSOperation.J:
-                        {
-                            var i = FindLabel(current.OperateDatapath);
-                            if (i == -1)
-                            {
-                                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.LABEL_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"Jumper Failed: Target label \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                return null;
-                            }
-                            Index = i;
-                        }
-                        break;
-                    case SMSOperation.LABEL:
-                        break;
-                    case SMSOperation.END:
-                        //End the execution of the script immediately.
-                        Index = CommandSet.Count + 1;
-                        break;
-                    case SMSOperation.ENDLABEL:
-                        //A mark of the end of previous label.
-                        break;
-                    case SMSOperation.DEL:
-                        {
-                            if (Memory.ContainsKey(current.OperateDatapath))
-                            {
-                                Memory.Remove(current.OperateDatapath);
-                            }
-                            else
-                            {
-                                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Warning, Message = $"Deletion Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                            }
-                        }
-                        break;
-                    case SMSOperation.ADD:
-                        {
-                            result = ADD_Opertaion(result, Index, current);
-                        }
-                        break;
-                    case SMSOperation.ADDI:
-
-                        {
-                            result = ADDI_Operation(result, Index, current);
-                        }
-                        break;
-                    case SMSOperation.MULT:
-                        {
-                            result = MULT_Operation(result, Index, current);
-                        }
-                        break;
-                    case SMSOperation.MULTI:
-                        {
-                            result = MULTI_Operation(result, Index, current);
-                        }
-                        break;
-                    case SMSOperation.DIV:
-                        {
-                            result = DIV_Operation(result, Index, current);
-                        }
-                        break;
-                    case SMSOperation.DIVI:
-                        {
-                            result = DIVI_Operation(result, Index, current);
-                        }
-                        break;
-                    case SMSOperation.DIVII:
-                        {
-                            result = DIVII_Operation(result, Index, current);
-                        }
-                        break;
-                    case SMSOperation.SW:
-                        {
-                            if (SW_Operation(result, Index, current)) return null;
-                        }
-                        break;
-                    case SMSOperation.ADDW:
-                        {
-
-                            object list = FindObject(current.OperateDatapath);
-                            if (list == null)
-                            {
-                                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.LABEL_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADDW Failed: Target object \"{current.parameters[0]}\" does not exist!.", Position = Index });
-                                return null;
-                            }
-                            else
-                            if ((list as IList) != null)
-                            {
-
-                                var l = (list as IList);
-                                var d = Parse(current.parameters[0]);
-                                if (d == null)
-                                {
-
-                                    result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.LABEL_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADDW Failed: Target object \"{current.parameters[0]}\" does not exist!.", Position = Index });
-                                    return null;
-                                }
-                                Trace.WriteLine($"Add {current.parameters[0]} to {current.OperateDatapath}");
-                                l.Add(d);
-                            }
-                            else if ((list as IDictionary) != null)
-                            {
-                                var index = Parse(current.parameters[0]);
-                                var d = (list as IDictionary);
-                                if (d.Contains(index)) d[index] = Parse(current.parameters[1]);
-                                else d.Add(index, Parse(current.parameters[1]));
-                            }
-                            else
-                            {
-                                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.INVALID_DATA_TYPE, ErrorType = ErrorType.Error, Message = $"ADDW Failed: Target object \"{current.OperateDatapath}\" cannot be casted to IList or IDictionary!.", Position = Index });
-                                return null;
-                            }
-                        }
-                        break;
-                    case SMSOperation.LW:
-                        {
-                            object list = FindObject(current.OperateDatapath);
-                            if (list == null)
-                            {
-                                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.LABEL_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADDW Failed: Target object \"{current.parameters[0]}\" does not exist!.", Position = Index });
-                                return null;
-                            }
-                            else
-                            if ((list as IList) != null)
-                            {
-                                SetObject(current.parameters[1], (list as IList)[Convert.ToInt32(Parse(current.parameters[0]))], null, ref result, Index);
-                            }
-                            else if ((list as IDictionary) != null)
-                            {
-                                SetObject(current.parameters[1], (list as IDictionary)[Parse(current.parameters[0])], null, ref result, Index);
-                            }
-                            else
-                            {
-                                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.INVALID_DATA_TYPE, ErrorType = ErrorType.Error, Message = $"ADDW Failed: Target object \"{current.OperateDatapath}\" cannot be casted to IList or IDictionary!.", Position = Index });
-                                return null;
-                            }
-                        }
-                        break;
-                    case SMSOperation.NL:
-                        {
-                            NL_Operation(current);
-                        }
-                        break;
-                    case SMSOperation.ND:
-                        {
-                            ND_Operation(current);
-                        }
-                        break;
-                    default:
-                        break;
-                }
+                if(SingleExec(ref result, ref Index, current))return null;
             }
             return Current.ExposedObjects["Result"];
+        }
+
+        private bool SingleExec(ref List<ScriptError> result, ref int Index, SMSSingleCommand current)
+        {
+            switch (current.operation)
+            {
+                case SMSOperation.NEW:
+                    {
+                        NEW_Operation(current);
+                    }
+                    break;
+                case SMSOperation.NEWT:
+                    {
+                        NEWT_Operation(current);
+                    }
+                    break;
+                case SMSOperation.SET:
+                    {
+                        if (SET_Operation(ref result, Index, current)) return true;
+                    }
+                    break;
+                case SMSOperation.SETF:
+                    {
+                        if (SETF_Operation(result, Index, current)) return true;
+                    }
+                    break;
+                case SMSOperation.EXEC:
+                    {
+                        if (EXEC_Operation(result, Index, current)) return true;
+                    }
+                    break;
+                case SMSOperation.EXER:
+                    {
+                        if (EXER_Operation(ref result, Index, current)) return true;
+                    }
+                    break;
+                case SMSOperation.EQL:
+                    {
+                        result = EQL_Operation(result, Index, current);
+                    }
+                    break;
+                case SMSOperation.LGR:
+                    {
+                        if (LGR_Operation(ref result, Index, current)) return true;
+                    }
+                    break;
+                case SMSOperation.LGE:
+                    {
+                        if (LGE_Operation(ref result, Index, current)) return true;
+                    }
+                    break;
+                case SMSOperation.IF:
+                    {
+                        if (IF_Operation(result, ref Index, current)) return true;
+                    }
+                    break;
+                case SMSOperation.J:
+                    {
+                        if (J_Operation(result, ref Index, current)) return true;
+                    }
+                    break;
+                case SMSOperation.LABEL:
+                    break;
+                case SMSOperation.END:
+                    //End the execution of the script immediately.
+                    Index = CommandSet.Count + 1;
+                    break;
+                case SMSOperation.ENDLABEL:
+                    //A mark of the end of previous label.
+                    break;
+                case SMSOperation.DEL:
+                    {
+                        DEL_Operation(result, Index, current);
+                    }
+                    break;
+                case SMSOperation.ADD:
+                    {
+                        result = ADD_Opertaion(result, Index, current);
+                    }
+                    break;
+                case SMSOperation.ADDI:
+
+                    {
+                        result = ADDI_Operation(result, Index, current);
+                    }
+                    break;
+                case SMSOperation.MULT:
+                    {
+                        result = MULT_Operation(result, Index, current);
+                    }
+                    break;
+                case SMSOperation.MULTI:
+                    {
+                        result = MULTI_Operation(result, Index, current);
+                    }
+                    break;
+                case SMSOperation.DIV:
+                    {
+                        result = DIV_Operation(result, Index, current);
+                    }
+                    break;
+                case SMSOperation.DIVI:
+                    {
+                        result = DIVI_Operation(result, Index, current);
+                    }
+                    break;
+                case SMSOperation.DIVII:
+                    {
+                        result = DIVII_Operation(result, Index, current);
+                    }
+                    break;
+                case SMSOperation.SW:
+                    {
+                        if (SW_Operation(result, Index, current)) return true;
+                    }
+                    break;
+                case SMSOperation.ADDW:
+                    {
+                        if (ADDW_Operation(result, Index, current)) return true;
+                    }
+                    break;
+                case SMSOperation.LW:
+                    {
+                        if (LW_Operation(ref result, Index, current)) return true;
+                    }
+                    break;
+                case SMSOperation.NL:
+                    {
+                        NL_Operation(current);
+                    }
+                    break;
+                case SMSOperation.ND:
+                    {
+                        ND_Operation(current);
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return false;
+        }
+
+        private bool LGE_Operation(ref List<ScriptError> result, int Index, SMSSingleCommand current)
+        {
+            var obj0 = Parse(current.parameters[0]);
+            if (obj0 is IComparable)
+            {
+                SetObject(current.OperateDatapath, ((IComparable)Parse(current.parameters[0])).CompareTo(Parse(current.parameters[1])) >= 0, typeof(bool), ref result, Index);
+            }
+            else
+            {
+                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.OBJ_IS_NOT_COMPARABLE, ErrorType = ErrorType.Error, Message = $"Comparison Failed: Target object \"{current.OperateDatapath}\" is not comparable!.", Position = Index });
+                return true;
+            }
+            return false;
+        }
+
+        private bool LGR_Operation(ref List<ScriptError> result, int Index, SMSSingleCommand current)
+        {
+            var obj0 = Parse(current.parameters[0]);
+            if (obj0 is IComparable)
+            {
+                SetObject(current.OperateDatapath, ((IComparable)Parse(current.parameters[0])).CompareTo(Parse(current.parameters[1])) > 0, typeof(bool), ref result, Index);
+            }
+            else
+            {
+                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.OBJ_IS_NOT_COMPARABLE, ErrorType = ErrorType.Error, Message = $"Comparison Failed: Target object \"{current.OperateDatapath}\" is not comparable!.", Position = Index });
+                return true;
+            }
+            return false;
+        }
+
+        private bool IF_Operation(List<ScriptError> result, ref int Index, SMSSingleCommand current)
+        {
+            if ((bool)FindObject(current.OperateDatapath) == true)
+            {
+                var i = FindLabel(current.parameters[0]);
+                if (i == -1)
+                {
+                    result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.LABEL_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"Jumper Failed: Target label \"{current.parameters[0]}\" does not exist!.", Position = Index });
+                    return true;
+                }
+                Index = i;
+            }
+            return false;
+        }
+
+        private bool J_Operation(List<ScriptError> result, ref int Index, SMSSingleCommand current)
+        {
+            var i = FindLabel(current.OperateDatapath);
+            if (i == -1)
+            {
+                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.LABEL_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"Jumper Failed: Target label \"{current.OperateDatapath}\" does not exist!.", Position = Index });
+                Index = -1;
+                return true;
+            }
+            Index = i;
+            return false;
+        }
+
+        private void DEL_Operation(List<ScriptError> result, int Index, SMSSingleCommand current)
+        {
+            if (Memory.ContainsKey(current.OperateDatapath))
+            {
+                Memory.Remove(current.OperateDatapath);
+            }
+            else
+            {
+                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Warning, Message = $"Deletion Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
+            }
+        }
+
+        private bool ADDW_Operation(List<ScriptError> result, int Index, SMSSingleCommand current)
+        {
+            object list = FindObject(current.OperateDatapath);
+            if (list == null)
+            {
+                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.LABEL_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADDW Failed: Target object \"{current.parameters[0]}\" does not exist!.", Position = Index });
+                return true;
+            }
+            else
+            if ((list as IList) != null)
+            {
+                var l = (list as IList);
+                var d = Parse(current.parameters[0]);
+                if (d == null)
+                {
+                    result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.LABEL_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADDW Failed: Target object \"{current.parameters[0]}\" does not exist!.", Position = Index });
+                    return true;
+                }
+                Trace.WriteLine($"Add {current.parameters[0]} to {current.OperateDatapath}");
+                l.Add(d);
+            }
+            else if ((list as IDictionary) != null)
+            {
+                var index = Parse(current.parameters[0]);
+                var d = (list as IDictionary);
+                if (d.Contains(index)) d[index] = Parse(current.parameters[1]);
+                else d.Add(index, Parse(current.parameters[1]));
+            }
+            else
+            {
+                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.INVALID_DATA_TYPE, ErrorType = ErrorType.Error, Message = $"ADDW Failed: Target object \"{current.OperateDatapath}\" cannot be casted to IList or IDictionary!.", Position = Index });
+                return true;
+            }
+            return false;
+        }
+
+        private bool LW_Operation(ref List<ScriptError> result, int Index, SMSSingleCommand current)
+        {
+            object list = FindObject(current.OperateDatapath);
+            if (list == null)
+            {
+                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.LABEL_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADDW Failed: Target object \"{current.parameters[0]}\" does not exist!.", Position = Index });
+                return true;
+            }
+            else
+            if ((list as IList) != null)
+            {
+                SetObject(current.parameters[1], (list as IList)[Convert.ToInt32(Parse(current.parameters[0]))], null, ref result, Index);
+            }
+            else if ((list as IDictionary) != null)
+            {
+                SetObject(current.parameters[1], (list as IDictionary)[Parse(current.parameters[0])], null, ref result, Index);
+            }
+            else
+            {
+                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.INVALID_DATA_TYPE, ErrorType = ErrorType.Error, Message = $"ADDW Failed: Target object \"{current.OperateDatapath}\" cannot be casted to IList or IDictionary!.", Position = Index });
+                return true;
+            }
+            return false;
         }
 
         private List<ScriptError> EQL_Operation(List<ScriptError> result, int Index, SMSSingleCommand current)
@@ -277,7 +318,6 @@ namespace CLUNL.Scripting.SMS
             if (obj0 is IComparable)
             {
                 SetObject(current.OperateDatapath, ((IComparable)Parse(current.parameters[0])).CompareTo(Parse(current.parameters[1])) == 0, typeof(bool), ref result, Index);
-
             }
             else
                 SetObject(current.OperateDatapath, Parse(current.parameters[0]).Equals(Parse(current.parameters[1])), typeof(bool), ref result, Index);
@@ -323,7 +363,6 @@ namespace CLUNL.Scripting.SMS
                 }
             }
             {
-
                 object[] parameters = null;
                 if (current.parameters.Length > 1)
                 {
@@ -383,13 +422,11 @@ namespace CLUNL.Scripting.SMS
                 ReferencedType = FindType(current.OperateDatapath);
                 if (ReferencedType == null)
                 {
-
                     result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.LABEL_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"EXEC Failed: Target object or type \"{current.OperateDatapath}\" does not exist!.", Position = Index });
                     return true;
                 }
                 else
                 {
-
                     object[] parameters_t = null;
                     if (current.parameters.Length > 1)
                     {
@@ -399,7 +436,6 @@ namespace CLUNL.Scripting.SMS
                         {
                             parameters_t[_i - 1] = Parse(current.parameters[_i]);
                         }
-
                     }
                     Type[] types = ReferencedType == null ? null : new Type[parameters_t.Length];
                     if (parameters_t != null)
