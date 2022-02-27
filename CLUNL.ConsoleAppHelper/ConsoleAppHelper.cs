@@ -12,61 +12,6 @@ using CLUNL.Localization;
 namespace CLUNL.ConsoleAppHelper
 {
     /// <summary>
-    /// Indicates that a class is a console Application feature.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = true)]
-    public sealed class DependentFeatureAttribute : Attribute
-    {
-        readonly string nameString;
-        readonly string featureCollectionID;
-        /// <summary>
-        /// Initializes a new instance of the `DependentFeatureAttribute` class.
-        /// </summary>
-        /// <param name="featureCollectionID">The ID of the collection, in case an assembly contains features that should be accessed in separated dependent application.</param>
-        /// <param name="nameString"></param>
-        public DependentFeatureAttribute(string featureCollectionID, string nameString)
-        {
-            this.nameString = nameString;
-            this.featureCollectionID = featureCollectionID;
-        }
-
-        /// <summary>
-        /// The ID of the collection, in case an assembly contains features that should be accessed in separated dependent application.
-        /// </summary>
-        public string FeatureCollectionID
-        {
-            get => featureCollectionID;
-        }
-        /// <summary>
-        /// The name of the feature.
-        /// </summary>
-        public string Name
-        {
-            get
-            {
-                return nameString;
-            }
-        }
-        /// <summary>
-        /// Description of the feature.
-        /// </summary>
-        public string Description { get; set; } = "";
-        /// <summary>
-        /// Available options.
-        /// </summary>
-        public string[] Options
-        {
-            get; set;
-        }
-        /// <summary>
-        /// Option descriptions.
-        /// </summary>
-        public string[] OptionDescriptions
-        {
-            get; set;
-        }
-    }
-    /// <summary>
     /// Main class of the CLUNL.ConsoleAppHelper.
     /// </summary>
     public class ConsoleAppHelper
@@ -206,8 +151,6 @@ namespace CLUNL.ConsoleAppHelper
             {
                 if (!isSlientMode)
                 {
-
-
                     if (Colorful)
                     {
                         Console.ForegroundColor = ConsoleColor.Yellow;
@@ -276,7 +219,6 @@ namespace CLUNL.ConsoleAppHelper
         /// </summary>
         /// <param name="o1"></param>
         /// <param name="o2"></param>
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void OutLine(object o1, object o2)
         {
@@ -420,57 +362,68 @@ namespace CLUNL.ConsoleAppHelper
                     ParameterList p = new ParameterList();
                     p.ApplyDescription(infos[FeatureName]);
                     Dictionary<string, List<string>> keyValuePairs = new Dictionary<string, List<string>>();
-                    foreach (var item in p.Parameters)
-                    {
-                        if (keyValuePairs.ContainsKey(item.Value))
-                        {
-                            keyValuePairs[item.Value].Add(item.Key);
-                        }
-                        else
-                        {
-                            keyValuePairs.Add(item.Value, new List<string>() { item.Value });
-                        }
-                    }
-                    foreach (var item in keyValuePairs)
-                    {
-                        Out("\t");
-                        for (int i = 0; i < item.Value.Count; i++)
-                        {
-                            if (i == 0)
-                            {
-                                Out($"-{item.Value[i]}");
-                            }
-                            else
-                                Out($", -{item.Value[i]}");
-                        }
-                        int index = -1;
-                        for (int i = 0; i < p.Options.Count; i++)
-                        {
-                            if (p.Options.ElementAt(i).Key == item.Key)
-                            {
-                                index = i;
-                                break;
-                            }
-                        }
-                        string fallback = "";
-                        if (infos[FeatureName].OptionDescriptions is not null)
-                            if (infos[FeatureName].OptionDescriptions.Length > 0 && index is not -1)
-                            {
-                                fallback = infos[FeatureName].OptionDescriptions[index];
-                            }
-                        var final = Language.Find(CurrentFeatureCollectionID + ".Options." + item.Key, fallback);
-                        if (final != "")
-                        {
-
-                            OutLine(Environment.NewLine);
-                            OutLine($"\t\t{Language.Find(CurrentFeatureCollectionID + ".Options." + item.Key, fallback)}");
-                            OutLine();
-                        }
-
-                    }
+                    ObtainParameters(p, keyValuePairs);
+                    PrintParameters(FeatureName, p, keyValuePairs);
 
                 }
         }
+
+        private static void PrintParameters(string FeatureName, ParameterList p, Dictionary<string, List<string>> keyValuePairs)
+        {
+            foreach (var item in keyValuePairs)
+            {
+                Out("\t");
+                for (int i = 0; i < item.Value.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                        Out($"-{item.Value[i]}");
+                    }
+                    else
+                        Out($", -{item.Value[i]}");
+                }
+                int index = -1;
+                for (int i = 0; i < p.Options.Count; i++)
+                {
+                    if (p.Options.ElementAt(i).Key == item.Key)
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+                string fallback = "";
+                if (infos[FeatureName].OptionDescriptions is not null)
+                    if (infos[FeatureName].OptionDescriptions.Length > 0 && index is not -1)
+                    {
+                        fallback = infos[FeatureName].OptionDescriptions[index];
+                    }
+                var final = Language.Find(CurrentFeatureCollectionID + ".Options." + item.Key, fallback);
+                if (final != "")
+                {
+
+                    OutLine(Environment.NewLine);
+                    OutLine($"\t\t{Language.Find(CurrentFeatureCollectionID + ".Options." + item.Key, fallback)}");
+                    OutLine();
+                }
+
+            }
+        }
+
+        private static void ObtainParameters(ParameterList p, Dictionary<string, List<string>> keyValuePairs)
+        {
+            foreach (var item in p.Parameters)
+            {
+                if (keyValuePairs.ContainsKey(item.Value))
+                {
+                    keyValuePairs[item.Value].Add(item.Key);
+                }
+                else
+                {
+                    keyValuePairs.Add(item.Value, new List<string>() { item.Value });
+                }
+            }
+        }
+
         /// <summary>
         /// Print out localized version message.
         /// </summary>
@@ -506,17 +459,17 @@ namespace CLUNL.ConsoleAppHelper
                 if (item.StartsWith("--"))
                 {
                     //An Option.
-                    Process(item.ToUpper(), 2);
+                    Process(item.ToUpper(), 2, parameters, ref toExecute, FeatureName, Length, RawOptions, ref i);
                 }
                 else if (item.StartsWith("-"))
                 {
                     //An Option.
-                    Process(item.ToUpper(), 1);
+                    Process(item.ToUpper(), 1, parameters, ref toExecute, FeatureName, Length, RawOptions, ref i);
                 }
                 else if (item.StartsWith("/"))
                 {
                     //An Option.
-                    Process(item.ToUpper(), 1);
+                    Process(item.ToUpper(), 1, parameters, ref toExecute, FeatureName, Length, RawOptions, ref i);
                 }
                 else
                 {
@@ -531,95 +484,6 @@ namespace CLUNL.ConsoleAppHelper
                     else
                     {
                         MainParameter = item;
-                    }
-                }
-                void Process(string Item, int prefixLength)
-                {
-                    var oN = Item.Substring(prefixLength).ToUpper();
-
-                    if (oN == "?" || oN == "H" || oN == "HELP")
-                    {
-                        if (PreExecution is not null)
-                            PreExecution();
-                        if (FeatureName != "")
-                            PrintHelp(FeatureName);
-                        else
-                            PrintHelp();
-                        //Terminate immediately.
-                        toExecute = new DefaultBlankFeature();
-                        return;
-                    }
-                    if (oN == "V" || oN == "VER" || oN == "VERSION")
-                    {
-                        if (PreExecution is not null)
-                            PreExecution();
-                        PrintVersion();
-                        toExecute = new DefaultBlankFeature();
-                        return;
-                    }
-                    else if (oN == "S" || oN == "SLIENT")
-                    {
-                        isSlientMode = true;
-                    }
-                    else if (oN == "B" || oN == "BATCH")
-                    {
-                        isBatchMode = true;
-                    }
-                    else
-                    {
-                        string Name;
-                        string Value;
-                        if (oN.Contains(':'))
-                        {
-                            Name = oN.Substring(0, oN.IndexOf(':'));
-                            Value = oN.Substring(oN.IndexOf(':') + 1);
-
-                        }
-                        else
-                        if (oN.Contains('='))
-                        {
-
-                            Name = oN.Substring(0, oN.IndexOf('='));
-                            Value = oN.Substring(oN.IndexOf('=') + 1);
-                        }
-                        else
-                        {
-                            Name = oN;
-                            if (i + 1 < Length)
-                            {
-                                Value = parameters[i + 1];
-                                if (Value.StartsWith("-") || Value.StartsWith("/"))
-                                {
-                                    Value = bool.TrueString;
-                                }
-                                else
-                                    i++;
-                            }
-                            else
-                                Value = bool.TrueString;
-                        }
-                        if (bool.TryParse(Value, out bool a))
-                        {
-                            RawOptions.Add(Name, a);
-                        }
-                        else if (int.TryParse(Value, out int i))
-                        {
-                            RawOptions.Add(Name, i);
-                        }
-                        else if (float.TryParse(Value, out float f))
-                        {
-                            RawOptions.Add(Name, f);
-                        }
-                        else if (double.TryParse(Value, out double d))
-                        {
-                            RawOptions.Add(Name, d);
-                        }
-                        else if (BigInteger.TryParse(Value, out BigInteger BI))
-                        {
-                            RawOptions.Add(Name, BI);
-                        }
-                        else
-                            RawOptions.Add(Name, Value);
                     }
                 }
             }
@@ -648,17 +512,96 @@ namespace CLUNL.ConsoleAppHelper
                 toExecute.Execute(p, MainParameter);
             }
         }
-    }
-    /// <summary>
-    /// Defines a method of getting version.
-    /// </summary>
-    public interface IFeatureCollectionVersion
-    {
-        /// <summary>
-        /// Returns a version string.
-        /// </summary>
-        /// <returns></returns>
-        string GetVersionString();
+
+        private static void Process(string Item, int prefixLength, string[] parameters, ref IFeature toExecute, string FeatureName, int Length, Dictionary<string, object> RawOptions, ref int i)
+        {
+            var oN = Item.Substring(prefixLength).ToUpper();
+
+            if (oN == "?" || oN == "H" || oN == "HELP")
+            {
+                if (PreExecution is not null)
+                    PreExecution();
+                if (FeatureName != "")
+                    PrintHelp(FeatureName);
+                else
+                    PrintHelp();
+                //Terminate immediately.
+                toExecute = new DefaultBlankFeature();
+                return;
+            }
+            if (oN == "V" || oN == "VER" || oN == "VERSION")
+            {
+                if (PreExecution is not null)
+                    PreExecution();
+                PrintVersion();
+                toExecute = new DefaultBlankFeature();
+                return;
+            }
+            else if (oN == "S" || oN == "SLIENT")
+            {
+                isSlientMode = true;
+            }
+            else if (oN == "B" || oN == "BATCH")
+            {
+                isBatchMode = true;
+            }
+            else
+            {
+                string Name;
+                string Value;
+                if (oN.Contains(':'))
+                {
+                    Name = oN.Substring(0, oN.IndexOf(':'));
+                    Value = oN.Substring(oN.IndexOf(':') + 1);
+
+                }
+                else
+                if (oN.Contains('='))
+                {
+
+                    Name = oN.Substring(0, oN.IndexOf('='));
+                    Value = oN.Substring(oN.IndexOf('=') + 1);
+                }
+                else
+                {
+                    Name = oN;
+                    if (i + 1 < Length)
+                    {
+                        Value = parameters[i + 1];
+                        if (Value.StartsWith("-") || Value.StartsWith("/"))
+                        {
+                            Value = bool.TrueString;
+                        }
+                        else
+                            i++;
+                    }
+                    else
+                        Value = bool.TrueString;
+                }
+                if (bool.TryParse(Value, out bool a))
+                {
+                    RawOptions.Add(Name, a);
+                }
+                else if (int.TryParse(Value, out int _i))
+                {
+                    RawOptions.Add(Name, _i);
+                }
+                else if (float.TryParse(Value, out float f))
+                {
+                    RawOptions.Add(Name, f);
+                }
+                else if (double.TryParse(Value, out double d))
+                {
+                    RawOptions.Add(Name, d);
+                }
+                else if (BigInteger.TryParse(Value, out BigInteger BI))
+                {
+                    RawOptions.Add(Name, BI);
+                }
+                else
+                    RawOptions.Add(Name, Value);
+            }
+        }
     }
     /// <summary>
     /// Defines a method of Console feature.
