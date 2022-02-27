@@ -51,185 +51,27 @@ namespace CLUNL.Scripting.SMS
                         break;
                     case SMSOperation.SET:
                         {
-                            if (SetObject(current.OperateDatapath, Parse(current.parameters[0]), null, ref result, Index))
-                            { }
-                            else
-                            {
-                                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"SET Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                return null;
-                            }
+                            if (SET_Operation(ref result, Index, current)) return null;
                         }
                         break;
                     case SMSOperation.SETF:
                         {
-                            FieldInfo FinalField = null;
-                            object TargetObject = FindObject(current.OperateDatapath);
-                            Type t = TargetObject.GetType();
-                            for (int i = 0; i < current.parameters.Length - 1; i++)
-                            {
-                                FinalField = t.GetField(current.parameters[i]);
-                                if (FinalField != null)
-                                {
-                                    TargetObject = FinalField.GetValue(TargetObject);
-                                    t = FinalField.ReflectedType;
-                                }
-                                else
-                                {
-                                    result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.MEMBER_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"SETF Failed: Target member \"{current.OperateDatapath} ->...-> {current.parameters[i]}\" does not exist!.", Position = Index });
-                                    return null;
-                                }
-                            }
-                            if (FinalField != null)
-                                FinalField.SetValue(TargetObject, Parse(current.parameters.Last()));
-                            else
-                            {
-                                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.MEMBER_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"SETF Failed: Target member \"{current.OperateDatapath} ->...-> null\" does not exist!.", Position = Index });
-                                return null;
-                            }
+                            if (SETF_Operation(result, Index, current)) return null;
                         }
                         break;
                     case SMSOperation.EXEC:
                         {
-                            object ReferencedTarget;
-                            Type ReferencedType = null;
-                            ReferencedTarget = FindObject(current.OperateDatapath);
-                            if (ReferencedTarget == null)
-                            {
-                                ReferencedType = FindType(current.OperateDatapath);
-                                if (ReferencedType == null)
-                                {
-
-                                    result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.LABEL_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"EXEC Failed: Target object or type \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return null;
-                                }
-                                else
-                                {
-
-                                    object[] parameters_t = null;
-                                    if (current.parameters.Length > 1)
-                                    {
-                                        parameters_t = new object[current.parameters.Length - 1];
-
-                                        for (int _i = 1; _i < current.parameters.Length; _i++)
-                                        {
-                                            parameters_t[_i - 1] = Parse(current.parameters[_i]);
-                                        }
-
-                                    }
-                                    Type[] types = ReferencedType == null ? null : new Type[parameters_t.Length];
-                                    if (parameters_t != null)
-                                    {
-                                        for (int i = 0; i < parameters_t.Length; i++)
-                                        {
-                                            types[i] = parameters_t.GetType();
-                                        }
-                                    }
-                                    var m_t = ReferencedType.GetMethod(current.parameters[0], types);
-                                    m_t.Invoke(null, parameters_t);
-                                    continue;
-                                }
-                            }
-                            {
-
-                                object[] parameters = null;
-                                if (current.parameters.Length > 1)
-                                {
-                                    parameters = new object[current.parameters.Length - 1];
-
-                                    for (int _i = 1; _i < current.parameters.Length; _i++)
-                                    {
-                                        parameters[_i - 1] = Parse(current.parameters[_i]);
-                                    }
-
-                                }
-                                Type[] types = ReferencedType == null ? null : new Type[parameters.Length];
-                                if (parameters != null)
-                                {
-                                    for (int i = 0; i < parameters.Length; i++)
-                                    {
-                                        types[i] = parameters.GetType();
-                                    }
-                                }
-                                var m = ReferencedTarget.GetType().GetMethod(current.parameters[0], types);
-                                m.Invoke(ReferencedTarget, parameters);
-                            }
+                            if (EXEC_Operation(result, Index, current)) return null;
                         }
                         break;
                     case SMSOperation.EXER:
                         {
-                            object ReferencedTarget;
-                            Type ReferencedType = null;
-                            ReferencedTarget = FindObject(current.OperateDatapath);
-                            if (ReferencedTarget == null)
-                            {
-                                ReferencedType = FindType(current.OperateDatapath);
-                                if (ReferencedType == null)
-                                {
-
-                                    result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.LABEL_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"EXEC Failed: Target object or type \"{current.OperateDatapath}\" does not exist!.", Position = Index });
-                                    return null;
-                                }
-                                else
-                                {
-                                    object[] parameters_t = null;
-                                    if (current.parameters.Length > 1)
-                                    {
-                                        parameters_t = new object[current.parameters.Length - 1];
-
-                                        for (int _i = 2; _i < current.parameters.Length; _i++)
-                                        {
-                                            parameters_t[_i - 2] = Parse(current.parameters[_i]);
-                                        }
-
-                                    }
-                                    Type[] types = ReferencedType == null ? null : new Type[parameters_t.Length];
-                                    if (parameters_t != null)
-                                    {
-                                        for (int i = 0; i < parameters_t.Length; i++)
-                                        {
-                                            types[i] = parameters_t.GetType();
-                                        }
-                                    }
-                                    var m_t = ReferencedType.GetMethod(current.parameters[1], types);
-                                    SetObject(current.parameters[0], m_t.Invoke(null, parameters_t), null, ref result, Index);
-                                    continue;
-                                }
-                            }
-                            {
-
-                                object[] parameters = null;
-                                if (current.parameters.Length > 1)
-                                {
-                                    parameters = new object[current.parameters.Length - 1];
-
-                                    for (int _i = 2; _i < current.parameters.Length; _i++)
-                                    {
-                                        parameters[_i - 2] = Parse(current.parameters[_i]);
-                                    }
-                                }
-                                Type[] types = ReferencedType == null ? null : new Type[parameters.Length];
-                                if (parameters != null)
-                                {
-                                    for (int i = 0; i < parameters.Length; i++)
-                                    {
-                                        types[i] = parameters.GetType();
-                                    }
-                                }
-                                var m = ReferencedTarget.GetType().GetMethod(current.parameters[1], types);
-                                SetObject(current.parameters[0], m.Invoke(ReferencedTarget, parameters), null, ref result, Index);
-                            }
+                            if (EXER_Operation(ref result, Index, current)) return null;
                         }
                         break;
                     case SMSOperation.EQL:
                         {
-                            var obj0 = Parse(current.parameters[0]);
-                            if (obj0 is IComparable)
-                            {
-                                SetObject(current.OperateDatapath, ((IComparable)Parse(current.parameters[0])).CompareTo(Parse(current.parameters[1])) == 0, typeof(bool), ref result, Index);
-
-                            }
-                            else
-                                SetObject(current.OperateDatapath, Parse(current.parameters[0]).Equals(Parse(current.parameters[1])), typeof(bool), ref result, Index);
+                            result = EQL_Operation(result, Index, current);
                         }
                         break;
                     case SMSOperation.LGR:
@@ -347,27 +189,7 @@ namespace CLUNL.Scripting.SMS
                         break;
                     case SMSOperation.SW:
                         {
-
-                            object list = FindObject(current.OperateDatapath);
-                            if (list == null)
-                            {
-                                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.LABEL_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADDW Failed: Target object \"{current.parameters[0]}\" does not exist!.", Position = Index });
-                                return null;
-                            }
-                            else
-                            if ((list as IList) != null)
-                            {
-                                (list as IList)[Convert.ToInt32(Parse(current.parameters[0]))] = Parse(current.parameters[1]);
-                            }
-                            else if ((list as IDictionary) != null)
-                            {
-                                (list as IDictionary)[Parse(current.parameters[0])] = Parse(current.parameters[1]);
-                            }
-                            else
-                            {
-                                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.INVALID_DATA_TYPE, ErrorType = ErrorType.Error, Message = $"ADDW Failed: Target object \"{current.OperateDatapath}\" cannot be casted to IList or IDictionary!.", Position = Index });
-                                return null;
-                            }
+                            if (SW_Operation(result, Index, current)) return null;
                         }
                         break;
                     case SMSOperation.ADDW:
@@ -447,6 +269,214 @@ namespace CLUNL.Scripting.SMS
                 }
             }
             return Current.ExposedObjects["Result"];
+        }
+
+        private List<ScriptError> EQL_Operation(List<ScriptError> result, int Index, SMSSingleCommand current)
+        {
+            var obj0 = Parse(current.parameters[0]);
+            if (obj0 is IComparable)
+            {
+                SetObject(current.OperateDatapath, ((IComparable)Parse(current.parameters[0])).CompareTo(Parse(current.parameters[1])) == 0, typeof(bool), ref result, Index);
+
+            }
+            else
+                SetObject(current.OperateDatapath, Parse(current.parameters[0]).Equals(Parse(current.parameters[1])), typeof(bool), ref result, Index);
+            return result;
+        }
+
+        private bool EXER_Operation(ref List<ScriptError> result, int Index, SMSSingleCommand current)
+        {
+            object ReferencedTarget;
+            Type ReferencedType = null;
+            ReferencedTarget = FindObject(current.OperateDatapath);
+            if (ReferencedTarget == null)
+            {
+                ReferencedType = FindType(current.OperateDatapath);
+                if (ReferencedType == null)
+                {
+                    result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.LABEL_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"EXEC Failed: Target object or type \"{current.OperateDatapath}\" does not exist!.", Position = Index });
+                    return true;
+                }
+                else
+                {
+                    object[] parameters_t = null;
+                    if (current.parameters.Length > 1)
+                    {
+                        parameters_t = new object[current.parameters.Length - 1];
+
+                        for (int _i = 2; _i < current.parameters.Length; _i++)
+                        {
+                            parameters_t[_i - 2] = Parse(current.parameters[_i]);
+                        }
+                    }
+                    Type[] types = ReferencedType == null ? null : new Type[parameters_t.Length];
+                    if (parameters_t != null)
+                    {
+                        for (int i = 0; i < parameters_t.Length; i++)
+                        {
+                            types[i] = parameters_t.GetType();
+                        }
+                    }
+                    var m_t = ReferencedType.GetMethod(current.parameters[1], types);
+                    SetObject(current.parameters[0], m_t.Invoke(null, parameters_t), null, ref result, Index);
+                    return false;
+                }
+            }
+            {
+
+                object[] parameters = null;
+                if (current.parameters.Length > 1)
+                {
+                    parameters = new object[current.parameters.Length - 1];
+
+                    for (int _i = 2; _i < current.parameters.Length; _i++)
+                    {
+                        parameters[_i - 2] = Parse(current.parameters[_i]);
+                    }
+                }
+                Type[] types = ReferencedType == null ? null : new Type[parameters.Length];
+                if (parameters != null)
+                {
+                    for (int i = 0; i < parameters.Length; i++)
+                    {
+                        types[i] = parameters.GetType();
+                    }
+                }
+                var m = ReferencedTarget.GetType().GetMethod(current.parameters[1], types);
+                SetObject(current.parameters[0], m.Invoke(ReferencedTarget, parameters), null, ref result, Index);
+            }
+            return false;
+        }
+
+        private bool SW_Operation(List<ScriptError> result, int Index, SMSSingleCommand current)
+        {
+            object list = FindObject(current.OperateDatapath);
+            if (list == null)
+            {
+                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.LABEL_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"ADDW Failed: Target object \"{current.parameters[0]}\" does not exist!.", Position = Index });
+                return true;
+            }
+            else
+            if ((list as IList) != null)
+            {
+                (list as IList)[Convert.ToInt32(Parse(current.parameters[0]))] = Parse(current.parameters[1]);
+            }
+            else if ((list as IDictionary) != null)
+            {
+                (list as IDictionary)[Parse(current.parameters[0])] = Parse(current.parameters[1]);
+            }
+            else
+            {
+                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.INVALID_DATA_TYPE, ErrorType = ErrorType.Error, Message = $"ADDW Failed: Target object \"{current.OperateDatapath}\" cannot be casted to IList or IDictionary!.", Position = Index });
+                return true;
+            }
+            return false;
+        }
+
+        private bool EXEC_Operation(List<ScriptError> result, int Index, SMSSingleCommand current)
+        {
+            object ReferencedTarget;
+            Type ReferencedType = null;
+            ReferencedTarget = FindObject(current.OperateDatapath);
+            if (ReferencedTarget == null)
+            {
+                ReferencedType = FindType(current.OperateDatapath);
+                if (ReferencedType == null)
+                {
+
+                    result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.LABEL_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"EXEC Failed: Target object or type \"{current.OperateDatapath}\" does not exist!.", Position = Index });
+                    return true;
+                }
+                else
+                {
+
+                    object[] parameters_t = null;
+                    if (current.parameters.Length > 1)
+                    {
+                        parameters_t = new object[current.parameters.Length - 1];
+
+                        for (int _i = 1; _i < current.parameters.Length; _i++)
+                        {
+                            parameters_t[_i - 1] = Parse(current.parameters[_i]);
+                        }
+
+                    }
+                    Type[] types = ReferencedType == null ? null : new Type[parameters_t.Length];
+                    if (parameters_t != null)
+                    {
+                        for (int i = 0; i < parameters_t.Length; i++)
+                        {
+                            types[i] = parameters_t.GetType();
+                        }
+                    }
+                    var m_t = ReferencedType.GetMethod(current.parameters[0], types);
+                    m_t.Invoke(null, parameters_t);
+                    return false;
+                }
+            }
+            {
+                object[] parameters = null;
+                if (current.parameters.Length > 1)
+                {
+                    parameters = new object[current.parameters.Length - 1];
+                    for (int _i = 1; _i < current.parameters.Length; _i++)
+                    {
+                        parameters[_i - 1] = Parse(current.parameters[_i]);
+                    }
+                }
+                Type[] types = ReferencedType == null ? null : new Type[parameters.Length];
+                if (parameters != null)
+                {
+                    for (int i = 0; i < parameters.Length; i++)
+                    {
+                        types[i] = parameters.GetType();
+                    }
+                }
+                var m = ReferencedTarget.GetType().GetMethod(current.parameters[0], types);
+                m.Invoke(ReferencedTarget, parameters);
+            }
+            return false;
+        }
+
+        private bool SETF_Operation(List<ScriptError> result, int Index, SMSSingleCommand current)
+        {
+            FieldInfo FinalField = null;
+            object TargetObject = FindObject(current.OperateDatapath);
+            Type t = TargetObject.GetType();
+            for (int i = 0; i < current.parameters.Length - 1; i++)
+            {
+                FinalField = t.GetField(current.parameters[i]);
+                if (FinalField != null)
+                {
+                    TargetObject = FinalField.GetValue(TargetObject);
+                    t = FinalField.ReflectedType;
+                }
+                else
+                {
+                    result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.MEMBER_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"SETF Failed: Target member \"{current.OperateDatapath} ->...-> {current.parameters[i]}\" does not exist!.", Position = Index });
+                    return true;
+                }
+            }
+            if (FinalField != null)
+                FinalField.SetValue(TargetObject, Parse(current.parameters.Last()));
+            else
+            {
+                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.MEMBER_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"SETF Failed: Target member \"{current.OperateDatapath} ->...-> null\" does not exist!.", Position = Index });
+                return true;
+            }
+            return false;
+        }
+
+        private bool SET_Operation(ref List<ScriptError> result, int Index, SMSSingleCommand current)
+        {
+            if (SetObject(current.OperateDatapath, Parse(current.parameters[0]), null, ref result, Index))
+            { }
+            else
+            {
+                result.Add(new ScriptError() { ErrorTime = ErrorTime.Execute, ID = ScriptErrorIDs.REFERENCE_DOES_NOT_EXIST, ErrorType = ErrorType.Error, Message = $"SET Failed: Target reference \"{current.OperateDatapath}\" does not exist!.", Position = Index });
+                return true;
+            }
+            return false;
         }
 
         private void ND_Operation(SMSSingleCommand current)
