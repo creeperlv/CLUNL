@@ -31,7 +31,7 @@ namespace CLUNL
         /// </summary>
         /// <param name="FeatureID"></param>
         /// <param name="Value"></param>
-        public static void SetFlag(int FeatureID,int Value)
+        public static void SetFlag(int FeatureID, int Value)
         {
             if (__.ContainsKey(FeatureID))
             {
@@ -72,11 +72,11 @@ namespace CLUNL
         /// <summary>
         /// Whether pipeline will ignore pipeline unit error.
         /// </summary>
-        public static int Pipeline_IgnoreError=0x0004;
+        public static int Pipeline_IgnoreError = 0x0004;
         /// <summary>
         /// Whether Pipeline will auto generate an ID.
         /// </summary>
-        public static int Pipeline_AutoID_Random=0x0005;
+        public static int Pipeline_AutoID_Random = 0x0005;
     }
     /// <summary>
     /// Version Channel

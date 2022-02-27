@@ -7,7 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CLUNL.Scripting.SMS
@@ -41,35 +40,13 @@ namespace CLUNL.Scripting.SMS
                 {
                     case SMSOperation.NEW:
                         {
-                            Data d = new Data();
-                            d.DataType = FindType(current.parameters[0]);
-                            if (current.parameters.Length > 1)
-                            {
-                                object[] parameters = new object[current.parameters.Length - 1];
-
-                                for (int _i = 1; _i < current.parameters.Length; _i++)
-                                {
-                                    parameters[_i - 1] = Parse(current.parameters[_i]);
-                                }
-                                d.CoreData = Activator.CreateInstance(d.DataType, parameters);
-                            }
-                            else
-                            {
-                                d.CoreData = Activator.CreateInstance(d.DataType);
-                            }
-                            if (!Memory.ContainsKey(current.OperateDatapath))
-                                Memory.Add(current.OperateDatapath, d);
-                            else Memory[current.OperateDatapath] = d;
+                            NEW_Operation
+                                (current);
                         }
                         break;
                     case SMSOperation.NEWT:
                         {
-                            Data d = new Data();
-                            d.CoreData = FindType(current.parameters[0]);
-                            d.DataType = typeof(Type);
-                            if (!Memory.ContainsKey(current.OperateDatapath))
-                                Memory.Add(current.OperateDatapath, d);
-                            else Memory[current.OperateDatapath] = d;
+                            NEWT_Operation(current);
                         }
                         break;
                     case SMSOperation.SET:
@@ -194,7 +171,6 @@ namespace CLUNL.Scripting.SMS
                                 }
                                 else
                                 {
-
                                     object[] parameters_t = null;
                                     if (current.parameters.Length > 1)
                                     {
@@ -230,7 +206,6 @@ namespace CLUNL.Scripting.SMS
                                     {
                                         parameters[_i - 2] = Parse(current.parameters[_i]);
                                     }
-
                                 }
                                 Type[] types = ReferencedType == null ? null : new Type[parameters.Length];
                                 if (parameters != null)
@@ -263,7 +238,6 @@ namespace CLUNL.Scripting.SMS
                             if (obj0 is IComparable)
                             {
                                 SetObject(current.OperateDatapath, ((IComparable)Parse(current.parameters[0])).CompareTo(Parse(current.parameters[1])) > 0, typeof(bool), ref result, Index);
-
                             }
                             else
                             {
@@ -337,76 +311,38 @@ namespace CLUNL.Scripting.SMS
                         break;
                     case SMSOperation.ADD:
                         {
-                            Type t = FindType(current.parameters[0]);
-                            string Target = current.OperateDatapath;
-                            object obj1 = FindObject(current.parameters[1]);
-                            object obj2 = FindObject(current.parameters[2]);
-                            Number n1 = new Number(obj1, current.parameters[1], t);
-                            Number n2 = new Number(obj2, current.parameters[2], t);
-                            SetObject(Target, n1 + n2, null, ref result, Index);
+                            result = ADD_Opertaion(result, Index, current);
                         }
                         break;
                     case SMSOperation.ADDI:
 
                         {
-                            Type t = FindType(current.parameters[0]);
-                            string Target = current.OperateDatapath;
-                            object obj1 = FindObject(current.parameters[1]);
-                            Number n1 = new Number(obj1, current.parameters[1], t);
-                            Number n2 = new Number(null, current.parameters[2], t);
-                            SetObject(Target, n1 + n2, null, ref result, Index);
+                            result = ADDI_Operation(result, Index, current);
                         }
                         break;
                     case SMSOperation.MULT:
                         {
-                            Type t = FindType(current.parameters[0]);
-                            string Target = current.OperateDatapath;
-                            object obj1 = FindObject(current.parameters[1]);
-                            object obj2 = FindObject(current.parameters[2]);
-                            Number n1 = new Number(obj1, current.parameters[1], t);
-                            Number n2 = new Number(obj2, current.parameters[2], t);
-                            SetObject(Target, n1 * n2, null, ref result, Index);
+                            result = MULT_Operation(result, Index, current);
                         }
                         break;
                     case SMSOperation.MULTI:
                         {
-                            Type t = FindType(current.parameters[0]);
-                            string Target = current.OperateDatapath;
-                            object obj1 = FindObject(current.parameters[1]);
-                            Number n1 = new Number(obj1, current.parameters[1], t);
-                            Number n2 = new Number(null, current.parameters[2], t);
-                            SetObject(Target, n1 * n2, null, ref result, Index);
+                            result = MULTI_Operation(result, Index, current);
                         }
                         break;
                     case SMSOperation.DIV:
                         {
-                            Type t = FindType(current.parameters[0]);
-                            string Target = current.OperateDatapath;
-                            object obj1 = FindObject(current.parameters[1]);
-                            object obj2 = FindObject(current.parameters[2]);
-                            Number n1 = new Number(obj1, current.parameters[1], t);
-                            Number n2 = new Number(obj2, current.parameters[2], t);
-                            SetObject(Target, n1 / n2, null, ref result, Index);
+                            result = DIV_Operation(result, Index, current);
                         }
                         break;
                     case SMSOperation.DIVI:
                         {
-                            Type t = FindType(current.parameters[0]);
-                            string Target = current.OperateDatapath;
-                            object obj1 = FindObject(current.parameters[1]);
-                            Number n1 = new Number(obj1, current.parameters[1], t);
-                            Number n2 = new Number(null, current.parameters[2], t);
-                            SetObject(Target, n1 / n2, null, ref result, Index);
+                            result = DIVI_Operation(result, Index, current);
                         }
                         break;
                     case SMSOperation.DIVII:
                         {
-                            Type t = FindType(current.parameters[0]);
-                            string Target = current.OperateDatapath;
-                            object obj1 = FindObject(current.parameters[2]);
-                            Number n1 = new Number(null, current.parameters[1], t);
-                            Number n2 = new Number(obj1, current.parameters[2], t);
-                            SetObject(Target, n1 / n2, null, ref result, Index);
+                            result = DIVII_Operation(result, Index, current);
                         }
                         break;
                     case SMSOperation.SW:
@@ -498,25 +434,12 @@ namespace CLUNL.Scripting.SMS
                         break;
                     case SMSOperation.NL:
                         {
-                            var t = typeof(List<int>).Assembly.GetType($"System.Collections.Generic.List`1[{FindType(current.parameters[0])}]");
-                            Data d = new Data();
-                            d.DataType = t;
-                            d.CoreData = Activator.CreateInstance(t);
-                            if (!Memory.ContainsKey(current.OperateDatapath))
-                                Memory.Add(current.OperateDatapath, d);
-                            else Memory[current.OperateDatapath] = d;
+                            NL_Operation(current);
                         }
                         break;
                     case SMSOperation.ND:
                         {
-                            var t = typeof(List<int>).Assembly.GetType($"System.Collections.Generic.Dictionary`2[{FindType(current.parameters[0])},{FindType(current.parameters[1])}]");
-
-                            Data d = new Data();
-                            d.DataType = t;
-                            d.CoreData = Activator.CreateInstance(t);
-                            if (!Memory.ContainsKey(current.OperateDatapath))
-                                Memory.Add(current.OperateDatapath, d);
-                            else Memory[current.OperateDatapath] = d;
+                            ND_Operation(current);
                         }
                         break;
                     default:
@@ -524,6 +447,141 @@ namespace CLUNL.Scripting.SMS
                 }
             }
             return Current.ExposedObjects["Result"];
+        }
+
+        private void ND_Operation(SMSSingleCommand current)
+        {
+            var t = typeof(List<int>).Assembly.GetType($"System.Collections.Generic.Dictionary`2[{FindType(current.parameters[0])},{FindType(current.parameters[1])}]");
+            Data d = new Data();
+            d.DataType = t;
+            d.CoreData = Activator.CreateInstance(t);
+            if (!Memory.ContainsKey(current.OperateDatapath))
+                Memory.Add(current.OperateDatapath, d);
+            else Memory[current.OperateDatapath] = d;
+        }
+
+        private void NL_Operation(SMSSingleCommand current)
+        {
+            var t = typeof(List<int>).Assembly.GetType($"System.Collections.Generic.List`1[{FindType(current.parameters[0])}]");
+            Data d = new Data();
+            d.DataType = t;
+            d.CoreData = Activator.CreateInstance(t);
+            if (!Memory.ContainsKey(current.OperateDatapath))
+                Memory.Add(current.OperateDatapath, d);
+            else Memory[current.OperateDatapath] = d;
+        }
+
+        private List<ScriptError> DIVII_Operation(List<ScriptError> result, int Index, SMSSingleCommand current)
+        {
+            Type t = FindType(current.parameters[0]);
+            string Target = current.OperateDatapath;
+            object obj1 = FindObject(current.parameters[2]);
+            Number n1 = new Number(null, current.parameters[1], t);
+            Number n2 = new Number(obj1, current.parameters[2], t);
+            SetObject(Target, n1 / n2, null, ref result, Index);
+            return result;
+        }
+
+        private List<ScriptError> DIVI_Operation(List<ScriptError> result, int Index, SMSSingleCommand current)
+        {
+            Type t = FindType(current.parameters[0]);
+            string Target = current.OperateDatapath;
+            object obj1 = FindObject(current.parameters[1]);
+            Number n1 = new Number(obj1, current.parameters[1], t);
+            Number n2 = new Number(null, current.parameters[2], t);
+            SetObject(Target, n1 / n2, null, ref result, Index);
+            return result;
+        }
+
+        private List<ScriptError> DIV_Operation(List<ScriptError> result, int Index, SMSSingleCommand current)
+        {
+            Type t = FindType(current.parameters[0]);
+            string Target = current.OperateDatapath;
+            object obj1 = FindObject(current.parameters[1]);
+            object obj2 = FindObject(current.parameters[2]);
+            Number n1 = new Number(obj1, current.parameters[1], t);
+            Number n2 = new Number(obj2, current.parameters[2], t);
+            SetObject(Target, n1 / n2, null, ref result, Index);
+            return result;
+        }
+
+        private List<ScriptError> MULTI_Operation(List<ScriptError> result, int Index, SMSSingleCommand current)
+        {
+            Type t = FindType(current.parameters[0]);
+            string Target = current.OperateDatapath;
+            object obj1 = FindObject(current.parameters[1]);
+            Number n1 = new Number(obj1, current.parameters[1], t);
+            Number n2 = new Number(null, current.parameters[2], t);
+            SetObject(Target, n1 * n2, null, ref result, Index);
+            return result;
+        }
+
+        private List<ScriptError> MULT_Operation(List<ScriptError> result, int Index, SMSSingleCommand current)
+        {
+            Type t = FindType(current.parameters[0]);
+            string Target = current.OperateDatapath;
+            object obj1 = FindObject(current.parameters[1]);
+            object obj2 = FindObject(current.parameters[2]);
+            Number n1 = new Number(obj1, current.parameters[1], t);
+            Number n2 = new Number(obj2, current.parameters[2], t);
+            SetObject(Target, n1 * n2, null, ref result, Index);
+            return result;
+        }
+
+        private List<ScriptError> ADDI_Operation(List<ScriptError> result, int Index, SMSSingleCommand current)
+        {
+            Type t = FindType(current.parameters[0]);
+            string Target = current.OperateDatapath;
+            object obj1 = FindObject(current.parameters[1]);
+            Number n1 = new Number(obj1, current.parameters[1], t);
+            Number n2 = new Number(null, current.parameters[2], t);
+            SetObject(Target, n1 + n2, null, ref result, Index);
+            return result;
+        }
+
+        private List<ScriptError> ADD_Opertaion(List<ScriptError> result, int Index, SMSSingleCommand current)
+        {
+            Type t = FindType(current.parameters[0]);
+            string Target = current.OperateDatapath;
+            object obj1 = FindObject(current.parameters[1]);
+            object obj2 = FindObject(current.parameters[2]);
+            Number n1 = new Number(obj1, current.parameters[1], t);
+            Number n2 = new Number(obj2, current.parameters[2], t);
+            SetObject(Target, n1 + n2, null, ref result, Index);
+            return result;
+        }
+
+        private void NEWT_Operation(SMSSingleCommand current)
+        {
+            Data d = new Data();
+            d.CoreData = FindType(current.parameters[0]);
+            d.DataType = typeof(Type);
+            if (!Memory.ContainsKey(current.OperateDatapath))
+                Memory.Add(current.OperateDatapath, d);
+            else Memory[current.OperateDatapath] = d;
+        }
+
+        private void NEW_Operation(SMSSingleCommand current)
+        {
+            Data d = new Data();
+            d.DataType = FindType(current.parameters[0]);
+            if (current.parameters.Length > 1)
+            {
+                object[] parameters = new object[current.parameters.Length - 1];
+
+                for (int _i = 1; _i < current.parameters.Length; _i++)
+                {
+                    parameters[_i - 1] = Parse(current.parameters[_i]);
+                }
+                d.CoreData = Activator.CreateInstance(d.DataType, parameters);
+            }
+            else
+            {
+                d.CoreData = Activator.CreateInstance(d.DataType);
+            }
+            if (!Memory.ContainsKey(current.OperateDatapath))
+                Memory.Add(current.OperateDatapath, d);
+            else Memory[current.OperateDatapath] = d;
         }
 
         public async Task<(object, List<ScriptError>)> EvalAsync(string str)
@@ -785,7 +843,6 @@ namespace CLUNL.Scripting.SMS
         }
         public void GatherLabels()
         {
-
             for (int i = 0; i < CommandSet.Count; i++)
             {
                 var command = CommandSet[i];
@@ -829,7 +886,6 @@ namespace CLUNL.Scripting.SMS
                         break;
                     case SMSOperation.LABEL:
                         {
-
                         }
                         break;
                     case SMSOperation.END:
@@ -873,41 +929,5 @@ namespace CLUNL.Scripting.SMS
             CommandSet.Clear();
             Base = null;
         }
-    }
-    internal enum SMSOperation
-    {
-        NEW = 0x00,             //Create new object. NEW Object Type [Parameter0 Parameter1 ...]
-        SET = 0x01,             //Set value to an object. SET Object Value
-        SETF = 0x14,            //Set value to a field of an object. SETF Object Field0 Field1 ... Field[N] Value
-        EXEC = 0x02,            //Execute external method. EXEC Object/Type MethodName [Parameter0 Parameter1 ...]
-        EXER = 0x13,            //Execute external method and receive return value. EXER Object/Type MethodName WhereToStoreRetureValue [Parameter0 Parameter1 ...]
-        IF = 0x03,              //If sentence. ID BOOL_VALUE LABEL
-        EQL = 0x15,             //Judge if two object is equal. EQL BoolObj Obj0 Obj1. To implement !=, recommend: EQL BOOL_VALUE BOOL_VALUE Bool:False
-        LGR = 0x16,             //Judge if object 1 is larger than object 2. LGR BoolObj Obj1 Obj2. To implement '<', it is recommended to swap the order.
-        LGE = 0x17,             //Judge if object 1 is larger than or equal to object 2. LGE BoolObj Obj1 Obj2. This operation is equal to 'BoolObj = Obj1 >= Obj2;'
-        J = 0x04,               //Jump to label. J Label_Name
-        LABEL = 0x05,           //Define label. LABEL Label_Name
-        END = 0x06,             //End of program. END
-        ENDLABEL = 0x07,        //End of label. ENDLABEL
-        DEL = 0x08,             //Delete object. DEL Object0
-        ADD = 0x09,             //Add Object0 = Object1 + Object2.  ADD OBJ0 TYPE OBJ1 OBJ2
-        ADDI = 0x0A,            //Add immediately. ADD OBJ0 TYPE OBJ1 NUMBER
-        MULT = 0x0B,            //Multiply Object0=Object1*Object2. MULT OBJ0 TYPE OBJ1 OBJ2
-        MULTI = 0x0C,           //Multiply immediately. MULT OBJ0 TYPE OBJ1 NUMBER
-        DIV = 0x0D,             //Divide Object0=Object1/Object2. DIV OBJ0 TYPE OBJ1 OBJ2
-        DIVI = 0x0E,            //Divide immediately. DIVI OBJ0 TYPE OBJ1 NUMBER
-        DIVII = 0x0F,           //Divide inversed immediately. DIVI OBJ0 TYPE NUMBER OBJ1
-        SW = 0x10,              //Save Word. SW ARRAY_OBJECT INDEX TYPE:DATA(Object)
-        ADDW = 0x11,            //Add word to ArrayList. ADDW LIST_OBJECT TYPE:DATA                        
-        LW = 0x12,              //Load word. LW ARRAY_OBJECT INDEX TARGET_OBJECT
-        NL = 0x18,              //New List
-        ND = 0x19,              //New Dictionary
-        NEWT = 0x1A,            //Create an instance of Type of certain type. NEWT Object Type.
-    }
-    internal struct SMSSingleCommand
-    {
-        internal SMSOperation operation;
-        internal string OperateDatapath;
-        internal string[] parameters;
     }
 }

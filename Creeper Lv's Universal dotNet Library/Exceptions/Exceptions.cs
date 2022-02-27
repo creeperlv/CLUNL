@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CLUNL.Exceptions
 {
@@ -52,6 +50,6 @@ namespace CLUNL.Exceptions
         /// <summary>
         /// Throw when trying using the object that is on hold.
         /// </summary>
-        public ObjectIsOnHoldException():base("The object is on hold by other handle.") { }
+        public ObjectIsOnHoldException() : base("The object is on hold by other handle.") { }
     }
 }

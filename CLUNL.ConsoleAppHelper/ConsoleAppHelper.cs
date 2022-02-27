@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CLUNL.Localization;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -7,7 +8,6 @@ using System.Numerics;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
-using CLUNL.Localization;
 
 namespace CLUNL.ConsoleAppHelper
 {

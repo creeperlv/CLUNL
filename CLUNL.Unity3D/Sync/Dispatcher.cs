@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 //using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace CLUNL.Unity3D.Sync
 {

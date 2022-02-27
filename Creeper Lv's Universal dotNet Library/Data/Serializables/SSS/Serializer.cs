@@ -23,12 +23,12 @@ namespace CLUNL.Data.Serializables.SSS
         public static List<string> Serialize<T>(List<T> data)
         {
             List<string> result = new List<string>();
-            StringBuilder stringBuilder= new StringBuilder();
+            StringBuilder stringBuilder = new StringBuilder();
             foreach (var item in data)
             {
                 stringBuilder.Clear();
-                var Item_T=item.GetType();
-                var Fields=Item_T.GetFields();
+                var Item_T = item.GetType();
+                var Fields = Item_T.GetFields();
                 stringBuilder.Append(Item_T.FullName);
                 stringBuilder.Append(BLANK);
                 foreach (var field in Fields)

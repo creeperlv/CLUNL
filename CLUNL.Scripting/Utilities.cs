@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 
 namespace CLUNL.Scripting
@@ -81,7 +80,7 @@ namespace CLUNL.Scripting
                         b = true;
                         continue;
                     }
-                    if (c == '#'|| c == ';')
+                    if (c == '#' || c == ';')
                     {
                         if (a == false)
                         {

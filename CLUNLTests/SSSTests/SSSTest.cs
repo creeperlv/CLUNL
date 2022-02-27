@@ -3,9 +3,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CLUNLTests.SSSTests
 {
@@ -16,11 +13,11 @@ namespace CLUNLTests.SSSTests
         [TestMethod]
         public void Test0()
         {
-            List<SSS_Base> list = new ();
-            Random random = new Random ();
+            List<SSS_Base> list = new();
+            Random random = new Random();
             for (int i = 0; i < 50; i++)
             {
-                int index=i%4;
+                int index = i % 4;
                 switch (index)
                 {
                     case 0:
@@ -47,12 +44,12 @@ namespace CLUNLTests.SSSTests
                         break;
                 }
             }
-            var content=Serializer.Serialize(list);
+            var content = Serializer.Serialize(list);
             foreach (var item in content)
             {
                 Trace.WriteLine(item);
             }
-            var result=Deserializer.Deserialize<SSS_Base>(content);
+            var result = Deserializer.Deserialize<SSS_Base>(content);
             foreach (var item in result)
             {
                 Trace.WriteLine(item);

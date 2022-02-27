@@ -3,7 +3,6 @@ using CLUNL.Massives;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace CLUNL.Data.Layer0
 {

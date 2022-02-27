@@ -5,8 +5,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace CLUNL.Data.Layer2
 {
@@ -30,7 +28,7 @@ namespace CLUNL.Data.Layer2
         /// List data that directly write content to stream.
         /// </summary>
         /// <param name="Data">Base data</param>
-        public ListData(List <T> Data)
+        public ListData(List<T> Data)
         {
             RawData = Data;
         }
@@ -43,7 +41,7 @@ namespace CLUNL.Data.Layer2
         {
             ListData<T> LD = new ListData<T>();
             LD.RawData = new List<T>();
-            LD.BasicKeyValueData= new BasicKeyValueData(new StreamWR(stream), '=', true);
+            LD.BasicKeyValueData = new BasicKeyValueData(new StreamWR(stream), '=', true);
             var A = LD.BasicKeyValueData.FindValue("Length");
             if (A != null)
             {
@@ -70,7 +68,7 @@ namespace CLUNL.Data.Layer2
         }
         T ConvertData(string OriginalData)
         {
-            var d=Convert.ChangeType(OriginalData, typeof(T));
+            var d = Convert.ChangeType(OriginalData, typeof(T));
             return (T)d;
         }
         /// <summary>
@@ -112,11 +110,11 @@ namespace CLUNL.Data.Layer2
         {
             int Handle = new Random().Next();
             BasicKeyValueData.OnHold(Handle);
-            BasicKeyValueData.Clear(Handle:Handle);
-            BasicKeyValueData.AddValue("Length", RawData.Count+"",Handle:Handle);
+            BasicKeyValueData.Clear(Handle: Handle);
+            BasicKeyValueData.AddValue("Length", RawData.Count + "", Handle: Handle);
             for (int i = 0; i < RawData.Count; i++)
             {
-                BasicKeyValueData.AddValue(i + "", RawData[i].ToString(),false,false,Handle);
+                BasicKeyValueData.AddValue(i + "", RawData[i].ToString(), false, false, Handle);
             }
             BasicKeyValueData.RemoveOldDuplicatedItems();
             BasicKeyValueData.Flush(Handle);
@@ -124,7 +122,7 @@ namespace CLUNL.Data.Layer2
         }
         void _Save()
         {
-            if (LibraryInfo.GetFlag(FeatureFlags.ListData_AutoSave)==1)
+            if (LibraryInfo.GetFlag(FeatureFlags.ListData_AutoSave) == 1)
             {
                 Save();
             }

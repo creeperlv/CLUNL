@@ -1,6 +1,5 @@
 ﻿using CLUNL.Data.Convertors;
 using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace CLUNL.Data.Layer0.Buffers
@@ -311,7 +310,7 @@ namespace CLUNL.Data.Layer0.Buffers
             }
             else
             {
-                var Convertor=ConvertorManager.CurrentConvertorManager.GetConvertor(obj.GetType());
+                var Convertor = ConvertorManager.CurrentConvertorManager.GetConvertor(obj.GetType());
                 CoreBuffer.AppendGroup(BitConverter.GetBytes(TypeFlags.CustomData));
                 CoreBuffer.AppendGroup(BitConverter.GetBytes(Convertor.DataHeader()));
                 CoreBuffer.AppendGroup(Convertor.Serialize(obj));

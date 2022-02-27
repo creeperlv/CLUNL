@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CLUNL.Scripting
 {
-    public interface IEngine:IDisposable
+    public interface IEngine : IDisposable
     {
         ScriptEnvironment GetCurrentEnvironment();
         void SetEnvironmentBase(ScriptEnvironment environment);
-        object Eval(string str,out List<ScriptError> result);
-        Task<(object,List<ScriptError>)> EvalAsync(string str);
+        object Eval(string str, out List<ScriptError> result);
+        Task<(object, List<ScriptError>)> EvalAsync(string str);
         void ResetEngine();
         void ClearMemory();
         Dictionary<string, Data> GetMemory();
@@ -22,11 +21,11 @@ namespace CLUNL.Scripting
     }
     public enum ErrorType
     {
-        Warning,Error
+        Warning, Error
     }
     public enum ErrorTime
     {
-        Compile,Execute
+        Compile, Execute
     }
     public static class ScriptErrorIDs
     {

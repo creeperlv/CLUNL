@@ -1,7 +1,6 @@
 ﻿using CLUNL.DirectedIO;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CLUNL.Diagnosis
@@ -12,7 +11,7 @@ namespace CLUNL.Diagnosis
     public class MMFDebuggerWatcher
     {
         MMFWR MMFWR;
-        bool isStop=false;
+        bool isStop = false;
         public void Stop()
         {
             isStop = true;
@@ -21,18 +20,20 @@ namespace CLUNL.Diagnosis
         /// Init the watcher. Will start a thread/task to listen.
         /// </summary>
         /// <param name="WR"></param>
-        public MMFDebuggerWatcher(MMFWR WR,LogInfoProfile logInfoProfile= LogInfoProfile.R1)
+        public MMFDebuggerWatcher(MMFWR WR, LogInfoProfile logInfoProfile = LogInfoProfile.R1)
         {
             MMFWR = WR;
             switch (logInfoProfile)
             {
                 case LogInfoProfile.R0:
-                    Task.Run(() => { 
-                    
+                    Task.Run(() =>
+                    {
+
                     });
                     break;
                 case LogInfoProfile.R1:
-                    Task.Run(() => {
+                    Task.Run(() =>
+                    {
                         string line;
                         while ((line = MMFWR.ReadLine()) != ">S[End")
                         {
@@ -63,14 +64,14 @@ namespace CLUNL.Diagnosis
                 default:
                     break;
             }
-            
+
         }
         List<Action<(LogDescription, string)>> Listeners;
         /// <summary>
         /// Add a debug listener.
         /// </summary>
         /// <param name="Listener"></param>
-        public void AddListener(Action<(LogDescription,string)> Listener)
+        public void AddListener(Action<(LogDescription, string)> Listener)
         {
             lock (Listeners)
             {
@@ -85,7 +86,7 @@ namespace CLUNL.Diagnosis
         public static LogDescription Analysis(string Msg)
         {
             LogDescription logDescription = new LogDescription();
-            logDescription.Time=DateTime.Parse(Msg.Substring(0, Msg.IndexOf('>')));
+            logDescription.Time = DateTime.Parse(Msg.Substring(0, Msg.IndexOf('>')));
             switch (Msg[Msg.IndexOf('>') + 1])
             {
                 case 'D':

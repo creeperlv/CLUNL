@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CLUNL.ConsoleAppHelper
 {
@@ -20,12 +16,10 @@ namespace CLUNL.ConsoleAppHelper
         public DependentVersionAttribute(string FeatureCollectionID)
         {
             this.featureCollectionID = FeatureCollectionID;
-
         }
         /// <summary>
         /// The ID of the collection, in case an assembly contains features that should be accessed in separated dependent application.
         /// </summary>
-
         public string FeatureCollectionID
         {
             get { return featureCollectionID; }

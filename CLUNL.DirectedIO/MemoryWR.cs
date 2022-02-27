@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
+﻿using System.IO;
 using System.Threading.Tasks;
 
 namespace CLUNL.DirectedIO
@@ -91,7 +88,7 @@ namespace CLUNL.DirectedIO
 
         public async Task WriteBytesAsync(byte[] b, int length, int offset)
         {
-            await MemoryStream.WriteAsync(b, offset, length); 
+            await MemoryStream.WriteAsync(b, offset, length);
         }
 
         public void WriteLine(string Str)

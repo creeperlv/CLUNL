@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CLUNL.Utilities
 {
@@ -75,11 +73,11 @@ namespace CLUNL.Utilities
         /// <summary>
         /// From 0 to 9 and a to z.
         /// </summary>
-        R2, 
+        R2,
         /// <summary>
         /// From 0 to 0 , a to z and A to Z.
         /// </summary>
-        R3, 
+        R3,
         /// <summary>
         /// Any character.
         /// </summary>

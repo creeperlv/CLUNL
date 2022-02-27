@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CLUNL.Diagnostics
 {
@@ -12,7 +9,7 @@ namespace CLUNL.Diagnostics
     /// </summary>
     public class Logger
     {
-        static bool __init=false;
+        static bool __init = false;
         static List<ILogger> Loggers = new List<ILogger>();
         /// <summary>
         /// Init the logger, call in the very early stage of the program.
@@ -77,7 +74,7 @@ namespace CLUNL.Diagnostics
         {
             foreach (var item in Loggers)
             {
-                item.Write(o0,o1);
+                item.Write(o0, o1);
             }
         }
         /// <summary>
@@ -93,11 +90,11 @@ namespace CLUNL.Diagnostics
             }
         }
         /// <summary>
-         /// Write a line in format of "o0: o1"
-         /// </summary>
-         /// <param name="ML"></param>
-         /// <param name="o0"></param>
-         /// <param name="o1"></param>
+        /// Write a line in format of "o0: o1"
+        /// </summary>
+        /// <param name="ML"></param>
+        /// <param name="o0"></param>
+        /// <param name="o1"></param>
         public static void WriteLine(MessageLevel ML, object o0, object o1)
         {
             foreach (var item in Loggers)
@@ -257,7 +254,7 @@ namespace CLUNL.Diagnostics
             Console.Write("]");
             Console.Write(o);
         }
-        
+
         private static void WriteMessageLevel(MessageLevel ML)
         {
             switch (ML)

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CLUNL.Data.Layer0.Buffers
+﻿namespace CLUNL.Data.Layer0.Buffers
 {
     /// <summary>
     /// Support converting to ByteBuffer and vice vesa

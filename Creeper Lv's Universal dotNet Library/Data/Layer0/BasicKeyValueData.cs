@@ -1,13 +1,10 @@
-﻿using CLUNL.Data.Layer1;
-using CLUNL.DirectedIO;
-using CLUNL.Exceptions;
+﻿using CLUNL.DirectedIO;
 using CLUNL.Massives;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace CLUNL.Data.Layer0
 {
@@ -238,7 +235,7 @@ namespace CLUNL.Data.Layer0
         /// <param name="Handle"></param>
         /// <param name="IgnoreDuplicateCheck">Duplicate Check will cause huge performance cost when operating data in a huge scale, recommand ignores it and check it at last.</param>
         /// <returns><p>true: Operate Succeed.</p><br/><p>false: Operation calceld due to other operation is on hold.</p></returns>
-        public bool? AddValue(string Key, string Value,bool IgnoreDuplicateCheck=false, bool AutoSave = false, int Handle = 0)
+        public bool? AddValue(string Key, string Value, bool IgnoreDuplicateCheck = false, bool AutoSave = false, int Handle = 0)
         {
             if (HitHandle(Handle) == false)
             {
@@ -248,19 +245,19 @@ namespace CLUNL.Data.Layer0
             {
                 return false;
             }
-            if(IgnoreDuplicateCheck==false)
-            for (int i = 0; i < Raw.Count; i++)
-            {
-                if (Raw[i].StartsWith(Key + Separator))
+            if (IgnoreDuplicateCheck == false)
+                for (int i = 0; i < Raw.Count; i++)
                 {
-                    Raw[i] = Key + Separator + Value.Replace("\r", "[:R;]").Replace("\n", "[:N;]");
-                    if (AutoSave == true)
+                    if (Raw[i].StartsWith(Key + Separator))
                     {
-                        Flush();
+                        Raw[i] = Key + Separator + Value.Replace("\r", "[:R;]").Replace("\n", "[:N;]");
+                        if (AutoSave == true)
+                        {
+                            Flush();
+                        }
+                        return true;
                     }
-                    return true;
                 }
-            }
             Raw.Add(Key + Separator + Value.Replace("\r", "[:R;]").Replace("\n", "[:N;]"));
             if (AutoSave == true)
             {
@@ -315,8 +312,8 @@ namespace CLUNL.Data.Layer0
             {
                 return false;
             }
-            List<string> Keys=new List<string>();
-            for (int i = Raw.Count-1; i >=0 ; i--)
+            List<string> Keys = new List<string>();
+            for (int i = Raw.Count - 1; i >= 0; i--)
             {
                 if (Raw[i].StartsWith("#")) continue;
                 if (Raw[i].Contains(Separator))
@@ -387,7 +384,7 @@ namespace CLUNL.Data.Layer0
         /// <param name="item"></param>
         public void Add(KeyValuePair<string, string> item)
         {
-            AddValue(item.Key, item.Value,false,true,0);
+            AddValue(item.Key, item.Value, false, true, 0);
         }
         /// <summary>
         /// Clear all data.
@@ -437,9 +434,9 @@ namespace CLUNL.Data.Layer0
                 if (item.StartsWith("#")) continue;
                 if (item.IndexOf(Separator) >= 0)
                 {
-                    var K= item.Substring(0, item.IndexOf(Separator));
-                    var V = item.Substring(item.IndexOf(Separator)+1);
-                    yield return new KeyValuePair<string, string>(K,V);
+                    var K = item.Substring(0, item.IndexOf(Separator));
+                    var V = item.Substring(item.IndexOf(Separator) + 1);
+                    yield return new KeyValuePair<string, string>(K, V);
 
                 }
             }
