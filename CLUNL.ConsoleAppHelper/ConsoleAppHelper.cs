@@ -400,12 +400,10 @@ namespace CLUNL.ConsoleAppHelper
                 var final = Language.Find(CurrentFeatureCollectionID + ".Options." + item.Key, fallback);
                 if (final != "")
                 {
-
                     OutLine(Environment.NewLine);
                     OutLine($"\t\t{Language.Find(CurrentFeatureCollectionID + ".Options." + item.Key, fallback)}");
                     OutLine();
                 }
-
             }
         }
 
@@ -453,6 +451,38 @@ namespace CLUNL.ConsoleAppHelper
             ParameterList p = new();
             Dictionary<string, object> RawOptions = new Dictionary<string, object>();
             string MainParameter = "";
+            ProcessParameters(parameters, ref toExecute, ref FeatureName, Length, RawOptions, ref MainParameter);
+            if (toExecute == null)
+            {
+                if (PreExecution is not null)
+                    PreExecution();
+                PrintHelp();
+            }
+            else
+                _Execute(toExecute, FeatureName, p, RawOptions, MainParameter);
+        }
+
+        private static void _Execute(IFeature toExecute, string FeatureName, ParameterList p, Dictionary<string, object> RawOptions, string MainParameter)
+        {
+            if (toExecute is DefaultBlankFeature)
+            {
+                return;
+            }
+            if (FeatureName != "")
+            {
+                p.ApplyDescription(infos[FeatureName]);
+                foreach (var item in RawOptions)
+                {
+                    p.AddKey(item.Key, item.Value);
+                }
+            }
+            if (PreExecution is not null)
+                PreExecution();
+            toExecute.Execute(p, MainParameter);
+        }
+
+        private static void ProcessParameters(string[] parameters, ref IFeature toExecute, ref string FeatureName, int Length, Dictionary<string, object> RawOptions, ref string MainParameter)
+        {
             for (int i = 0; i < Length; i++)
             {
                 var item = parameters[i];
@@ -486,30 +516,6 @@ namespace CLUNL.ConsoleAppHelper
                         MainParameter = item;
                     }
                 }
-            }
-            if (toExecute == null)
-            {
-                if (PreExecution is not null)
-                    PreExecution();
-                PrintHelp();
-            }
-            else
-            {
-                if (toExecute is DefaultBlankFeature)
-                {
-                    return;
-                }
-                if (FeatureName != "")
-                {
-                    p.ApplyDescription(infos[FeatureName]);
-                    foreach (var item in RawOptions)
-                    {
-                        p.AddKey(item.Key, item.Value);
-                    }
-                }
-                if (PreExecution is not null)
-                    PreExecution();
-                toExecute.Execute(p, MainParameter);
             }
         }
 
@@ -553,12 +559,10 @@ namespace CLUNL.ConsoleAppHelper
                 {
                     Name = oN.Substring(0, oN.IndexOf(':'));
                     Value = oN.Substring(oN.IndexOf(':') + 1);
-
                 }
                 else
                 if (oN.Contains('='))
                 {
-
                     Name = oN.Substring(0, oN.IndexOf('='));
                     Value = oN.Substring(oN.IndexOf('=') + 1);
                 }
