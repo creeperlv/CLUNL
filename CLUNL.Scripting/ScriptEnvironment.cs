@@ -15,7 +15,7 @@ namespace CLUNL.Scripting
             Expose("NULL", (object)null);
             Expose("Array", typeof(Array));
             Expose("Trace", typeof(Trace));
-            
+
         }
         public void Expose(string name, object Target)
         {

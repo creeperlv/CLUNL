@@ -27,13 +27,13 @@ namespace CLUNL.Data.Serializables.SSS
         /// <typeparam name="T"></typeparam>
         /// <param name="Reader"></param>
         /// <param name="result"></param>
-        public static void Deserialize<T>(TextReader Reader,ref List<T> result)
+        public static void Deserialize<T>(TextReader Reader, ref List<T> result)
         {
             object processing = null;
             bool isInited = false;
             Type t = null;
             string line;
-            while ((line = Reader.ReadLine())!=null)
+            while ((line = Reader.ReadLine()) != null)
             {
                 var item = line.Trim();
                 if (item.StartsWith("#"))
@@ -111,12 +111,12 @@ namespace CLUNL.Data.Serializables.SSS
         public static List<T> Deserialize<T>(List<string> content)
         {
             List<T> result = new List<T>();
-            object processing=null;
-            bool isInited=false;
-            Type t=null;
+            object processing = null;
+            bool isInited = false;
+            Type t = null;
             for (int i = 0; i < content.Count; i++)
             {
-                var item=content[i].Trim();
+                var item = content[i].Trim();
                 if (item.StartsWith("#"))
                 {
                     //Macro preserve.
@@ -127,7 +127,7 @@ namespace CLUNL.Data.Serializables.SSS
 
                     continue;
                 }
-                var cmd=CommandLineTool.Analyze(item);
+                var cmd = CommandLineTool.Analyze(item);
                 if (isInited)
                 {
                     if (cmd.RealParameter[0].EntireArgument == "+" || cmd.RealParameter[0].EntireArgument == "\\")
@@ -136,13 +136,13 @@ namespace CLUNL.Data.Serializables.SSS
                     }
                     else
                     {
-                        result.Add((T) processing);
+                        result.Add((T)processing);
                         foreach (var DLL in AppDomain.CurrentDomain.GetAssemblies())
                         {
                             t = DLL.GetType(cmd.RealParameter[0].EntireArgument);
                             if (t != null)
                             {
-                                processing = (T) Activator.CreateInstance(t);
+                                processing = (T)Activator.CreateInstance(t);
                                 break;
                             }
                         }
@@ -161,7 +161,7 @@ namespace CLUNL.Data.Serializables.SSS
                             t = DLL.GetType(cmd.RealParameter[0].EntireArgument);
                             if (t != null)
                             {
-                                processing = (T) Activator.CreateInstance(t);
+                                processing = (T)Activator.CreateInstance(t);
                                 isInited = true;
                                 break;
                             }
@@ -171,12 +171,12 @@ namespace CLUNL.Data.Serializables.SSS
                 }
                 for (int A = 1; A < cmd.RealParameter.Count; A++)
                 {
-                    var arg=cmd.RealParameter[A];
+                    var arg = cmd.RealParameter[A];
                     if (arg.isCollection)
                     {
-                        var Field=t.GetField(arg.CollectionNameStrictCase);
-                        var FT=Field.FieldType;
-                        object value=Convert.ChangeType(arg.UnsegmentedCollectionString,FT);
+                        var Field = t.GetField(arg.CollectionNameStrictCase);
+                        var FT = Field.FieldType;
+                        object value = Convert.ChangeType(arg.UnsegmentedCollectionString, FT);
 
                         Field.SetValue(processing, value);
                     }

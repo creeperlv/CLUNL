@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using static System.Collections.Generic.Dictionary<System.Type, CLUNL.Data.Convertors.IConvertor>;
 
 namespace CLUNL.Data.Convertors
@@ -33,7 +31,7 @@ namespace CLUNL.Data.Convertors
         /// </summary>
         /// <param name="T"></param>
         /// <param name="Convertor"></param>
-        public void RegisterConvertor(Type T,IConvertor Convertor)
+        public void RegisterConvertor(Type T, IConvertor Convertor)
         {
             if (Convertors.ContainsKey(T)) Convertors[T] = Convertor; else Convertors.Add(T, Convertor);
         }

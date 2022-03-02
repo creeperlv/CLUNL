@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CLUNL.Data.Layer0
 {
@@ -16,15 +15,15 @@ namespace CLUNL.Data.Layer0
         /// <summary>
         /// Children of current node.
         /// </summary>
-        public List<TreeNode> Children=new List<TreeNode>();
+        public List<TreeNode> Children = new List<TreeNode>();
         /// <summary>
         /// Name of this node.
         /// </summary>
-        public string Name="";
+        public string Name = "";
         /// <summary>
         /// Value of this node.
         /// </summary>
-        public string Value="";
+        public string Value = "";
         /// <summary>
         /// Container of nodes.
         /// </summary>
@@ -72,7 +71,7 @@ namespace CLUNL.Data.Layer0
         /// </summary>
         /// <param name="Line"></param>
         /// <returns></returns>
-        public static (TreeNode,int) ResolveFromLine(string Line)
+        public static (TreeNode, int) ResolveFromLine(string Line)
         {
             TreeNode treeNode = new TreeNode();
             int DepthIndex = Line.IndexOf(treeNode.GetSeparator());
@@ -83,7 +82,7 @@ namespace CLUNL.Data.Layer0
             string value = tmp.Substring(name.Length + 1);
             treeNode.Name = name;
             treeNode.Value = value;
-            return (treeNode,Depth);
+            return (treeNode, Depth);
         }
     }
 }

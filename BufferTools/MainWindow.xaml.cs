@@ -1,18 +1,6 @@
 ﻿using CLUNL.Data.Layer0.Buffers.UITool;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace BufferTools
 {
@@ -42,8 +30,8 @@ namespace BufferTools
         byte[] RandomArray()
         {
             Random random = new Random();
-            var length=random.Next(1, 16);
-            byte[] b= new byte[length];
+            var length = random.Next(1, 16);
+            byte[] b = new byte[length];
             for (int i = 0; i < length; i++)
             {
                 b[i] = (byte)random.Next(byte.MinValue, byte.MaxValue);

@@ -2,11 +2,8 @@
 using Newtonsoft.Json;
 using System;
 using System.IO;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CLUNL.CacheManager
@@ -37,7 +34,7 @@ namespace CLUNL.CacheManager
         /// <summary>
         /// Product Name, such as "CLUNL", then, the cache will be stored in "/tmp/CLUNL/".
         /// </summary>
-        public static string ProductName="Temp";
+        public static string ProductName = "Temp";
         /// <summary>
         /// Initialize the cache manager.
         /// </summary>
@@ -104,7 +101,7 @@ namespace CLUNL.CacheManager
                             {
                                 File.Delete(c.StorePath);
                                 c.RequestCount = 0;
-                                Logger.WriteLine("Maintenance",$"Cache \"{c.RequestUrl}\" is now forced to be invalid due to it is expired.");
+                                Logger.WriteLine("Maintenance", $"Cache \"{c.RequestUrl}\" is now forced to be invalid due to it is expired.");
                             }
                         }
                     }

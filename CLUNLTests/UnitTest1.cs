@@ -17,7 +17,7 @@ namespace CLUNLTests
             var a = BasicKeyValueData.CreateToFile(new FileInfo("./TestData.data"));
             for (int i = 0; i < 100000; i++)
             {
-                a.AddValue("Key." + i + "", "SampleTest"+i);
+                a.AddValue("Key." + i + "", "SampleTest" + i);
             }
             for (int i = 0; i < 10000; i++)
             {
@@ -54,9 +54,9 @@ namespace CLUNLTests
             int DepthIndex = Line.IndexOf(treeNode.GetSeparator());
             string Blanks = Line.Substring(0, DepthIndex);
             int Depth = Blanks.Length;
-            var tmp = Line.Substring(Depth+1);
-            string name = tmp.Substring(0,tmp.IndexOf(treeNode.GetSeparator()));
-            string value = tmp.Substring(name.Length+1);
+            var tmp = Line.Substring(Depth + 1);
+            string name = tmp.Substring(0, tmp.IndexOf(treeNode.GetSeparator()));
+            string value = tmp.Substring(name.Length + 1);
             Console.WriteLine(Depth);
             Console.WriteLine(name);
             Console.WriteLine(value);
@@ -67,7 +67,7 @@ namespace CLUNLTests
             TreeStructureData treeStructureData = TreeStructureData.CreateToFile(new FileInfo("./TreeData-Test-2.tree"));
             var a = new TreeNode() { Name = "0001", Value = "AAAB" };
             {
-                var b = new TreeNode() {Name= "0002", Value="aaa" };
+                var b = new TreeNode() { Name = "0002", Value = "aaa" };
                 a.AddChildren(b);
                 {
                     var c = new TreeNode() { Name = "0003", Value = "dfjjkgnsdfjkgdfnklgvdfjgi" };

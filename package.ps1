@@ -1,27 +1,27 @@
 param([System.Version]$Version=$(throw "Need Parameter 'Version': -Verison Version"),[String]$Channel)
-Write-Host ""
-Write-Host "Package Build Artifacts"
-Write-Host ""
-Write-Host "==================================="
-Write-Host "Target Version:		Target Channel:"
-Write-Host "$Version" -NoNewLine -BackgroundColor DarkGreen
-Write-Host "			" -NoNewLine
-Write-Host "$Channel" -BackgroundColor Blue
-Write-Host "==================================="
+Write-Output ""
+Write-Output "Package Build Artifacts"
+Write-Output ""
+Write-Output "==================================="
+Write-Output "Target Version:		Target Channel:"
+Write-Output "$Version" -NoNewLine -BackgroundColor DarkGreen
+Write-Output "			" -NoNewLine
+Write-Output "$Channel" -BackgroundColor Blue
+Write-Output "==================================="
 if(Test-Path ".\Artifacts"){
 	
 }else{
 	mkdir ".\Artifacts"
 }
 $ArtifactName="CLUNL-AnyCPU-$Version-$Channel"
-Write-Host "Generate Manifest file to: .\Artifacts\LibManifest"
+Write-Output "Generate Manifest file to: .\Artifacts\LibManifest"
 $ManifestContent="CLUNL.dll"
 $ManifestContent+="`nCLUNL.DirectedIO.dll"
 $ManifestContent+="`nCLUNL.Pipeline.dll"
 $ManifestContent+="`nCLUNL.Diagnosis.dll"
 $ManifestContent+="`nCLUNL.Packaging.dll"
 $ManifestContent|Out-File ".\Artifacts\LibManifest" 
-Write-Host "Compressing..."
+Write-Output "Compressing..."
 $Compress=@{
 	Path=".\Creeper Lv's Universal dotNet Library\bin\Release\netstandard2.0\CLUNL.dll",
 		".\CLUNL.DirectedIO\bin\Release\netstandard2.0\CLUNL.DirectedIO.dll",
@@ -32,5 +32,5 @@ $Compress=@{
 	Destination=".\Artifacts\$ArtifactName.zip"
 }
 Compress-Archive @Compress -Force
-Write-Host "Completed."
-Write-Host "Generated Artifact to: .\Artifacts\$ArtifactName.zip"
+Write-Output "Completed."
+Write-Output "Generated Artifact to: .\Artifacts\$ArtifactName.zip"

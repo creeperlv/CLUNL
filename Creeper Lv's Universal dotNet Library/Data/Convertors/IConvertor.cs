@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CLUNL.Data.Convertors
+﻿namespace CLUNL.Data.Convertors
 {
     /// <summary>
     /// Interface for convertors that managed by ConvertorManager.

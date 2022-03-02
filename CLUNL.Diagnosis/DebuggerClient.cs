@@ -80,7 +80,7 @@ namespace CLUNL.Diagnosis
         /// <param name="logLevel"></param>
         public void Log(string Message, LogLevel logLevel = LogLevel.Default)
         {
-            
+
             if (isPaused == true) return;
             switch (Profile)
             {
@@ -151,7 +151,7 @@ namespace CLUNL.Diagnosis
                 default:
                     break;
             }
-            
+
         }
     }
     public enum LogLevel

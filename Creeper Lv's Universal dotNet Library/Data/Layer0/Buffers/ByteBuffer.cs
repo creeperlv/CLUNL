@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
-using System.Text;
 
 namespace CLUNL.Data.Layer0.Buffers
 {
@@ -280,7 +278,7 @@ namespace CLUNL.Data.Layer0.Buffers
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public byte this[int index] { get => buf.ToArray()[index]; set =>buf=new Queue<byte>(buf.ToArray()[index] = value); }
+        public byte this[int index] { get => buf.ToArray()[index]; set => buf = new Queue<byte>(buf.ToArray()[index] = value); }
 
         /// <summary>
         /// Append  right ByteBuffer to left ByteBuffer as-is.

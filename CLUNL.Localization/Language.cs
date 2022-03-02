@@ -45,7 +45,7 @@ namespace CLUNL.Localization
         public static bool IsInited() => isInited;
 
         static string SettingFileName;
-        static string ProductName= "CLUNL";
+        static string ProductName = "CLUNL";
 
         /// <summary>
         ///  Init languages with given settings file and a product name.
@@ -113,7 +113,7 @@ namespace CLUNL.Localization
             if (File.Exists(__path_0))
             {
                 File.Delete(__path_0);
-                File.WriteAllText(__path_0,languageCode);
+                File.WriteAllText(__path_0, languageCode);
             }
             else
             {
@@ -178,7 +178,7 @@ namespace CLUNL.Localization
             {
                 if (item.Name.ToUpper().EndsWith(".LANG"))
                 {
-                    L1.Add(item.Name.Substring(0,item.Name.Length-5));
+                    L1.Add(item.Name.Substring(0, item.Name.Length - 5));
                 }
             }
 

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CLUNL.Data.Serializables.CheckpointSystem.Types
+﻿namespace CLUNL.Data.Serializables.CheckpointSystem.Types
 {
     /// <summary>
     /// Int Number, helpful when using Checkpoint.

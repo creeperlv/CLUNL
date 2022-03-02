@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.IO.MemoryMappedFiles;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Schema;
 
 namespace CLUNL.DirectedIO
 {
@@ -23,7 +18,7 @@ namespace CLUNL.DirectedIO
         /// </summary>
         public MemoryMappedFile CoreFile
         {
-            get => file;private set
+            get => file; private set
             {
                 file = value;
                 MemoryFileStream = file.CreateViewStream();

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CLUNL.Massives
+﻿namespace CLUNL.Massives
 {
     /// <summary>
     /// Interface for holdable objects.

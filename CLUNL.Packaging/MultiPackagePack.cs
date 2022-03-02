@@ -8,11 +8,11 @@ namespace CLUNL.Packaging
 {
     public class MultiPackagePack
     {
-        public static void CreatePack(Dictionary<string,DirectoryInfo>Manifest,DirectoryInfo TempDirectory, FileInfo TargetPackage)
+        public static void CreatePack(Dictionary<string, DirectoryInfo> Manifest, DirectoryInfo TempDirectory, FileInfo TargetPackage)
         {
             Guid guid = Guid.NewGuid();
             TempDirectory = new DirectoryInfo(Path.Combine(TempDirectory.FullName, guid.ToString()));
-            if(!TempDirectory.Exists)TempDirectory.Create();
+            if (!TempDirectory.Exists) TempDirectory.Create();
             FileInfo fileInfo = new FileInfo(Path.Combine(TempDirectory.FullName, "Package.Manifest"));
             StreamWriter sw = new StreamWriter(fileInfo.OpenWrite());
             foreach (var item in Manifest)
@@ -26,7 +26,7 @@ namespace CLUNL.Packaging
             ZipFile.CreateFromDirectory(TempDirectory.FullName, TargetPackage.FullName);
             TempDirectory.Delete(true);
         }
-        public static void ExtractPack(FileInfo PackageFile,DirectoryInfo TempDirectory,DirectoryInfo Target,params string[] PackageName)
+        public static void ExtractPack(FileInfo PackageFile, DirectoryInfo TempDirectory, DirectoryInfo Target, params string[] PackageName)
         {
             //var stream=PackageFile.Open(FileMode.Open);
             //ZipArchive zipArchive=new ZipArchive(stream);
@@ -52,9 +52,9 @@ namespace CLUNL.Packaging
             //    }
             //}
             TempDirectory = new DirectoryInfo(Path.Combine(TempDirectory.FullName, Guid.NewGuid().ToString()));
-            if(!TempDirectory.Exists)TempDirectory.Create();
-            if(Target.Exists==false)Target.Create();
-            ZipFile.ExtractToDirectory(PackageFile.FullName,TempDirectory.FullName);
+            if (!TempDirectory.Exists) TempDirectory.Create();
+            if (Target.Exists == false) Target.Create();
+            ZipFile.ExtractToDirectory(PackageFile.FullName, TempDirectory.FullName);
             var manifest = File.ReadAllLines(Path.Combine(TempDirectory.FullName, "Package.Manifest"));
             foreach (var item in manifest)
             {
@@ -62,7 +62,7 @@ namespace CLUNL.Packaging
                 {
                     if (item.StartsWith(target))
                     {
-                        var pkgName = item.Substring(target.Length+1);
+                        var pkgName = item.Substring(target.Length + 1);
                         FileUtilities.MoveFolderRecursively(Path.Combine(TempDirectory.FullName, pkgName), Target.FullName);
                         //Directory.Move(Path.Combine(TempDirectory.FullName, pkgName), Target.FullName);
                     }

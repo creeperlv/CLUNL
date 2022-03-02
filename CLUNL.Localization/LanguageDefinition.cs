@@ -101,10 +101,10 @@ namespace CLUNL.Localization
         /// <param name="file"></param>
         public void SaveToFile(FileInfo file)
         {
-            using(var stream= file.Open(FileMode.OpenOrCreate))
+            using (var stream = file.Open(FileMode.OpenOrCreate))
             {
 
-                using (var SW=new StreamWriter(stream))
+                using (var SW = new StreamWriter(stream))
                 {
 
                     foreach (var item in new EnumerativeSerializer(this))

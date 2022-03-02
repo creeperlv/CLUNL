@@ -1,7 +1,4 @@
 ﻿using CLUNL.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CLUNL.Massives
 {
@@ -10,7 +7,7 @@ namespace CLUNL.Massives
     /// </summary>
     public class HoldableObject : IHoldable
     {
-        internal int Handle =0;
+        internal int Handle = 0;
         /// <summary>
         /// Hold the object.
         /// </summary>

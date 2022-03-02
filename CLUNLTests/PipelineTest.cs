@@ -1,8 +1,6 @@
 ﻿using CLUNL.Pipeline;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CLUNLTests
 {
@@ -14,13 +12,13 @@ namespace CLUNLTests
         {
             DefaultProcessor defaultProcessor = new DefaultProcessor();
             defaultProcessor.Init();
-            var assemblies= AppDomain.CurrentDomain.GetAssemblies();
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
             foreach (var item in assemblies)
             {
                 if (item.FullName.StartsWith("System.")) continue;
                 if (item.FullName.StartsWith("Microsoft.")) continue;
                 if (item.FullName.StartsWith("netstandard")) continue;
-                Console.WriteLine(defaultProcessor.Process(new PipelineData(item.FullName,null,null)));
+                Console.WriteLine(defaultProcessor.Process(new PipelineData(item.FullName, null, null)));
             }
         }
     }

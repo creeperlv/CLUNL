@@ -1,14 +1,12 @@
 ﻿using CLUNL.DirectedIO;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CLUNL.Data.Layer0.Buffers
 {
     /// <summary>
     /// Just operates WR like byte buffer.
     /// </summary>
-    public class ByteBufferOverWR:IDisposable
+    public class ByteBufferOverWR : IDisposable
     {
         IBaseWR CoreWR;
         /// <summary>
@@ -36,7 +34,7 @@ namespace CLUNL.Data.Layer0.Buffers
         /// <param name="Data"></param>
         public void AppendGroup(byte[] Data)
         {
-            CoreWR.WriteBytes(Data,Data.Length,0);
+            CoreWR.WriteBytes(Data, Data.Length, 0);
             CoreWR.Flush();
         }
         /// <summary>

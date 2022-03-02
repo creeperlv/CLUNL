@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 
 namespace CLUNL.ConsoleAppHelper
 {
@@ -19,7 +14,7 @@ namespace CLUNL.ConsoleAppHelper
         /// <param name="asm"></param>
         public DefaultFeatureCollectionVersion(Assembly asm)
         {
-            this.asm= asm;
+            this.asm = asm;
         }
         /// <summary>
         /// Returns the version of the assembly.

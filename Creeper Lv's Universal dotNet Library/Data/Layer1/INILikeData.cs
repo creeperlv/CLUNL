@@ -1,9 +1,6 @@
 ﻿using CLUNL.Data.Layer0;
 using CLUNL.DirectedIO;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace CLUNL.Data.Layer1
 {
@@ -12,7 +9,8 @@ namespace CLUNL.Data.Layer1
     /// </summary>
     public class INILikeData : BasicKeyValueData
     {
-        internal INILikeData(IBaseWR WR,bool AutoLoad=true) : base(WR,'=',AutoLoad) {
+        internal INILikeData(IBaseWR WR, bool AutoLoad = true) : base(WR, '=', AutoLoad)
+        {
 
         }
         /// <summary>

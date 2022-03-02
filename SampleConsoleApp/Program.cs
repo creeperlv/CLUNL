@@ -17,7 +17,8 @@ namespace SampleConsoleApp
                 }
             }
             ConsoleAppHelper.Colorful = true;
-            ConsoleAppHelper.PreExecution = () => {
+            ConsoleAppHelper.PreExecution = () =>
+            {
                 Output.OutLine("This software/library is licensed under the MIT Licenes.");
             };
             ConsoleAppHelper.Execute(args);

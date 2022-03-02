@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace CLUNL.Data.Layer0.Buffers
@@ -21,7 +20,7 @@ namespace CLUNL.Data.Layer0.Buffers
         public bool IsEmpty()
         {
             return
-               vs.Length== 0 ? true : false;
+               vs.Length == 0 ? true : false;
         }
         /// <summary>
         /// Generate a DataBuffer from a byte array.
@@ -166,7 +165,7 @@ namespace CLUNL.Data.Layer0.Buffers
         public Array ReadArray<T>()
         {
             var l = BitConverter.ToInt32(vs.GetGroup(), 0);
-            Array array = Array.CreateInstance(typeof(T), l) ;
+            Array array = Array.CreateInstance(typeof(T), l);
             for (int i = 0; i < l; i++)
             {
                 if (typeof(T) == typeof(int))
@@ -238,7 +237,8 @@ namespace CLUNL.Data.Layer0.Buffers
                 if (item is int)
                 {
                     vs.AppendGroup(BitConverter.GetBytes((int)item));
-                }else if (item is uint)
+                }
+                else if (item is uint)
                 {
                     vs.AppendGroup(BitConverter.GetBytes((uint)item));
                 }
@@ -367,7 +367,7 @@ namespace CLUNL.Data.Layer0.Buffers
         public static implicit operator DataBuffer(byte[] Data)
         {
             DataBuffer result = new DataBuffer();
-               ByteBuffer vs = new ByteBuffer();
+            ByteBuffer vs = new ByteBuffer();
             foreach (var item in Data)
             {
                 vs.buf.Enqueue(item);

@@ -4,10 +4,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CLUNLTests
 {
@@ -17,7 +13,7 @@ namespace CLUNLTests
         [TestMethod]
         public void ParameterResolutionTest()
         {
-            var l=Utilities.ResolveParameters("This is a S:\"Test\\tString, with some\\r\\ndecorations\\\\.\" right#Comments");
+            var l = Utilities.ResolveParameters("This is a S:\"Test\\tString, with some\\r\\ndecorations\\\\.\" right#Comments");
             foreach (var item in l)
             {
                 Trace.WriteLine($"[{item}]");
@@ -31,7 +27,7 @@ namespace CLUNLTests
             CLUNL.Scripting.ScriptEnvironment environment = new CLUNL.Scripting.ScriptEnvironment();
             environment.Expose("Console", typeof(Console));
             simpleManagedScript.SetEnvironmentBase(environment);
-            
+
             string script = @"
 
 NEW B Bool
@@ -49,14 +45,14 @@ EXEC Console WriteLine E:TEMP_INT
 LGR B Int:5 E:Result#A Comment
 IF B L0
 ";
-            var obj=simpleManagedScript.Eval(script,out errors);
+            var obj = simpleManagedScript.Eval(script, out errors);
             Trace.WriteLine(obj + "");
             if (errors.Count != 0)
             {
                 foreach (var item in errors)
                 {
 
-                    Trace.WriteLine(""+item.Message);
+                    Trace.WriteLine("" + item.Message);
                 }
             }
         }
