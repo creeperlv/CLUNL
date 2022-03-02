@@ -6,16 +6,6 @@ using System.IO;
 namespace CLUNL.Localization
 {
     /// <summary>
-    /// An interface for objects that will use Language.
-    /// </summary>
-    public interface ILocalized
-    {
-        /// <summary>
-        /// Apply current language.
-        /// </summary>
-        void ApplyLanguage();
-    }
-    /// <summary>
     /// Represent a language resource collection.
     /// </summary>
     public class Language

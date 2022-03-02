@@ -8,6 +8,7 @@ namespace CLUNL.Localization
     /// <summary>
     /// Localized via Language.
     /// </summary>
+    [Serializable]
     public class LocalizedString
     {
         /// <summary>
