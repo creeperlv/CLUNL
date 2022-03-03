@@ -9,7 +9,10 @@ namespace CLUNL.Localization
     [Serializable]
     public class LocalizedString
     {
-        object[] arguments;
+        /// <summary>
+        /// Used by string.Format().
+        /// </summary>
+        public object[] arguments;
         /// <summary>
         /// Initialize the string with LanguageID and fallback.
         /// </summary>
@@ -22,8 +25,14 @@ namespace CLUNL.Localization
             this.Fallback = Fallback;
             this.arguments = arguments;
         }
-        private string ID;
-        private string Fallback;
+        /// <summary>
+        /// ID in language definition.
+        /// </summary>
+        public string ID="";
+        /// <summary>
+        /// Fallback value once it is not found in language definition.
+        /// </summary>
+        public string Fallback="";
         /// <summary>
         /// Return the localized string.
         /// </summary>
@@ -32,7 +41,7 @@ namespace CLUNL.Localization
         public override string ToString()
         {
             if (arguments != null)
-                return String.Format(Language.Find(ID, Fallback), arguments);
+                return string.Format(Language.Find(ID, Fallback), arguments);
             else return Language.Find(ID, Fallback);
         }
         /// <summary>
