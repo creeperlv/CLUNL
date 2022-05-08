@@ -43,7 +43,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CLUNL.CacheManager", "CLUNL
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unity3D", "Unity3D", "{346A3F9B-483B-4B55-9DEB-06751848D4CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLUNL.Unity3D", "CLUNL.Unity3D\CLUNL.Unity3D.csproj", "{A0B8FEAE-359C-42FF-B7DE-47BEC603AD28}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CLUNL.Unity3D", "CLUNL.Unity3D\CLUNL.Unity3D.csproj", "{A0B8FEAE-359C-42FF-B7DE-47BEC603AD28}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLUNL.Graph", "CLUNL.Graph\CLUNL.Graph.csproj", "{AC438628-F8E2-45F7-B997-6C5A7C6ADBAD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -107,6 +109,10 @@ Global
 		{A0B8FEAE-359C-42FF-B7DE-47BEC603AD28}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0B8FEAE-359C-42FF-B7DE-47BEC603AD28}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0B8FEAE-359C-42FF-B7DE-47BEC603AD28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC438628-F8E2-45F7-B997-6C5A7C6ADBAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC438628-F8E2-45F7-B997-6C5A7C6ADBAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC438628-F8E2-45F7-B997-6C5A7C6ADBAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC438628-F8E2-45F7-B997-6C5A7C6ADBAD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
