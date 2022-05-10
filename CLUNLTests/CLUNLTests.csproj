@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CLUNL.Graph\CLUNL.Graph.csproj" />
     <ProjectReference Include="..\CLUNL.Packaging\CLUNL.Packaging.csproj" />
     <ProjectReference Include="..\CLUNL.Pipeline\CLUNL.Pipeline.csproj" />
     <ProjectReference Include="..\CLUNL.Scripting\CLUNL.Scripting.csproj" />
