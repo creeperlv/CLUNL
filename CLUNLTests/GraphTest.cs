@@ -10,19 +10,14 @@ namespace CLUNLTests
         [TestMethod]
         public void TypeResolverTest()
         {
-            SerializableGraph g = new SerializableGraph();
             for (int i = 0; i < 10000; i++)
             {
                 {
-                    var t = g.FindType("CLUNLTests.SampleType");
+                    var t = SerializableGraph.FindType("CLUNLTests.SampleType");
                     Trace.WriteLine(t);
                     Assert.IsNotNull(t);
                 }
             }
         }
-    }
-    public class SampleType
-    {
-
     }
 }
