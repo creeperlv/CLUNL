@@ -14,6 +14,15 @@ namespace CLUNL.Localization
         /// </summary>
         public object[] arguments;
         /// <summary>
+        /// Empty constructor for serialization purpose
+        /// </summary>
+        public LocalizedString()
+        {
+            arguments = new object[0];
+            ID = "";
+            Fallback = "";
+        }
+        /// <summary>
         /// Initialize the string with LanguageID and fallback.
         /// </summary>
         /// <param name="ID"></param>
