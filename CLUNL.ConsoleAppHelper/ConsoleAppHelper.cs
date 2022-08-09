@@ -282,15 +282,21 @@ namespace CLUNL.ConsoleAppHelper
                             }
                     }
             }
-            if (Language.IsInited() is false)
-                if (LanguageConfigurationFile == null)
-                {
-                    Language.Init(FeatureCollectionID + "Language", ProductName);
-                }
-                else
-                {
-                    Language.Init(LanguageConfigurationFile, ProductName);
-                }
+            try
+            {
+                if (Language.IsInited() is false)
+                    if (LanguageConfigurationFile == null)
+                    {
+                        Language.Init(FeatureCollectionID + "Language", ProductName);
+                    }
+                    else
+                    {
+                        Language.Init(LanguageConfigurationFile, ProductName);
+                    }
+            }
+            catch (Exception)
+            {
+            }
         }
         /// <summary>
         /// The name of configuration, setting it to null will make ConsoleAppHelper use `FeatureCollectionID + "Language"`.

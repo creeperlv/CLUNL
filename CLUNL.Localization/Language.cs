@@ -117,7 +117,13 @@ namespace CLUNL.Localization
             }
             else
             {
-                var p0 = Path.Combine(new FileInfo(typeof(Language).Assembly.Location).Directory.FullName, SettingFileName);
+                var DataPath = DataFolder;
+                if (DataPath == null)
+                {
+                    var d = new FileInfo(typeof(Language).Assembly.Location).Directory;
+                    DataPath = d.FullName;
+                }
+                var p0 = Path.Combine(DataPath, SettingFileName);
                 if (File.Exists(p0))
                 {
                     File.Delete(p0);
@@ -165,10 +171,10 @@ namespace CLUNL.Localization
         public static List<string> EnumerateLanguageCodes()
         {
 
-            var d = new FileInfo(typeof(Language).Assembly.Location).Directory;
             string DataPath = DataFolder;
             if (DataPath == null)
             {
+                var d = new FileInfo(typeof(Language).Assembly.Location).Directory;
                 DataPath = d.FullName;
             }
             var __lang_d = Path.Combine(DataPath, Locales);
@@ -192,10 +198,10 @@ namespace CLUNL.Localization
         {
             isInited = true;
             //CultureInfo.CurrentUICulture.Name -> en-US
-            var d = new FileInfo(typeof(Language).Assembly.Location).Directory;
             string DataPath = DataFolder;
             if (DataPath == null)
             {
+                var d = new FileInfo(typeof(Language).Assembly.Location).Directory;
                 DataPath = d.FullName;
             }
             var langfile = Path.Combine(DataPath, Locales, DefaultLang);
