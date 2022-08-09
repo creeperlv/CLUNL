@@ -303,6 +303,10 @@ namespace CLUNL.ConsoleAppHelper
         /// </summary>
         public static string LanguageConfigurationFile = null;
         /// <summary>
+        /// Override the default executable name by setting it to non-null value to avoid some crashing related to reflection.
+        /// </summary>
+        public static string ExecutableName = null;
+        /// <summary>
         /// Print out a auto-generated help document.
         /// </summary>
         public static void PrintHelp()
@@ -336,7 +340,9 @@ namespace CLUNL.ConsoleAppHelper
             var option = Language.Find("General.Console.Option", "Option");
             var MainParameter = Language.Find("General.Console.MainParameter", "Main Parameter");
             OutLine();
+            if(ExecutableName==null)
             OutLine($"\t{new FileInfo(Assembly.GetEntryAssembly().Location).Name} (exe) <{command}> [{option}] [...] [{MainParameter}]");
+            else OutLine($"\t{ExecutableName} (exe) <{command}> [{option}] [...] [{MainParameter}]");
             OutLine();
             OutLine(Language.Find("General.Console.Commands", "Commands:"));
             OutLine();
