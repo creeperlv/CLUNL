@@ -335,5 +335,12 @@ namespace CLUNL.Localization
                 return Fallback;
             else return LanguageStrings[Key].Replace("\\r", "\r");
         }
+        /// <summary>
+        /// Remove loaded strings, hope to help reduce resource usage.
+        /// </summary>
+        public static void ClearLoadedStrings()
+        {
+            LanguageStrings.Clear();
+        }
     }
 }

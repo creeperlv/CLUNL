@@ -115,6 +115,13 @@ namespace CLUNL.Localization
             }
         }
         /// <summary>
+        /// Clear the dictionary.
+        /// </summary>
+        public void Clear()
+        {
+            LanguageStrings.Clear();
+        }
+        /// <summary>
         /// Load form string array.
         /// </summary>
         /// <param name="contents"></param>
